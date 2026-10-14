@@ -4,63 +4,193 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Academic Grade Advisor — Clean White Dashboard</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    body { font-family: 'Inter', sans-serif; background-color: #FFFFFF; color: #111827; }
-    .nav-btn.active { background-color: #F3F4F6; font-weight: 600; border-left: 3px solid #111827; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: #FFFFFF;
+      color: #111827;
+      display: flex;
+      min-height: 100vh;
+      flex-direction: row;
+    }
+    @media (max-width: 768px) {
+      body { flex-direction: column; }
+    }
+    /* Sidebar */
+    aside {
+      width: 265px;
+      border-right: 1px solid #E5E7EB;
+      background: #FFFFFF;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      flex-shrink: 0;
+    }
+    @media (max-width: 768px) {
+      aside { width: 100%; border-right: none; border-bottom: 1px solid #E5E7EB; }
+    }
+    .brand { padding: 24px; border-bottom: 1px solid #E5E7EB; }
+    .brand h1 { font-size: 18px; font-weight: 700; color: #111827; letter-spacing: -0.02em; }
+    .brand p { font-size: 12px; color: #6B7280; margin-top: 4px; }
+    nav { padding: 12px; }
+    .nav-btn {
+      display: block;
+      width: 100%;
+      text-align: left;
+      padding: 10px 14px;
+      margin-bottom: 4px;
+      font-size: 13.5px;
+      color: #374151;
+      background: transparent;
+      border: none;
+      border-left: 3px solid transparent;
+      border-radius: 0 6px 6px 0;
+      cursor: pointer;
+      transition: 0.15s;
+    }
+    .nav-btn:hover { background-color: #F9FAFB; }
+    .nav-btn.active {
+      background-color: #F3F4F6;
+      font-weight: 600;
+      color: #111827;
+      border-left: 3px solid #111827;
+    }
+    .sidebar-footer { padding: 16px; border-top: 1px solid #E5E7EB; }
+    .btn-outline {
+      width: 100%;
+      padding: 8px 12px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #374151;
+      background: #FFFFFF;
+      border: 1px solid #D1D5DB;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .btn-outline:hover { background: #F3F4F6; }
+    .btn-dark {
+      width: 100%;
+      padding: 9px 12px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #111827;
+      background: #FFFFFF;
+      border: 1px solid #111827;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 14px;
+      transition: 0.15s;
+    }
+    .btn-dark:hover { background: #111827; color: #FFFFFF; }
+
+    /* Main Content */
+    main { flex: 1; padding: 32px 40px; background: #FFFFFF; overflow-y: auto; }
+    @media (max-width: 768px) { main { padding: 20px; } }
+    .hidden { display: none !important; }
+    .page-header {
+      border-bottom: 1px solid #E5E7EB;
+      padding-bottom: 16px;
+      margin-bottom: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .page-header h2 { font-size: 22px; font-weight: 700; color: #111827; }
+    .page-header p { font-size: 13px; color: #6B7280; margin-top: 4px; }
+    select, input[type="text"], input[type="number"] {
+      padding: 8px 12px;
+      border: 1px solid #D1D5DB;
+      border-radius: 6px;
+      font-size: 13px;
+      background: #FFFFFF;
+      color: #111827;
+    }
+    select:focus, input:focus { outline: none; border-color: #111827; }
+    .grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 28px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+    .grid-calc { display: grid; grid-template-columns: 1.65fr 1fr; gap: 24px; }
+    @media (max-width: 960px) { .grid-calc { grid-template-columns: 1fr; } }
+
+    .card {
+      border: 1px solid #E5E7EB;
+      border-radius: 8px;
+      padding: 20px;
+      background: #FFFFFF;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .kpi-label { font-size: 12px; color: #6B7280; }
+    .kpi-val { font-size: 24px; font-weight: 700; margin-top: 6px; color: #111827; }
+
+    .badge {
+      display: inline-block;
+      padding: 3px 8px;
+      font-size: 11px;
+      font-weight: 600;
+      border-radius: 4px;
+      border: 1px solid #D1D5DB;
+    }
+    .badge-safe { background: #ECFDF5; color: #065F46; border-color: #A7F3D0; }
+    .badge-ok { background: #EFF6FF; color: #1E40AF; border-color: #BFDBFE; }
+    .badge-warn { background: #FFFBEB; color: #92400E; border-color: #FDE68A; }
+    .badge-danger { background: #FFF1F2; color: #9F1239; border-color: #FECDD3; }
+    .badge-neutral { background: #F9FAFB; color: #4B5563; border-color: #E5E7EB; }
+
+    .comp-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid #F3F4F6;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .comp-row:last-child { border-bottom: none; }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    th, td { padding: 10px 14px; border-bottom: 1px solid #E5E7EB; text-align: left; }
+    th { background: #F9FAFB; font-weight: 600; }
   </style>
 </head>
-<body class="min-h-screen flex flex-col md:flex-row bg-white">
+<body>
 
-  <!-- SIDEBAR (6 FITUR UTAMA DI DASHBOARD) -->
-  <aside class="w-full md:w-64 border-b md:border-b-0 md:border-r border-gray-200 bg-white flex flex-col justify-between">
+  <!-- SIDEBAR DASHBOARD -->
+  <aside>
     <div>
-      <div class="p-6 border-b border-gray-200">
-        <h1 class="text-lg font-bold tracking-tight text-gray-900">GradeAdvisor.</h1>
-        <p class="text-xs text-gray-500 mt-1">Sistem Evaluasi & Target Nilai</p>
+      <div class="brand">
+        <h1>GradeAdvisor.</h1>
+        <p>Sistem Evaluasi & Target IPK 8 Smt</p>
       </div>
-      <nav class="p-3 space-y-1">
-        <button onclick="switchTab('beranda')" id="tab-beranda" class="nav-btn active w-full text-left px-4 py-2.5 text-sm text-gray-800 rounded-r-md hover:bg-gray-50 transition">
-          1. Beranda
-        </button>
-        <button onclick="switchTab('hitung')" id="tab-hitung" class="nav-btn w-full text-left px-4 py-2.5 text-sm text-gray-800 rounded-r-md hover:bg-gray-50 transition">
-          2. Hitung Nilai & Target
-        </button>
-        <button onclick="switchTab('simulasi')" id="tab-simulasi" class="nav-btn w-full text-left px-4 py-2.5 text-sm text-gray-800 rounded-r-md hover:bg-gray-50 transition">
-          3. Simulasi What-If
-        </button>
-        <button onclick="switchTab('bobot')" id="tab-bobot" class="nav-btn w-full text-left px-4 py-2.5 text-sm text-gray-800 rounded-r-md hover:bg-gray-50 transition">
-          4. Manajemen Bobot MK
-        </button>
-        <button onclick="switchTab('skala')" id="tab-skala" class="nav-btn w-full text-left px-4 py-2.5 text-sm text-gray-800 rounded-r-md hover:bg-gray-50 transition">
-          5. Skala Nilai & Indeks IP
-        </button>
-        <button onclick="switchTab('analitik')" id="tab-analitik" class="nav-btn w-full text-left px-4 py-2.5 text-sm text-gray-800 rounded-r-md hover:bg-gray-50 transition">
-          6. Analitik & Strategi
-        </button>
+      <nav>
+        <button onclick="switchTab('beranda')" id="tab-beranda" class="nav-btn active">1. Beranda</button>
+        <button onclick="switchTab('hitung')" id="tab-hitung" class="nav-btn">2. Hitung Nilai MK</button>
+        <button onclick="switchTab('ipk8')" id="tab-ipk8" class="nav-btn">3. Target IPK 8 Semester</button>
+        <button onclick="switchTab('simulasi')" id="tab-simulasi" class="nav-btn">4. Simulasi What-If</button>
+        <button onclick="switchTab('bobot')" id="tab-bobot" class="nav-btn">5. Manajemen Bobot MK</button>
+        <button onclick="switchTab('skala')" id="tab-skala" class="nav-btn">6. Skala Nilai & Analitik</button>
       </nav>
     </div>
-    <div class="p-4 border-t border-gray-200">
-      <button onclick="resetAllData()" class="w-full py-2 px-3 text-xs text-gray-600 border border-gray-300 rounded hover:bg-gray-100 transition">
-        Reset ke Data Awal
-      </button>
+    <div class="sidebar-footer">
+      <button onclick="resetAllData()" class="btn-outline">Reset Semua Data</button>
     </div>
   </aside>
 
   <!-- MAIN CONTENT AREA (CLEAN WHITE) -->
-  <main class="flex-1 p-6 md:p-10 bg-white overflow-y-auto">
-    
+  <main>
+
     <!-- FITUR 1: BERANDA -->
-    <section id="view-beranda" class="space-y-8">
-      <div class="border-b border-gray-200 pb-4 flex flex-col md:flex-row md:items-center md:justify-between">
+    <section id="view-beranda">
+      <div class="page-header">
         <div>
-          <h2 class="text-2xl font-bold text-gray-900">Beranda Akademik</h2>
-          <p class="text-sm text-gray-500 mt-1">Ringkasan posisi nilai dari 5 mata kuliah aktif Anda saat ini.</p>
+          <h2>Beranda Akademik</h2>
+          <p>Ringkasan posisi nilai dari 5 mata kuliah aktif dan proyeksi IPK Anda.</p>
         </div>
-        <div class="mt-4 md:mt-0 flex items-center space-x-3">
-          <span class="text-xs font-medium text-gray-500 uppercase">Target Utama:</span>
-          <select id="global-target" onchange="updateGlobalTarget(this.value)" class="border border-gray-300 rounded px-3 py-1.5 text-sm bg-white font-semibold">
+        <div>
+          <label style="font-size:12px; color:#6B7280; font-weight:600; margin-right:6px;">TARGET NILAI MK:</label>
+          <select id="global-target" onchange="updateGlobalTarget(this.value)">
             <option value="85">A (Min. 85 / IP 4.00)</option>
             <option value="80">A- (Min. 80 / IP 3.70)</option>
             <option value="75">B+ (Min. 75 / IP 3.30)</option>
@@ -69,221 +199,255 @@
           </select>
         </div>
       </div>
-
-      <!-- KPI Cards -->
-      <div class="grid grid-cols-1 md:grid-cols-4 gap-4" id="beranda-kpi"></div>
-
-      <!-- Daftar Kartu Mata Kuliah -->
-      <div>
-        <h3 class="text-base font-semibold text-gray-900 mb-4">Status Keamanan Nilai per Mata Kuliah</h3>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5" id="beranda-course-cards"></div>
-      </div>
+      <div class="grid-4" id="beranda-kpi"></div>
+      <h3 style="font-size:15px; font-weight:600; margin-bottom:14px;">Status Keamanan Nilai per Mata Kuliah</h3>
+      <div class="grid-3" id="beranda-course-cards"></div>
     </section>
 
-    <!-- FITUR 2: HITUNG NILAI & TARGET ADVISOR -->
-    <section id="view-hitung" class="hidden space-y-8">
-      <div class="border-b border-gray-200 pb-4 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+    <!-- FITUR 2: HITUNG NILAI PER MATA KULIAH -->
+    <section id="view-hitung" class="hidden">
+      <div class="page-header">
         <div>
-          <h2 class="text-2xl font-bold text-gray-900">Hitung Nilai & Target Advisor</h2>
-          <p class="text-sm text-gray-500 mt-1">Masukkan nilai yang sudah Anda miliki. Kosongkan komponen yang belum dinilai untuk melihat rekomendasi nilai ke depannya.</p>
+          <h2>Hitung Nilai & Target Advisor</h2>
+          <p>Masukkan nilai yang sudah Anda miliki. Kosongkan komponen yang belum dinilai untuk melihat target ke depannya.</p>
         </div>
+        <select id="select-course-hitung" onchange="renderHitungNilai()"></select>
+      </div>
+      <div class="grid-calc">
+        <div class="card" style="justify-content: flex-start;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+            <h3 id="hitung-course-title" style="font-size:16px; font-weight:700;">Komponen Evaluasi</h3>
+            <span id="hitung-total-weight" class="badge badge-neutral"></span>
+          </div>
+          <p style="font-size:12px; color:#6B7280; margin-bottom:14px;">
+            Tips: Ketik satu angka (misal <b>85</b>) atau beberapa nilai dipisahkan koma jika kuis/lab berkali-kali (misal <b>80, 90, 75</b> — otomatis dihitung rata-ratanya).
+          </p>
+          <div id="hitung-components-list"></div>
+        </div>
+        <div class="card" style="justify-content: flex-start; height: fit-content;">
+          <h3 style="font-size:15px; font-weight:700; border-bottom:1px solid #E5E7EB; padding-bottom:8px; margin-bottom:12px;">Hasil Evaluasi Saat Ini</h3>
+          <div id="hitung-summary-box" style="font-size:13px; line-height:1.9; margin-bottom:16px;"></div>
+          <h4 style="font-size:13px; font-weight:700; margin-bottom:8px;">Target Advisor (Harus Dapat Berapa Ke Depannya?)</h4>
+          <div id="hitung-advisor-table" style="display:flex; flex-direction:column; gap:6px; margin-bottom:16px;"></div>
+          <div id="hitung-advice-message"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FITUR 3: TARGET IPK 8 SEMESTER (BARU!) -->
+    <section id="view-ipk8" class="hidden">
+      <div class="page-header">
         <div>
-          <select id="select-course-hitung" onchange="renderHitungNilai()" class="border border-gray-300 rounded-md px-4 py-2 text-sm font-medium bg-white"></select>
+          <h2>Perencanaan & Target IPK 8 Semester</h2>
+          <p>Cek jika IPS Semester 1 Anda 3.30, berapa IPS minimal yang harus diraih pada semester berikutnya agar IPK mencapai ≥ 3.70 (A- / Cum Laude).</p>
+        </div>
+        <div style="display:flex; align-items:center; gap:8px;">
+          <label style="font-size:12px; color:#6B7280; font-weight:600;">TARGET IPK:</label>
+          <input type="number" id="ipk-target-input" step="0.05" min="2.00" max="4.00" value="3.70" oninput="updateTargetIPK(this.value)" style="width:90px; font-weight:700;" />
         </div>
       </div>
 
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <!-- Input Tabel Komponen -->
-        <div class="lg:col-span-2 border border-gray-200 rounded-lg p-6 bg-white">
-          <div class="flex justify-between items-center mb-4">
-            <h3 class="font-semibold text-gray-900" id="hitung-course-title">Komponen Evaluasi</h3>
-            <span class="text-xs px-2.5 py-1 rounded border border-gray-300 text-gray-700 font-medium" id="hitung-total-weight"></span>
+      <div class="grid-calc">
+        <!-- Tabel Input 8 Semester -->
+        <div class="card" style="justify-content:flex-start;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; flex-wrap:wrap; gap:8px;">
+            <div>
+              <h3 style="font-size:16px; font-weight:700;">Daftar IPS (Semester 1 s.d. Semester 8)</h3>
+              <p style="font-size:12px; color:#6B7280;">Isi IPS yang sudah keluar (contoh: <b>3.3</b> di Semester 1). Kosongkan semester yang belum dijalani.</p>
+            </div>
+            <button onclick="fillSmt1FromCurrent()" class="btn-outline" style="width:auto; padding:6px 10px;">
+              Isi Smt 1 dari Estimasi 5 MK Saat Ini
+            </button>
           </div>
-          <p class="text-xs text-gray-500 mb-4">Tips: Anda bisa mengetik satu angka (misal: <code>85</code>) atau beberapa nilai dipisahkan koma jika kuis/praktikum berkali-kali (misal: <code>80, 90, 75</code> — sistem otomatis menghitung rata-ratanya).</p>
-          <div class="divide-y divide-gray-200" id="hitung-components-list"></div>
+          <div id="semester-list-container"></div>
         </div>
 
-        <!-- Panel Hasil & Rekomendasi Ke Depan -->
-        <div class="border border-gray-200 rounded-lg p-6 bg-white space-y-6 h-fit">
-          <div>
-            <h3 class="font-semibold text-gray-900 border-b border-gray-200 pb-2">Hasil Evaluasi Saat Ini</h3>
-            <div class="mt-4 space-y-3" id="hitung-summary-box"></div>
-          </div>
-          <div>
-            <h4 class="text-sm font-semibold text-gray-900 mb-2">Target Advisor (Harus Dapat Berapa Ke Depannya?)</h4>
-            <div class="space-y-2" id="hitung-advisor-table"></div>
-          </div>
-          <div id="hitung-advice-message" class="p-4 rounded-md border text-sm"></div>
+        <!-- Hasil Perhitungan Target IPK -->
+        <div class="card" style="justify-content:flex-start; height:fit-content;">
+          <h3 style="font-size:15px; font-weight:700; border-bottom:1px solid #E5E7EB; padding-bottom:8px; margin-bottom:12px;">Analisis & Target Semester Berikutnya</h3>
+          <div id="ipk8-summary-box" style="font-size:13px; line-height:1.9; margin-bottom:16px;"></div>
+
+          <h4 style="font-size:13px; font-weight:700; margin-bottom:8px;">Strategi Kejar Target di Semester Depan:</h4>
+          <div id="ipk8-Immediate-box" style="margin-bottom:16px;"></div>
+
+          <h4 style="font-size:13px; font-weight:700; margin-bottom:8px;">Tabel Target Rata-Rata IPS di Sisa Semester:</h4>
+          <div id="ipk8-advisor-table" style="display:flex; flex-direction:column; gap:6px; margin-bottom:16px;"></div>
+
+          <div id="ipk8-advice-message"></div>
         </div>
       </div>
     </section>
 
-    <!-- FITUR 3: SIMULASI WHAT-IF -->
-    <section id="view-simulasi" class="hidden space-y-8">
-      <div class="border-b border-gray-200 pb-4 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+    <!-- FITUR 4: SIMULASI WHAT-IF -->
+    <section id="view-simulasi" class="hidden">
+      <div class="page-header">
         <div>
-          <h2 class="text-2xl font-bold text-gray-900">Simulasi Skenario "What-If"</h2>
-          <p class="text-sm text-gray-500 mt-1">Geser slider pada komponen yang belum dinilai untuk mensimulasikan hasil akhir tanpa mengubah data asli Anda.</p>
+          <h2>Simulasi Skenario "What-If"</h2>
+          <p>Geser slider pada komponen mata kuliah untuk mencoba prediksi nilai akhir tanpa mengubah data asli Anda.</p>
         </div>
-        <select id="select-course-simulasi" onchange="initSimulasi()" class="border border-gray-300 rounded-md px-4 py-2 text-sm font-medium bg-white"></select>
+        <select id="select-course-simulasi" onchange="initSimulasi()"></select>
       </div>
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <div class="lg:col-span-2 border border-gray-200 rounded-lg p-6 space-y-4" id="simulasi-sliders"></div>
-        <div class="border border-gray-200 rounded-lg p-6 h-fit space-y-4" id="simulasi-result"></div>
-      </div>
-    </section>
-
-    <!-- FITUR 4: MANAJEMEN BOBOT MK -->
-    <section id="view-bobot" class="hidden space-y-6">
-      <div class="border-b border-gray-200 pb-4">
-        <h2 class="text-2xl font-bold text-gray-900">Manajemen Mata Kuliah & Bobot Kontrak Kuliah</h2>
-        <p class="text-sm text-gray-500 mt-1">Rincian struktur bobot penilaian resmi dari 5 mata kuliah yang telah terekam.</p>
-      </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="bobot-courses-container"></div>
-    </section>
-
-    <!-- FITUR 5: SKALA NILAI & INDEKS IP -->
-    <section id="view-skala" class="hidden space-y-6">
-      <div class="border-b border-gray-200 pb-4">
-        <h2 class="text-2xl font-bold text-gray-900">Skala Rentang Nilai & Bobot IP</h2>
-        <p class="text-sm text-gray-500 mt-1">Tabel acuan konversi nilai angka ke nilai huruf dan Indeks Prestasi (IP).</p>
-      </div>
-      <div class="border border-gray-200 rounded-lg overflow-hidden max-w-3xl">
-        <table class="w-full text-left border-collapse text-sm">
-          <thead>
-            <tr class="border-b border-gray-200 bg-gray-50">
-              <th class="py-3 px-4 font-semibold">Nilai Angka</th>
-              <th class="py-3 px-4 font-semibold">Nilai Huruf</th>
-              <th class="py-3 px-4 font-semibold">Bobot Angka (IP)</th>
-              <th class="py-3 px-4 font-semibold">Keterangan</th>
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-gray-200">
-            <tr><td class="py-3 px-4">85 – 100</td><td class="py-3 px-4 font-bold">A</td><td class="py-3 px-4">4,00</td><td class="py-3 px-4">Sangat Baik / Excellent</td></tr>
-            <tr><td class="py-3 px-4">80 – 84</td><td class="py-3 px-4 font-bold">A-</td><td class="py-3 px-4">3,70</td><td class="py-3 px-4">Sangat Baik / Excellent</td></tr>
-            <tr><td class="py-3 px-4">75 – 79</td><td class="py-3 px-4 font-bold">B+</td><td class="py-3 px-4">3,30</td><td class="py-3 px-4">Baik / Good</td></tr>
-            <tr><td class="py-3 px-4">70 – 74</td><td class="py-3 px-4 font-bold">B</td><td class="py-3 px-4">3,00</td><td class="py-3 px-4">Baik / Good</td></tr>
-            <tr><td class="py-3 px-4">65 – 69</td><td class="py-3 px-4 font-bold">B-</td><td class="py-3 px-4">2,70</td><td class="py-3 px-4">Baik / Good</td></tr>
-            <tr><td class="py-3 px-4">60 – 64</td><td class="py-3 px-4 font-bold">C+</td><td class="py-3 px-4">2,30</td><td class="py-3 px-4">Cukup / Satisfactory</td></tr>
-            <tr><td class="py-3 px-4">55 – 59</td><td class="py-3 px-4 font-bold">C</td><td class="py-3 px-4">2,00</td><td class="py-3 px-4">Cukup / Satisfactory (Batas minimal kelulusan MK)</td></tr>
-            <tr><td class="py-3 px-4">40 – 54</td><td class="py-3 px-4 font-bold text-red-600">D</td><td class="py-3 px-4">1,00</td><td class="py-3 px-4">Kurang / Failed</td></tr>
-            <tr><td class="py-3 px-4">&lt; 40</td><td class="py-3 px-4 font-bold text-red-600">E</td><td class="py-3 px-4">0,00</td><td class="py-3 px-4">Sangat Kurang / Failed</td></tr>
-          </tbody>
-        </table>
+      <div class="grid-calc">
+        <div class="card" id="simulasi-sliders" style="gap:12px;"></div>
+        <div class="card" id="simulasi-result" style="height:fit-content; text-align:center;"></div>
       </div>
     </section>
 
-    <!-- FITUR 6: ANALITIK & STRATEGI PRIORITAS -->
-    <section id="view-analitik" class="hidden space-y-6">
-      <div class="border-b border-gray-200 pb-4">
-        <h2 class="text-2xl font-bold text-gray-900">Analitik Poin Hilang & Prioritas Belajar</h2>
-        <p class="text-sm text-gray-500 mt-1">Analisis otomatis untuk menentukan mata kuliah dan komponen mana yang paling butuh perhatian ekstra.</p>
+    <!-- FITUR 5: MANAJEMEN BOBOT MK -->
+    <section id="view-bobot" class="hidden">
+      <div class="page-header">
+        <div>
+          <h2>Manajemen Mata Kuliah & Bobot Kontrak Kuliah</h2>
+          <p>Rincian struktur bobot penilaian resmi dari 5 mata kuliah yang telah terekam.</p>
+        </div>
       </div>
-      <div id="analitik-content" class="space-y-4"></div>
+      <div class="grid-3" id="bobot-courses-container"></div>
+    </section>
+
+    <!-- FITUR 6: SKALA NILAI & ANALITIK -->
+    <section id="view-skala" class="hidden">
+      <div class="page-header">
+        <div>
+          <h2>Skala Rentang Nilai, Bobot IP & Analitik Poin</h2>
+          <p>Tabel acuan konversi nilai huruf serta evaluasi poin hilang pada tiap mata kuliah.</p>
+        </div>
+      </div>
+      <div class="grid-calc">
+        <div class="card" style="padding:0; overflow:hidden; height:fit-content;">
+          <table>
+            <thead>
+              <tr><th>Nilai Angka</th><th>Nilai Huruf</th><th>Bobot IP</th><th>Keterangan</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>85 – 100</td><td><b>A</b></td><td>4,00</td><td>Sangat Baik / Excellent</td></tr>
+              <tr><td>80 – 84</td><td><b>A-</b></td><td>3,70</td><td>Sangat Baik / Excellent</td></tr>
+              <tr><td>75 – 79</td><td><b>B+</b></td><td>3,30</td><td>Baik / Good</td></tr>
+              <tr><td>70 – 74</td><td><b>B</b></td><td>3,00</td><td>Baik / Good</td></tr>
+              <tr><td>65 – 69</td><td><b>B-</b></td><td>2,70</td><td>Baik / Good</td></tr>
+              <tr><td>60 – 64</td><td><b>C+</b></td><td>2,30</td><td>Cukup / Satisfactory</td></tr>
+              <tr><td>55 – 59</td><td><b>C</b></td><td>2,00</td><td>Cukup (Batas minimal lulus MK)</td></tr>
+              <tr><td>40 – 54</td><td><b style="color:#E11D48;">D</b></td><td>1,00</td><td>Kurang / Failed</td></tr>
+              <tr><td>&lt; 40</td><td><b style="color:#E11D48;">E</b></td><td>0,00</td><td>Sangat Kurang / Failed</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:12px;" id="analitik-content"></div>
+      </div>
     </section>
 
   </main>
 
   <script>
-    // SKALA KONVERSI NILAI RESMI
     const GRADE_SCALE = [
-      { min: 85, max: 100, letter: 'A', gpa: 4.00, desc: 'Sangat Baik / Excellent' },
-      { min: 80, max: 84.99, letter: 'A-', gpa: 3.70, desc: 'Sangat Baik / Excellent' },
-      { min: 75, max: 79.99, letter: 'B+', gpa: 3.30, desc: 'Baik / Good' },
-      { min: 70, max: 74.99, letter: 'B', gpa: 3.00, desc: 'Baik / Good' },
-      { min: 65, max: 69.99, letter: 'B-', gpa: 2.70, desc: 'Baik / Good' },
-      { min: 60, max: 64.99, letter: 'C+', gpa: 2.30, desc: 'Cukup / Satisfactory' },
-      { min: 55, max: 59.99, letter: 'C', gpa: 2.00, desc: 'Cukup (Batas Lulus)' },
-      { min: 40, max: 54.99, letter: 'D', gpa: 1.00, desc: 'Kurang / Failed' },
-      { min: 0,  max: 39.99, letter: 'E', gpa: 0.00, desc: 'Sangat Kurang / Failed' }
+      { min: 85, letter: 'A', gpa: 4.00, desc: 'Sangat Baik / Excellent' },
+      { min: 80, letter: 'A-', gpa: 3.70, desc: 'Sangat Baik / Excellent' },
+      { min: 75, letter: 'B+', gpa: 3.30, desc: 'Baik / Good' },
+      { min: 70, letter: 'B', gpa: 3.00, desc: 'Baik / Good' },
+      { min: 65, letter: 'B-', gpa: 2.70, desc: 'Baik / Good' },
+      { min: 60, letter: 'C+', gpa: 2.30, desc: 'Cukup / Satisfactory' },
+      { min: 55, letter: 'C', gpa: 2.00, desc: 'Cukup (Batas Lulus)' },
+      { min: 40, letter: 'D', gpa: 1.00, desc: 'Kurang / Failed' },
+      { min: 0,  letter: 'E', gpa: 0.00, desc: 'Sangat Kurang / Failed' }
     ];
 
-    // DATA 5 MATA KULIAH SESUAI FOTO
     const DEFAULT_COURSES = [
       {
         id: 'ddp',
         name: 'Dasar-Dasar Pemrograman (DDP)',
         note: 'Total bobot 105% (termasuk ekstra 5% dari Tugas Proyek Akhir)',
         components: [
-          { id: 'ddp_lab', name: 'Praktikum Lab (closed book)', weight: 10, detail: '10x Soal Pemrograman', rawInput: '' },
-          { id: 'ddp_kuis', name: 'Kuis (closed book)', weight: 10, detail: 'Kebijakan kelas', rawInput: '' },
-          { id: 'ddp_uts', name: 'UTS (closed book)', weight: 30, detail: '1x (Sub-CPMK 1-6)', rawInput: '' },
-          { id: 'ddp_uas', name: 'UAS (closed book)', weight: 40, detail: '1x (Sub-CPMK 1-13)', rawInput: '' },
-          { id: 'ddp_proyek', name: 'Tugas Proyek Akhir (boleh AI)', weight: 15, detail: '1x Solusi program & GitHub', rawInput: '' }
+          { name: 'Praktikum Lab (closed book)', weight: 10, detail: '10x Soal Pemrograman', rawInput: '' },
+          { name: 'Kuis (closed book)', weight: 10, detail: 'Kebijakan masing-masing kelas', rawInput: '' },
+          { name: 'UTS (closed book)', weight: 30, detail: '1x (Sub-CPMK 1-6)', rawInput: '' },
+          { name: 'UAS (closed book)', weight: 40, detail: '1x (Sub-CPMK 1-13)', rawInput: '' },
+          { name: 'Tugas Proyek Akhir (boleh AI)', weight: 15, detail: '1x Solusi program & GitHub', rawInput: '' }
         ]
       },
       {
         id: 'manbis',
         name: 'Manajemen Bisnis',
-        note: 'Tanpa UAS — Fokus pada UTS, Proyek Kelompok & Partisipasi',
+        note: 'Total 100% — Fokus pada Kuis, UTS, Proyek Kelompok & Partisipasi',
         components: [
-          { id: 'mb_k1', name: 'Kuis 1', weight: 7.5, detail: 'Pilihan Ganda & Benar-Salah', rawInput: '' },
-          { id: 'mb_k2', name: 'Kuis 2', weight: 7.5, detail: 'Pilihan Ganda & Benar-Salah', rawInput: '' },
-          { id: 'mb_uts', name: 'UTS', weight: 25, detail: 'PG, Benar-Salah, Esai Kasus', rawInput: '' },
-          { id: 'mb_bp', name: 'Tugas Kelompok: Business Plan', weight: 25, detail: 'Dokumen & progress mingguan', rawInput: '' },
-          { id: 'mb_sk', name: 'Tugas Kelompok: Studi Kasus Perusahaan', weight: 20, detail: 'Dokumen + presentasi akhir', rawInput: '' },
-          { id: 'mb_p1', name: 'Partisipasi: Kehadiran Diskusi Bizplan', weight: 2.5, detail: 'Setiap hari Rabu', rawInput: '' },
-          { id: 'mb_p2', name: 'Partisipasi: Kahoot (10 Terbaik dari 12)', weight: 7.5, detail: '12 kali kuis interaktif', rawInput: '' },
-          { id: 'mb_p3', name: 'Partisipasi: Exercise & Keaktifan Kelas', weight: 5, detail: 'Exercise mingguan & tanya jawab', rawInput: '' }
+          { name: 'Kuis 1', weight: 7.5, detail: 'Tes Pilihan Ganda dan Benar-Salah', rawInput: '' },
+          { name: 'Kuis 2', weight: 7.5, detail: 'Tes Pilihan Ganda dan Benar-Salah', rawInput: '' },
+          { name: 'UTS', weight: 25, detail: 'Soal PG, Benar-Salah, dan Esai Kasus', rawInput: '' },
+          { name: 'Tugas Kelompok: Business Plan', weight: 25, detail: 'Dokumen & progress mingguan', rawInput: '' },
+          { name: 'Tugas Kelompok: Studi Kasus Perusahaan', weight: 20, detail: 'Dokumen + presentasi akhir', rawInput: '' },
+          { name: 'Partisipasi: Kehadiran Diskusi Bizplan', weight: 2.5, detail: 'Setiap Rabu', rawInput: '' },
+          { name: 'Partisipasi: Kahoot 12x (10 Terbaik)', weight: 7.5, detail: 'Diambil 10 nilai terbaik', rawInput: '' },
+          { name: 'Partisipasi: Exercise & Tanya Jawab', weight: 5, detail: 'Exercise mingguan & keaktifan kelas', rawInput: '' }
         ]
       },
       {
         id: 'matdis',
         name: 'Matematika Diskret',
-        note: 'Bobot kuis mencapai 40% (Pre-class & Post-class) dan Ujian 60%',
+        note: 'Total 100% — Kuis 40% (Pre-class & Post-class) dan Ujian 60%',
         components: [
-          { id: 'md_pre', name: 'Pre-class Quiz (12 Terbaik)', weight: 12, detail: 'Diambil 12 nilai tertinggi', rawInput: '' },
-          { id: 'md_post', name: 'Post-class Quiz (7 Terbaik)', weight: 28, detail: 'Diambil 7 nilai tertinggi', rawInput: '' },
-          { id: 'md_uts', name: 'UTS', weight: 30, detail: 'Ujian Tengah Semester', rawInput: '' },
-          { id: 'md_uas', name: 'UAS', weight: 30, detail: 'Ujian Akhir Semester', rawInput: '' }
+          { name: 'Pre-class Quiz (12 Terbaik)', weight: 12, detail: 'Diambil 12 terbaik', rawInput: '' },
+          { name: 'Post-class Quiz (7 Terbaik)', weight: 28, detail: 'Diambil 7 terbaik', rawInput: '' },
+          { name: 'UTS', weight: 30, detail: 'Ujian Tengah Semester', rawInput: '' },
+          { name: 'UAS', weight: 30, detail: 'Ujian Akhir Semester', rawInput: '' }
         ]
       },
       {
         id: 'kalkulus',
         name: 'Kalkulus',
-        note: 'Proporsi ujian (UTS + UAS) sebesar 58%',
+        note: 'Total 100% — Kuis, Tugas Individu/Kelompok, UTS & UAS',
         components: [
-          { id: 'kal_kuis', name: 'Kuis', weight: 22, detail: 'Evaluasi kuis berkala', rawInput: '' },
-          { id: 'kal_ti', name: 'Tugas Individu', weight: 8, detail: 'Penugasan mandiri', rawInput: '' },
-          { id: 'kal_tk', name: 'Tugas Kelompok', weight: 12, detail: 'Penugasan tim', rawInput: '' },
-          { id: 'kal_uts', name: 'UTS', weight: 29, detail: 'Ujian Tengah Semester', rawInput: '' },
-          { id: 'kal_uas', name: 'UAS', weight: 29, detail: 'Ujian Akhir Semester', rawInput: '' }
+          { name: 'Kuis', weight: 22, detail: 'Komponen kuis', rawInput: '' },
+          { name: 'Tugas Individu', weight: 8, detail: 'Penugasan individu', rawInput: '' },
+          { name: 'Tugas Kelompok', weight: 12, detail: 'Penugasan kelompok', rawInput: '' },
+          { name: 'UTS', weight: 29, detail: 'Ujian Tengah Semester', rawInput: '' },
+          { name: 'UAS', weight: 29, detail: 'Ujian Akhir Semester', rawInput: '' }
         ]
       },
       {
         id: 'kombis',
         name: 'Komunikasi Bisnis dan Teknis',
-        note: '100% Asesmen Tugas Kelompok, Tugas Individu, Kuis & Keaktifan',
+        note: 'Total 100% — 5 Tugas Kelompok, CV, 3 Kuis & Keaktifan',
         components: [
-          { id: 'kb_tk1', name: 'Tugas Kelompok 1: Laporan Kemajuan Bisnis', weight: 10, detail: 'Case Study (Sub-CPMK 1)', rawInput: '' },
-          { id: 'kb_tk2', name: 'Tugas Kelompok 2: Infographics', weight: 10, detail: 'Case Study (Sub-CPMK 2)', rawInput: '' },
-          { id: 'kb_tk3', name: 'Tugas Kelompok 3: Pesan Positif, Negatif & Persuasif', weight: 10, detail: 'Case Study (Sub-CPMK 3)', rawInput: '' },
-          { id: 'kb_tk4', name: 'Tugas Kelompok 4: Penulisan Laporan Bisnis', weight: 10, detail: 'PB, SPR (Sub-CPMK 4)', rawInput: '' },
-          { id: 'kb_tk5', name: 'Tugas Kelompok 5: Presentasi Laporan Bisnis', weight: 20, detail: 'PB, SPR (Sub-CPMK 5)', rawInput: '' },
-          { id: 'kb_ti1', name: 'Tugas Individu 1: Pembuatan CV', weight: 5, detail: 'Soal Tertulis (Sub-CPMK 6)', rawInput: '' },
-          { id: 'kb_k1', name: 'Kuis 1', weight: 10, detail: 'Ujian Tertulis (Sub-CPMK 1)', rawInput: '' },
-          { id: 'kb_k2', name: 'Kuis 2', weight: 10, detail: 'Ujian Tertulis (Sub-CPMK 3)', rawInput: '' },
-          { id: 'kb_k3', name: 'Kuis 3', weight: 10, detail: 'Ujian Tertulis (Sub-CPMK 5)', rawInput: '' },
-          { id: 'kb_aktif', name: 'Keaktifan Mahasiswa', weight: 5, detail: 'Soal Tertulis (Sub-CPMK 6)', rawInput: '' }
+          { name: 'Tugas Kelompok 1: Laporan Kemajuan Bisnis', weight: 10, detail: 'CS (Sub-CPMK 1)', rawInput: '' },
+          { name: 'Tugas Kelompok 2: Infographics', weight: 10, detail: 'CS (Sub-CPMK 2)', rawInput: '' },
+          { name: 'Tugas Kelompok 3: Pesan Positif, Negatif & Persuasif', weight: 10, detail: 'CS (Sub-CPMK 3)', rawInput: '' },
+          { name: 'Tugas Kelompok 4: Penulisan Laporan Bisnis', weight: 10, detail: 'PB, SPR (Sub-CPMK 4)', rawInput: '' },
+          { name: 'Tugas Kelompok 5: Presentasi Laporan Bisnis', weight: 20, detail: 'PB, SPR (Sub-CPMK 5)', rawInput: '' },
+          { name: 'Tugas Individu 1: Pembuatan CV', weight: 5, detail: 'ST (Sub-CPMK 6)', rawInput: '' },
+          { name: 'Kuis 1', weight: 10, detail: 'UT (Sub-CPMK 1)', rawInput: '' },
+          { name: 'Kuis 2', weight: 10, detail: 'UT (Sub-CPMK 3)', rawInput: '' },
+          { name: 'Kuis 3', weight: 10, detail: 'UT (Sub-CPMK 5)', rawInput: '' },
+          { name: 'Keaktifan Mahasiswa', weight: 5, detail: 'ST (Sub-CPMK 6)', rawInput: '' }
         ]
       }
     ];
 
+    const DEFAULT_SEMESTERS = [
+      { sem: 1, ips: '3.30', sks: 20 },
+      { sem: 2, ips: '', sks: 20 },
+      { sem: 3, ips: '', sks: 20 },
+      { sem: 4, ips: '', sks: 20 },
+      { sem: 5, ips: '', sks: 20 },
+      { sem: 6, ips: '', sks: 20 },
+      { sem: 7, ips: '', sks: 20 },
+      { sem: 8, ips: '', sks: 20 }
+    ];
+
     let state = {
       targetScore: 85,
-      courses: JSON.parse(localStorage.getItem('grade_advisor_courses_v1')) || DEFAULT_COURSES
+      targetIPK: 3.70,
+      courses: JSON.parse(localStorage.getItem('grade_advisor_courses_v3')) || JSON.parse(JSON.stringify(DEFAULT_COURSES)),
+      semesters: JSON.parse(localStorage.getItem('grade_advisor_semesters_v3')) || JSON.parse(JSON.stringify(DEFAULT_SEMESTERS))
     };
 
     function saveState() {
-      localStorage.setItem('grade_advisor_courses_v1', JSON.stringify(state.courses));
+      localStorage.setItem('grade_advisor_courses_v3', JSON.stringify(state.courses));
+      localStorage.setItem('grade_advisor_semesters_v3', JSON.stringify(state.semesters));
     }
 
     function parseScoreInput(raw) {
-      if (!raw || raw.trim() === '') return null;
-      const nums = raw.split(',').map(s => parseFloat(s.trim())).filter(n => !isNaN(n));
+      if (!raw || String(raw).trim() === '') return null;
+      const nums = String(raw).split(',').map(s => parseFloat(s.trim())).filter(n => !isNaN(n));
       if (nums.length === 0) return null;
-      const sum = nums.reduce((a, b) => a + b, 0);
-      return sum / nums.length;
+      return nums.reduce((a, b) => a + b, 0) / nums.length;
     }
 
     function getLetterInfo(score) {
@@ -294,12 +458,7 @@
     }
 
     function analyzeCourse(course, targetMin = state.targetScore) {
-      let totalWeight = 0;
-      let completedWeight = 0;
-      let remainingWeight = 0;
-      let earnedPoints = 0;
-      let lostPoints = 0;
-
+      let totalWeight = 0, completedWeight = 0, remainingWeight = 0, earnedPoints = 0, lostPoints = 0;
       course.components.forEach(c => {
         totalWeight += c.weight;
         const avg = parseScoreInput(c.rawInput);
@@ -315,46 +474,31 @@
       const currentRunningAvg = completedWeight > 0 ? (earnedPoints / completedWeight) * 100 : 0;
       const neededPoints = Math.max(0, targetMin - earnedPoints);
       const requiredFutureAvg = remainingWeight > 0 ? (neededPoints / remainingWeight) * 100 : 0;
-      const maxPossiblePoints = earnedPoints + remainingWeight;
 
-      let statusLabel = 'Belum Ada Nilai';
-      let statusClass = 'border-gray-300 text-gray-600 bg-gray-50';
+      let statusLabel = 'Belum Diisi';
+      let badgeClass = 'badge-neutral';
 
       if (completedWeight > 0) {
-        if (earnedPoints >= targetMin) {
-          statusLabel = 'Target Tercapai!';
-          statusClass = 'border-emerald-300 text-emerald-800 bg-emerald-50';
-        } else if (requiredFutureAvg <= 75) {
+        if (earnedPoints >= targetMin || requiredFutureAvg <= 75) {
           statusLabel = 'Sangat Aman';
-          statusClass = 'border-emerald-300 text-emerald-800 bg-emerald-50';
+          badgeClass = 'badge-safe';
         } else if (requiredFutureAvg <= 85) {
           statusLabel = 'Aman Terkendali';
-          statusClass = 'border-blue-300 text-blue-800 bg-blue-50';
+          badgeClass = 'badge-ok';
         } else if (requiredFutureAvg <= 100) {
-          statusLabel = 'Waspada / Butuh Fokus Tinggi';
-          statusClass = 'border-amber-300 text-amber-800 bg-amber-50';
+          statusLabel = 'Waspada / Fokus';
+          badgeClass = 'badge-warn';
         } else {
-          statusLabel = 'Target Sulit Terkejar (>100)';
-          statusClass = 'border-rose-300 text-rose-800 bg-rose-50';
+          statusLabel = 'Rawan (>100)';
+          badgeClass = 'badge-danger';
         }
       }
 
-      return {
-        totalWeight,
-        completedWeight,
-        remainingWeight,
-        earnedPoints,
-        lostPoints,
-        currentRunningAvg,
-        requiredFutureAvg,
-        maxPossiblePoints,
-        statusLabel,
-        statusClass
-      };
+      return { totalWeight, completedWeight, remainingWeight, earnedPoints, lostPoints, currentRunningAvg, requiredFutureAvg, statusLabel, badgeClass };
     }
 
     function switchTab(tab) {
-      ['beranda', 'hitung', 'simulasi', 'bobot', 'skala', 'analitik'].forEach(t => {
+      ['beranda', 'hitung', 'ipk8', 'simulasi', 'bobot', 'skala'].forEach(t => {
         document.getElementById('view-' + t).classList.add('hidden');
         document.getElementById('tab-' + t).classList.remove('active');
       });
@@ -368,97 +512,71 @@
       renderAll();
     }
 
-    function renderBeranda() {
-      const kpiContainer = document.getElementById('beranda-kpi');
-      const cardsContainer = document.getElementById('beranda-course-cards');
-      
-      let activeCourses = 0;
-      let totalRunningGPA = 0;
-      let safeCount = 0;
-
-      const cardsHtml = state.courses.map(course => {
-        const stats = analyzeCourse(course);
-        if (stats.completedWeight > 0) {
-          activeCourses++;
-          totalRunningGPA += getLetterInfo(stats.currentRunningAvg).gpa;
-        }
-        if (stats.requiredFutureAvg <= 85) safeCount++;
-
-        const reqText = stats.remainingWeight > 0
-          ? (stats.requiredFutureAvg > 100
-              ? `<span class="text-rose-600 font-semibold">Butuh ${stats.requiredFutureAvg.toFixed(1)} (Melebihi 100)</span>`
-              : `<span class="font-bold text-gray-900">Minimal ${stats.requiredFutureAvg.toFixed(1)}</span> di sisa ${stats.remainingWeight}% bobot`)
-          : `Seluruh komponen telah selesai (${stats.earnedPoints.toFixed(2)} poin)`;
-
-        return `
-          <div class="border border-gray-200 rounded-lg p-5 flex flex-col justify-between bg-white hover:border-gray-400 transition">
-            <div>
-              <div class="flex justify-between items-start gap-2">
-                <h4 class="font-bold text-gray-900 text-base">${course.name}</h4>
-                <span class="text-xs px-2 py-0.5 rounded border whitespace-nowrap ${stats.statusClass}">${stats.statusLabel}</span>
-              </div>
-              <p class="text-xs text-gray-500 mt-1">${course.note}</p>
-              <div class="mt-4 pt-4 border-t border-gray-100 grid grid-cols-2 gap-2 text-xs">
-                <div>
-                  <span class="text-gray-500 block">Poin Terkumpul:</span>
-                  <span class="font-semibold text-sm text-gray-900">${stats.earnedPoints.toFixed(2)} / ${stats.totalWeight}%</span>
-                </div>
-                <div>
-                  <span class="text-gray-500 block">Rata-rata Saat Ini:</span>
-                  <span class="font-semibold text-sm text-gray-900">${stats.completedWeight > 0 ? stats.currentRunningAvg.toFixed(1) + ' (' + getLetterInfo(stats.currentRunningAvg).letter + ')' : '-'}</span>
-                </div>
-              </div>
-              <div class="mt-3 text-xs bg-gray-50 p-2.5 rounded border border-gray-200">
-                <span class="text-gray-500 block mb-0.5">Syarat Capai Target (${state.targetScore}):</span>
-                ${reqText}
-              </div>
-            </div>
-            <button onclick="openCourseInCalculator('${course.id}')" class="mt-4 w-full py-2 text-xs font-semibold border border-gray-900 text-gray-900 rounded hover:bg-gray-900 hover:text-white transition">
-              Input / Cek Nilai Detail →
-            </button>
-          </div>
-        `;
-      }).join('');
-
-      const estGpa = activeCourses > 0 ? (totalRunningGPA / activeCourses).toFixed(2) : '0.00';
-
-      kpiContainer.innerHTML = `
-        <div class="border border-gray-200 rounded-lg p-4 bg-white">
-          <span class="text-xs text-gray-500">Total Mata Kuliah</span>
-          <p class="text-2xl font-bold mt-1">5 MK</p>
-        </div>
-        <div class="border border-gray-200 rounded-lg p-4 bg-white">
-          <span class="text-xs text-gray-500">Estimasi IP Berjalan</span>
-          <p class="text-2xl font-bold mt-1">${estGpa} <span class="text-xs font-normal text-gray-500">/ 4.00</span></p>
-        </div>
-        <div class="border border-gray-200 rounded-lg p-4 bg-white">
-          <span class="text-xs text-gray-500">MK Sudah Terisi Nilai</span>
-          <p class="text-2xl font-bold mt-1">${activeCourses} <span class="text-xs font-normal text-gray-500">dari 5 MK</span></p>
-        </div>
-        <div class="border border-gray-200 rounded-lg p-4 bg-white">
-          <span class="text-xs text-gray-500">Status Target (${state.targetScore})</span>
-          <p class="text-2xl font-bold mt-1">${safeCount} MK <span class="text-xs font-normal text-gray-500">Aman</span></p>
-        </div>
-      `;
-      cardsContainer.innerHTML = cardsHtml;
-    }
-
     function openCourseInCalculator(courseId) {
       document.getElementById('select-course-hitung').value = courseId;
       switchTab('hitung');
     }
 
-    function populateCourseDropdowns() {
-      const selHitung = document.getElementById('select-course-hitung');
-      const selSim = document.getElementById('select-course-simulasi');
-      const currentHitung = selHitung.value || state.courses[0].id;
-      const currentSim = selSim.value || state.courses[0].id;
+    function populateDropdowns() {
+      const s1 = document.getElementById('select-course-hitung');
+      const s2 = document.getElementById('select-course-simulasi');
+      const v1 = s1.value || state.courses[0].id;
+      const v2 = s2.value || state.courses[0].id;
+      const html = state.courses.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+      s1.innerHTML = html;
+      s2.innerHTML = html;
+      s1.value = v1;
+      s2.value = v2;
+    }
 
-      const opts = state.courses.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
-      selHitung.innerHTML = opts;
-      selSim.innerHTML = opts;
-      selHitung.value = currentHitung;
-      selSim.value = currentSim;
+    function renderBeranda() {
+      let active = 0, gpaSum = 0, safeCount = 0;
+      const cardsHtml = state.courses.map(course => {
+        const s = analyzeCourse(course);
+        if (s.completedWeight > 0) {
+          active++;
+          gpaSum += getLetterInfo(s.currentRunningAvg).gpa;
+        }
+        if (s.requiredFutureAvg <= 85) safeCount++;
+
+        const targetInfo = s.remainingWeight > 0
+          ? (s.requiredFutureAvg > 100
+              ? `<span style="color:#E11D48; font-weight:700;">Butuh ${s.requiredFutureAvg.toFixed(1)} (Melebihi 100)</span>`
+              : `Minimal <b>${s.requiredFutureAvg.toFixed(1)}</b> di sisa ${s.remainingWeight}% bobot`)
+          : `Selesai (${s.earnedPoints.toFixed(2)} poin)`;
+
+        return `
+          <div class="card">
+            <div>
+              <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:8px;">
+                <h4 style="font-size:15px; font-weight:700;">${course.name}</h4>
+                <span class="badge ${s.badgeClass}">${s.statusLabel}</span>
+              </div>
+              <p style="font-size:12px; color:#6B7280; margin-top:4px;">${course.note}</p>
+              <div style="margin-top:14px; padding-top:12px; border-top:1px solid #F3F4F6; display:flex; justify-content:space-between; font-size:12px;">
+                <div><span style="color:#6B7280;">Poin Terkumpul:</span><br><b style="font-size:14px;">${s.earnedPoints.toFixed(2)} / ${s.totalWeight}%</b></div>
+                <div><span style="color:#6B7280;">Rata-rata Saat Ini:</span><br><b style="font-size:14px;">${s.completedWeight > 0 ? s.currentRunningAvg.toFixed(1) + ' (' + getLetterInfo(s.currentRunningAvg).letter + ')' : '-'}</b></div>
+              </div>
+              <div style="margin-top:12px; background:#F9FAFB; padding:10px; border-radius:6px; border:1px solid #E5E7EB; font-size:12px;">
+                <span style="color:#6B7280; display:block; margin-bottom:2px;">Syarat Capai Target (${state.targetScore}):</span>
+                ${targetInfo}
+              </div>
+            </div>
+            <button onclick="openCourseInCalculator('${course.id}')" class="btn-dark">Input / Hitung Nilai Detail →</button>
+          </div>
+        `;
+      }).join('');
+
+      const estGpa = active > 0 ? (gpaSum / active).toFixed(2) : '0.00';
+      const ipkStats = analyzeIPK8();
+
+      document.getElementById('beranda-kpi').innerHTML = `
+        <div class="card"><span class="kpi-label">Total Mata Kuliah Aktif</span><div class="kpi-val">5 MK</div></div>
+        <div class="card"><span class="kpi-label">Estimasi IPS Berjalan</span><div class="kpi-val">${estGpa} <span style="font-size:12px; font-weight:400; color:#6B7280;">/ 4.00</span></div></div>
+        <div class="card"><span class="kpi-label">IPK Saat Ini (${ipkStats.completedSemCount} Smt)</span><div class="kpi-val">${ipkStats.currentIPK.toFixed(2)}</div></div>
+        <div class="card"><span class="kpi-label">Target IPS Smt Depan (Utk IPK ${state.targetIPK.toFixed(2)})</span><div class="kpi-val">${ipkStats.reqNextSemOnly <= 4 ? ipkStats.reqNextSemOnly.toFixed(2) : 'Rata2 ' + ipkStats.reqRemainingAvg.toFixed(2)}</div></div>
+      `;
+      document.getElementById('beranda-course-cards').innerHTML = cardsHtml;
     }
 
     function renderHitungNilai() {
@@ -469,30 +587,20 @@
       document.getElementById('hitung-course-title').textContent = course.name;
       document.getElementById('hitung-total-weight').textContent = `Total Bobot: ${stats.totalWeight}%`;
 
-      const listEl = document.getElementById('hitung-components-list');
-      listEl.innerHTML = course.components.map((comp, idx) => {
+      document.getElementById('hitung-components-list').innerHTML = course.components.map((comp, idx) => {
         const avg = parseScoreInput(comp.rawInput);
         const contrib = avg !== null ? ((avg * comp.weight) / 100).toFixed(2) : '-';
         return `
-          <div class="py-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-            <div class="flex-1">
-              <div class="flex items-center gap-2">
-                <span class="font-medium text-sm text-gray-900">${comp.name}</span>
-                <span class="text-xs px-2 py-0.5 bg-gray-100 rounded text-gray-700 font-semibold">${comp.weight}%</span>
-              </div>
-              <p class="text-xs text-gray-500">${comp.detail}</p>
+          <div class="comp-row">
+            <div style="flex:1; min-width:200px;">
+              <div style="font-size:13px; font-weight:600;">${comp.name} <span class="badge badge-neutral">${comp.weight}%</span></div>
+              <div style="font-size:11px; color:#6B7280; margin-top:2px;">${comp.detail}</div>
             </div>
-            <div class="flex items-center gap-3">
-              <input
-                type="text"
-                placeholder="Kosong / ketik nilai..."
-                value="${comp.rawInput}"
-                oninput="handleScoreChange('${course.id}', ${idx}, this.value)"
-                class="w-40 border border-gray-300 rounded px-3 py-1.5 text-sm focus:outline-none focus:border-gray-900"
-              />
-              <div class="w-24 text-right text-xs">
-                <span class="text-gray-400 block">Kontribusi</span>
-                <span class="font-semibold text-gray-900">${contrib} poin</span>
+            <div style="display:flex; align-items:center; gap:12px;">
+              <input type="text" placeholder="Ketik nilai..." value="${comp.rawInput}" oninput="handleScoreChange('${course.id}', ${idx}, this.value)" style="width:140px;" />
+              <div style="width:85px; text-align:right; font-size:12px;">
+                <span style="color:#9CA3AF; display:block; font-size:10px;">Kontribusi</span>
+                <b id="contrib-${course.id}-${idx}">${contrib} poin</b>
               </div>
             </div>
           </div>
@@ -502,131 +610,320 @@
       updateHitungSidebar(course);
     }
 
-    function handleScoreChange(courseId, compIdx, value) {
+    function handleScoreChange(courseId, idx, val) {
       const course = state.courses.find(c => c.id === courseId);
-      course.components[compIdx].rawInput = value;
+      course.components[idx].rawInput = val;
       saveState();
+      const avg = parseScoreInput(val);
+      const contribEl = document.getElementById(`contrib-${courseId}-${idx}`);
+      if (contribEl) contribEl.textContent = (avg !== null ? ((avg * course.components[idx].weight) / 100).toFixed(2) : '-') + ' poin';
       updateHitungSidebar(course);
-      // Update kontribusi tanpa merender ulang input agar kursor tidak lepas
       renderBeranda();
     }
 
     function updateHitungSidebar(course) {
-      const stats = analyzeCourse(course);
-      const summaryBox = document.getElementById('hitung-summary-box');
-      const advisorTable = document.getElementById('hitung-advisor-table');
-      const adviceMsg = document.getElementById('hitung-advice-message');
-
-      summaryBox.innerHTML = `
-        <div class="flex justify-between text-sm"><span class="text-gray-500">Bobot Sudah Dinilai:</span><span class="font-semibold">${stats.completedWeight}% dari ${stats.totalWeight}%</span></div>
-        <div class="flex justify-between text-sm"><span class="text-gray-500">Tabungan Poin Saat Ini:</span><span class="font-bold text-gray-900">${stats.earnedPoints.toFixed(2)} Poin</span></div>
-        <div class="flex justify-between text-sm"><span class="text-gray-500">Poin Hilang Sejauh Ini:</span><span class="font-semibold text-rose-600">-${stats.lostPoints.toFixed(2)} Poin</span></div>
-        <div class="flex justify-between text-sm"><span class="text-gray-500">Sisa Bobot Ke Depan:</span><span class="font-semibold">${stats.remainingWeight}%</span></div>
-        <div class="flex justify-between text-sm pt-2 border-t border-gray-100"><span class="text-gray-500">Nilai Rata-Rata Berjalan:</span><span class="font-bold">${stats.completedWeight > 0 ? stats.currentRunningAvg.toFixed(2) + ' (' + getLetterInfo(stats.currentRunningAvg).letter + ')' : 'Belum ada'}</span></div>
+      const s = analyzeCourse(course);
+      document.getElementById('hitung-summary-box').innerHTML = `
+        <div style="display:flex; justify-content:space-between;"><span>Bobot Sudah Dinilai:</span><b>${s.completedWeight}% dari ${s.totalWeight}%</b></div>
+        <div style="display:flex; justify-content:space-between;"><span>Tabungan Poin Saat Ini:</span><b>${s.earnedPoints.toFixed(2)} Poin</b></div>
+        <div style="display:flex; justify-content:space-between;"><span>Poin Hilang Sejauh Ini:</span><b style="color:#E11D48;">-${s.lostPoints.toFixed(2)} Poin</b></div>
+        <div style="display:flex; justify-content:space-between;"><span>Sisa Bobot Ke Depan:</span><b>${s.remainingWeight}%</b></div>
+        <div style="display:flex; justify-content:space-between; border-top:1px solid #E5E7EB; margin-top:6px; padding-top:6px;">
+          <span>Rata-Rata Berjalan:</span><b>${s.completedWeight > 0 ? s.currentRunningAvg.toFixed(2) + ' (' + getLetterInfo(s.currentRunningAvg).letter + ')' : 'Belum ada'}</b>
+        </div>
       `;
 
       const targets = [
-        { letter: 'A', min: 85, gpa: '4.00' },
-        { letter: 'A-', min: 80, gpa: '3.70' },
-        { letter: 'B+', min: 75, gpa: '3.30' },
-        { letter: 'B', min: 70, gpa: '3.00' },
-        { letter: 'C (Lulus)', min: 55, gpa: '2.00' }
+        { letter: 'A', min: 85 },
+        { letter: 'A-', min: 80 },
+        { letter: 'B+', min: 75 },
+        { letter: 'B', min: 70 },
+        { letter: 'C (Lulus)', min: 55 }
       ];
 
-      advisorTable.innerHTML = targets.map(t => {
-        const needed = Math.max(0, t.min - stats.earnedPoints);
-        const reqAvg = stats.remainingWeight > 0 ? (needed / stats.remainingWeight) * 100 : 0;
-        let badge = '';
-        if (stats.earnedPoints >= t.min) {
-          badge = `<span class="text-emerald-700 font-semibold">Sudah Tercapai ✓</span>`;
-        } else if (stats.remainingWeight === 0) {
-          badge = `<span class="text-gray-400">Komponen Habis</span>`;
-        } else if (reqAvg > 100) {
-          badge = `<span class="text-rose-600 font-semibold">Tidak Mungkin (${reqAvg.toFixed(1)})</span>`;
-        } else {
-          badge = `<span class="font-bold text-gray-900">Min. ${reqAvg.toFixed(1)}</span> <span class="text-xs text-gray-500">di sisa tugas/ujian</span>`;
-        }
+      document.getElementById('hitung-advisor-table').innerHTML = targets.map(t => {
+        const needed = Math.max(0, t.min - s.earnedPoints);
+        const req = s.remainingWeight > 0 ? (needed / s.remainingWeight) * 100 : 0;
+        let info = '';
+        if (s.earnedPoints >= t.min) info = `<b style="color:#059669;">Sudah Tercapai ✓</b>`;
+        else if (s.remainingWeight === 0) info = `<span style="color:#9CA3AF;">Komponen Habis</span>`;
+        else if (req > 100) info = `<b style="color:#E11D48;">Tidak Mungkin (${req.toFixed(1)})</b>`;
+        else info = `<b>Min. ${req.toFixed(1)}</b> di sisa bobot`;
+
         return `
-          <div class="flex justify-between items-center text-xs py-2 px-3 rounded border border-gray-200 bg-gray-50">
-            <span class="font-semibold">Target ${t.letter} (≥${t.min})</span>
-            <div>${badge}</div>
+          <div style="display:flex; justify-content:space-between; font-size:12px; padding:7px 10px; background:#F9FAFB; border:1px solid #E5E7EB; border-radius:5px;">
+            <span>Target <b>${t.letter}</b> (≥${t.min})</span>
+            <span>${info}</span>
           </div>
         `;
       }).join('');
 
-      if (stats.remainingWeight === 0) {
-        const finalGrade = getLetterInfo(stats.earnedPoints);
-        adviceMsg.className = 'p-4 rounded-md border border-gray-300 bg-gray-50 text-xs space-y-1';
-        adviceMsg.innerHTML = `<strong>Evaluasi Selesai:</strong> Nilai akhir Anda adalah <strong>${stats.earnedPoints.toFixed(2)} (${finalGrade.letter} / IP ${finalGrade.gpa.toFixed(2)})</strong>.`;
+      const msgEl = document.getElementById('hitung-advice-message');
+      if (s.remainingWeight === 0) {
+        const fg = getLetterInfo(s.earnedPoints);
+        msgEl.innerHTML = `<div class="badge badge-neutral" style="display:block; padding:12px; font-size:12px; line-height:1.5;">Evaluasi Selesai. Nilai Akhir: <b>${s.earnedPoints.toFixed(2)} (${fg.letter} / IP ${fg.gpa.toFixed(2)})</b></div>`;
       } else {
-        const reqA = Math.max(0, (85 - stats.earnedPoints) / stats.remainingWeight * 100);
-        const reqAMin = Math.max(0, (80 - stats.earnedPoints) / stats.remainingWeight * 100);
+        const reqA = Math.max(0, (85 - s.earnedPoints) / s.remainingWeight * 100);
+        const reqAMin = Math.max(0, (80 - s.earnedPoints) / s.remainingWeight * 100);
         if (reqA <= 80) {
-          adviceMsg.className = 'p-4 rounded-md border border-emerald-300 bg-emerald-50 text-emerald-900 text-xs leading-relaxed';
-          adviceMsg.innerHTML = `<strong>Status: SANGAT AMAN.</strong> Tabungan nilai Anda sangat kuat. Untuk mengunci nilai <strong>A (4.00)</strong>, Anda hanya perlu rata-rata minimal <strong>${reqA.toFixed(1)}</strong> pada komponen yang tersisa (${stats.remainingWeight}% bobot).`;
+          msgEl.innerHTML = `<div class="badge badge-safe" style="display:block; padding:12px; font-size:12px; line-height:1.5;"><b>STATUS AMAN:</b> Untuk mendapat <b>A (4.00)</b>, Anda cukup meraih nilai rata-rata minimal <b>${reqA.toFixed(1)}</b> pada sisa tugas/kuis/ujian (${s.remainingWeight}% bobot).</div>`;
         } else if (reqA <= 100) {
-          adviceMsg.className = 'p-4 rounded-md border border-amber-300 bg-amber-50 text-amber-900 text-xs leading-relaxed';
-          adviceMsg.innerHTML = `<strong>Status: PERLU FOKUS TINGGI.</strong> Nilai <strong>A</strong> masih bisa dicapai jika Anda meraih minimal <strong>${reqA.toFixed(1)}</strong> di seluruh sisa ujian/tugas. Alternatif amannya, kejar minimal <strong>${reqAMin.toFixed(1)}</strong> untuk mengamankan <strong>A- (3.70)</strong>.`;
+          msgEl.innerHTML = `<div class="badge badge-warn" style="display:block; padding:12px; font-size:12px; line-height:1.5;"><b>PERLU FOKUS TINGGI:</b> Anda butuh minimal <b>${reqA.toFixed(1)}</b> di sisa komponen untuk dapat <b>A</b>, atau minimal <b>${reqAMin.toFixed(1)}</b> untuk mengamankan <b>A- (3.70)</b>.</div>`;
         } else {
-          adviceMsg.className = 'p-4 rounded-md border border-rose-300 bg-rose-50 text-rose-900 text-xs leading-relaxed';
-          adviceMsg.innerHTML = `<strong>Status: REALISTIS KE TARGET BERIKUTNYA.</strong> Karena poin yang hilang sudah cukup besar (-${stats.lostPoints.toFixed(1)} poin), nilai A sudah tidak memungkinkan secara matematis. Fokuskan strategi Anda untuk meraih minimal <strong>${reqAMin <= 100 ? reqAMin.toFixed(1) + ' demi mengamankan A-' : 'nilai maksimal di sisa komponen'}</strong>.`;
+          msgEl.innerHTML = `<div class="badge badge-danger" style="display:block; padding:12px; font-size:12px; line-height:1.5;"><b>PERINGATAN TARGET:</b> Nilai A sudah tidak terkejar secara matematis karena poin hilang sudah -${s.lostPoints.toFixed(1)}. Kejar minimal <b>${reqAMin <= 100 ? reqAMin.toFixed(1) + ' untuk A-' : 'nilai maksimal di sisa ujian'}</b>.</div>`;
         }
+      }
+    }
+
+    // LOGIKA FITUR 3: PERENCANAAN IPK 8 SEMESTER
+    function analyzeIPK8(customTarget = state.targetIPK) {
+      let completedSKS = 0;
+      let remainingSKS = 0;
+      let earnedQualityPoints = 0; // IPS * SKS
+      let completedSemCount = 0;
+      let remainingSemCount = 0;
+      let nextSemObj = null;
+
+      state.semesters.forEach(s => {
+        const sks = parseFloat(s.sks) || 20;
+        const ipsVal = s.ips !== '' && s.ips !== null ? parseFloat(String(s.ips).replace(',', '.')) : NaN;
+        if (!isNaN(ipsVal) && ipsVal >= 0 && ipsVal <= 4.00) {
+          completedSKS += sks;
+          earnedQualityPoints += ipsVal * sks;
+          completedSemCount++;
+        } else {
+          remainingSKS += sks;
+          remainingSemCount++;
+          if (!nextSemObj) nextSemObj = { sem: s.sem, sks };
+        }
+      });
+
+      const totalSKS = completedSKS + remainingSKS;
+      const currentIPK = completedSKS > 0 ? earnedQualityPoints / completedSKS : 0;
+
+      // Rata-rata IPS yang dibutuhkan di seluruh sisa semester (sampai Smt 8)
+      const totalPointsNeeded8Sem = customTarget * totalSKS;
+      const reqRemainingAvg = remainingSKS > 0 ? (totalPointsNeeded8Sem - earnedQualityPoints) / remainingSKS : 0;
+
+      // IPS yang dibutuhkan khusus di semester depan saja agar IPK langsung naik ke target pada semester depan
+      let reqNextSemOnly = 0;
+      if (nextSemObj) {
+        const sksAfterNext = completedSKS + nextSemObj.sks;
+        reqNextSemOnly = ((customTarget * sksAfterNext) - earnedQualityPoints) / nextSemObj.sks;
+      }
+
+      return {
+        completedSKS,
+        remainingSKS,
+        totalSKS,
+        completedSemCount,
+        remainingSemCount,
+        currentIPK,
+        reqRemainingAvg,
+        reqNextSemOnly,
+        nextSemObj
+      };
+    }
+
+    function renderIPK8() {
+      const container = document.getElementById('semester-list-container');
+      container.innerHTML = state.semesters.map((s, idx) => {
+        const ipsVal = s.ips !== '' ? parseFloat(String(s.ips).replace(',', '.')) : NaN;
+        const isFilled = !isNaN(ipsVal);
+        return `
+          <div class="comp-row">
+            <div style="flex:1; min-width:140px;">
+              <div style="font-size:13.5px; font-weight:600;">
+                Semester ${s.sem}
+                ${isFilled ? '<span class="badge badge-safe" style="margin-left:6px;">Sudah Diisi</span>' : '<span class="badge badge-neutral" style="margin-left:6px;">Belum Dijalani</span>'}
+              </div>
+              <div style="font-size:11px; color:#6B7280; margin-top:2px;">Skala 0.00 – 4.00</div>
+            </div>
+            <div style="display:flex; align-items:center; gap:10px;">
+              <div>
+                <span style="font-size:10px; color:#6B7280; display:block;">IPS Semester ${s.sem}</span>
+                <input type="text" placeholder="Kosong / cth: 3.30" value="${s.ips}" oninput="handleSemesterChange(${idx}, 'ips', this.value)" style="width:130px; font-weight:600;" />
+              </div>
+              <div>
+                <span style="font-size:10px; color:#6B7280; display:block;">Beban SKS</span>
+                <input type="number" min="1" max="24" value="${s.sks}" oninput="handleSemesterChange(${idx}, 'sks', this.value)" style="width:75px;" />
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      updateIPK8Sidebar();
+    }
+
+    function handleSemesterChange(idx, field, val) {
+      state.semesters[idx][field] = val;
+      saveState();
+      updateIPK8Sidebar();
+      renderBeranda();
+    }
+
+    function updateTargetIPK(val) {
+      const parsed = parseFloat(val);
+      if (!isNaN(parsed) && parsed > 0 && parsed <= 4.00) {
+        state.targetIPK = parsed;
+        updateIPK8Sidebar();
+        renderBeranda();
+      }
+    }
+
+    function fillSmt1FromCurrent() {
+      let active = 0, gpaSum = 0;
+      state.courses.forEach(course => {
+        const s = analyzeCourse(course);
+        if (s.completedWeight > 0) {
+          active++;
+          gpaSum += getLetterInfo(s.currentRunningAvg).gpa;
+        }
+      });
+      if (active === 0) {
+        alert('Belum ada nilai mata kuliah yang diisi di menu Hitung Nilai MK. Silakan isi minimal 1 mata kuliah atau ketik langsung IPS Anda (misal 3.30).');
+        return;
+      }
+      state.semesters[0].ips = (gpaSum / active).toFixed(2);
+      saveState();
+      renderIPK8();
+      renderBeranda();
+    }
+
+    function updateIPK8Sidebar() {
+      const stats = analyzeIPK8(state.targetIPK);
+      const summaryEl = document.getElementById('ipk8-summary-box');
+      const immediateEl = document.getElementById('ipk8-Immediate-box');
+      const tableEl = document.getElementById('ipk8-advisor-table');
+      const msgEl = document.getElementById('ipk8-advice-message');
+
+      summaryEl.innerHTML = `
+        <div style="display:flex; justify-content:space-between;"><span>Semester Selesai:</span><b>${stats.completedSemCount} dari 8 Semester (${stats.completedSKS} SKS)</b></div>
+        <div style="display:flex; justify-content:space-between;"><span>Sisa Semester Ke Depan:</span><b>${stats.remainingSemCount} Semester (${stats.remainingSKS} SKS)</b></div>
+        <div style="display:flex; justify-content:space-between; border-top:1px solid #E5E7EB; margin-top:6px; padding-top:6px;">
+          <span>IPK Kumulatif Saat Ini:</span><b style="font-size:15px;">${stats.currentIPK.toFixed(2)} / 4.00</b>
+        </div>
+      `;
+
+      // Strategi Semester Depan (Langsung vs Jangka Panjang)
+      if (stats.nextSemObj) {
+        const nextSemNum = stats.nextSemObj.sem;
+        const imm = stats.reqNextSemOnly;
+        const avgRest = stats.reqRemainingAvg;
+
+        immediateEl.innerHTML = `
+          <div style="background:#F9FAFB; border:1px solid #E5E7EB; border-radius:6px; padding:12px; font-size:12px; line-height:1.6;">
+            <div style="margin-bottom:8px;">
+              <b>1. Jika ingin langsung tembus IPK ${state.targetIPK.toFixed(2)} di Semester ${nextSemNum} saja:</b><br>
+              ${imm <= 4.00
+                ? `Anda harus meraih IPS minimal <b style="color:#065F46; font-size:13.5px;">${Math.max(0, imm).toFixed(2)}</b> pada Semester${nextSemNum}.`
+                : `Butuh IPS <b style="color:#E11D48;">${imm.toFixed(2)}</b> di Semester${nextSemNum} (Melebihi batas 4.00 jika hanya mengandalkan 1 semester). Tapi tenang, Anda masih punya <b>${stats.remainingSemCount} semester</b> untuk mencicilnya!`
+              }
+            </div>
+            <div style="border-top:1px solid #E5E7EB; padding-top:8px;">
+              <b>2. Jika dicicil rata pada sisa ${stats.remainingSemCount} semester (Smt ${nextSemNum} – Smt 8):</b><br>
+              ${avgRest <= 4.00
+                ? `Anda cukup menjaga IPS rata-rata minimal <b style="color:#1E40AF; font-size:13.5px;">${Math.max(0, avgRest).toFixed(2)}</b> di setiap semester berikutnya.`
+                : `<span style="color:#E11D48; font-weight:600;">Target ${state.targetIPK.toFixed(2)} sudah melewati batas maksimal 4.00 (${avgRest.toFixed(2)}).</span>`
+              }
+            </div>
+          </div>
+        `;
+      } else {
+        immediateEl.innerHTML = `<div style="font-size:12px; color:#6B7280;">Seluruh 8 semester sudah terisi.</div>`;
+      }
+
+      const ipkTargets = [
+        { label: 'Target 3.85 (Summa / A)', val: 3.85 },
+        { label: 'Target 3.70 (A- / Cum Laude)', val: 3.70 },
+        { label: 'Target 3.51 (Batas Cum Laude)', val: 3.51 },
+        { label: 'Target 3.30 (B+ / Sangat Memuaskan)', val: 3.30 },
+        { label: 'Target 3.00 (B / Memuaskan)', val: 3.00 }
+      ];
+
+      tableEl.innerHTML = ipkTargets.map(t => {
+        const st = analyzeIPK8(t.val);
+        let rightText = '';
+        if (st.remainingSemCount === 0) {
+          rightText = st.currentIPK >= t.val ? `<b style="color:#059669;">Tercapai ✓</b>` : `<span style="color:#9CA3AF;">Selesai (${st.currentIPK.toFixed(2)})</span>`;
+        } else if (st.reqRemainingAvg > 4.00) {
+          rightText = `<b style="color:#E11D48;">Tidak Mungkin (${st.reqRemainingAvg.toFixed(2)})</b>`;
+        } else if (st.reqRemainingAvg <= 0) {
+          rightText = `<b style="color:#059669;">Sudah Terkunci ✓</b>`;
+        } else {
+          rightText = `Rata-rata IPS <b>min. ${st.reqRemainingAvg.toFixed(2)}</b> / smt`;
+        }
+        return `
+          <div style="display:flex; justify-content:space-between; font-size:12px; padding:7px 10px; background:#F9FAFB; border:1px solid #E5E7EB; border-radius:5px;">
+            <span><b>${t.label}</b></span>
+            <span>${rightText}</span>
+          </div>
+        `;
+      }).join('');
+
+      if (stats.remainingSemCount > 0) {
+        if (stats.reqRemainingAvg <= 3.75) {
+          msgEl.innerHTML = `<div class="badge badge-safe" style="display:block; padding:12px; font-size:12px; line-height:1.5;"><b>KESIMPULAN: SANGAT BISA DICAPAI!</b> Walaupun IP awal Anda ${stats.currentIPK.toFixed(2)}, Anda hanya perlu mempertahankan rata-rata IPS minimal <b>${Math.max(0, stats.reqRemainingAvg).toFixed(2)}</b> pada ${stats.remainingSemCount} semester ke depan untuk lulus dengan IPK <b>${state.targetIPK.toFixed(2)}</b>.</div>`;
+        } else if (stats.reqRemainingAvg <= 4.00) {
+          msgEl.innerHTML = `<div class="badge badge-warn" style="display:block; padding:12px; font-size:12px; line-height:1.5;"><b>KESIMPULAN: MASIH MUNGKIN TAPI KETAT.</b> Anda wajib meraih IPS rata-rata <b>${stats.reqRemainingAvg.toFixed(2)}</b> (hampir A semua) di seluruh sisa ${stats.remainingSemCount} semester.</div>`;
+        } else {
+          msgEl.innerHTML = `<div class="badge badge-danger" style="display:block; padding:12px; font-size:12px; line-height:1.5;"><b>KESIMPULAN:</b> Target IPK ${state.targetIPK.toFixed(2)} sudah melebihi batas 4.00. Turunkan sedikit target IPK ke angka yang masih hijau/biru di tabel atas.</div>`;
+        }
+      } else {
+        msgEl.innerHTML = '';
       }
     }
 
     function initSimulasi() {
       const courseId = document.getElementById('select-course-simulasi').value || state.courses[0].id;
       const course = state.courses.find(c => c.id === courseId);
-      const container = document.getElementById('simulasi-sliders');
-
-      container.innerHTML = course.components.map((c, idx) => {
-        const realAvg = parseScoreInput(c.rawInput);
-        const initVal = realAvg !== null ? realAvg : 80;
-        const isLocked = realAvg !== null;
+      document.getElementById('simulasi-sliders').innerHTML = course.components.map((c, idx) => {
+        const avg = parseScoreInput(c.rawInput);
+        const val = avg !== null ? avg : 80;
         return `
-          <div class="p-3 border border-gray-200 rounded-md">
-            <div class="flex justify-between text-xs font-medium mb-1">
-              <span>${c.name} (${c.weight}%) ${isLocked ? '<span class="text-emerald-700 font-semibold">[Nilai Asli Terisi]</span>' : '<span class="text-blue-600">[Simulasi]</span>'}</span>
-              <span id="sim-val-${idx}" class="font-bold text-sm">${initVal.toFixed(0)}</span>
+          <div style="border-bottom:1px solid #F3F4F6; padding-bottom:10px;">
+            <div style="display:flex; justify-content:space-between; font-size:13px; margin-bottom:4px;">
+              <span><b>${c.name}</b> (${c.weight}%) ${avg !== null ? '<span style="color:#059669; font-size:11px;">[Nilai Asli]</span>' : '<span style="color:#2563EB; font-size:11px;">[Simulasi]</span>'}</span>
+              <b id="sim-val-${idx}">${val.toFixed(0)}</b>
             </div>
-            <input type="range" min="0" max="100" value="${initVal}" oninput="updateSimulasiResult('${course.id}')" id="sim-slider-${idx}" class="w-full accent-gray-900" />
+            <input type="range" min="0" max="100" value="${val}" id="sim-slider-${idx}" oninput="updateSimulasi('${course.id}')" style="width:100%;" />
           </div>
         `;
       }).join('');
-      updateSimulasiResult(course.id);
+      updateSimulasi(course.id);
     }
 
-    function updateSimulasiResult(courseId) {
+    function updateSimulasi(courseId) {
       const course = state.courses.find(c => c.id === courseId);
-      let totalSimPoints = 0;
+      let total = 0;
       course.components.forEach((c, idx) => {
-        const val = parseFloat(document.getElementById(`sim-slider-${idx}`).value);
-        document.getElementById(`sim-val-${idx}`).textContent = val;
-        totalSimPoints += (val * c.weight) / 100;
+        const v = parseFloat(document.getElementById(`sim-slider-${idx}`).value);
+        document.getElementById(`sim-val-${idx}`).textContent = v;
+        total += (v * c.weight) / 100;
       });
-      const g = getLetterInfo(totalSimPoints);
+      const g = getLetterInfo(total);
       document.getElementById('simulasi-result').innerHTML = `
-        <h3 class="font-semibold text-gray-900 border-b pb-2">Hasil Simulasi Akhir</h3>
-        <div class="text-center py-6">
-          <span class="text-xs text-gray-500 uppercase">Prediksi Total Nilai</span>
-          <p class="text-4xl font-bold text-gray-900 mt-1">${totalSimPoints.toFixed(2)}</p>
-          <p class="text-lg font-bold mt-2">${g.letter} — IP ${g.gpa.toFixed(2)}</p>
-          <p class="text-xs text-gray-500 mt-1">${g.desc}</p>
+        <h3 style="font-size:15px; font-weight:700; border-bottom:1px solid #E5E7EB; padding-bottom:8px;">Hasil Simulasi Akhir</h3>
+        <div style="padding:20px 0;">
+          <div style="font-size:11px; color:#6B7280;">PREDIKSI TOTAL NILAI</div>
+          <div style="font-size:38px; font-weight:800; margin:6px 0;">${total.toFixed(2)}</div>
+          <div style="font-size:18px; font-weight:700;">Indeks ${g.letter} (IP ${g.gpa.toFixed(2)})</div>
+          <div style="font-size:12px; color:#6B7280; margin-top:4px;">${g.desc}</div>
         </div>
       `;
     }
 
     function renderBobot() {
-      const container = document.getElementById('bobot-courses-container');
-      container.innerHTML = state.courses.map(c => `
-        <div class="border border-gray-200 rounded-lg p-5">
-          <h4 class="font-bold text-base text-gray-900">${c.name}</h4>
-          <p class="text-xs text-gray-500 mb-3">${c.note}</p>
-          <div class="divide-y divide-gray-100 text-xs">
+      document.getElementById('bobot-courses-container').innerHTML = state.courses.map(c => `
+        <div class="card" style="justify-content:flex-start;">
+          <h4 style="font-size:15px; font-weight:700;">${c.name}</h4>
+          <p style="font-size:12px; color:#6B7280; margin:4px 0 12px 0;">${c.note}</p>
+          <div>
             ${c.components.map(comp => `
-              <div class="py-2 flex justify-between">
-                <span>${comp.name} <span class="text-gray-400">(${comp.detail})</span></span>
-                <span class="font-semibold">${comp.weight}%</span>
+              <div style="display:flex; justify-content:space-between; font-size:12px; padding:6px 0; border-top:1px solid #F3F4F6;">
+                <span>${comp.name}</span>
+                <b>${comp.weight}%</b>
               </div>
             `).join('')}
           </div>
@@ -635,35 +932,39 @@
     }
 
     function renderAnalitik() {
-      const container = document.getElementById('analitik-content');
-      container.innerHTML = state.courses.map(c => {
+      document.getElementById('analitik-content').innerHTML = state.courses.map(c => {
         const s = analyzeCourse(c);
         return `
-          <div class="border border-gray-200 rounded-lg p-4 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+          <div class="card" style="flex-direction:row; align-items:center; flex-wrap:wrap; gap:12px;">
             <div>
-              <h4 class="font-bold text-sm text-gray-900">${c.name}</h4>
-              <p class="text-xs text-gray-500">Poin Terkumpul: <strong>${s.earnedPoints.toFixed(2)}</strong> | Poin Hilang: <strong class="text-rose-600">-${s.lostPoints.toFixed(2)}</strong> | Sisa Bobot: <strong>${s.remainingWeight}%</strong></p>
+              <h4 style="font-size:14px; font-weight:700;">${c.name}</h4>
+              <p style="font-size:12px; color:#6B7280; margin-top:2px;">
+                Poin Terkumpul: <b>${s.earnedPoints.toFixed(2)}</b> | Poin Hilang: <b style="color:#E11D48;">-${s.lostPoints.toFixed(2)}</b> | Sisa Bobot: <b>${s.remainingWeight}%</b>
+              </p>
             </div>
-            <div class="text-xs font-medium px-3 py-1.5 rounded border ${s.statusClass}">
-              ${s.remainingWeight > 0 ? `Butuh rata-rata ${s.requiredFutureAvg.toFixed(1)} untuk capai target${state.targetScore}` : 'Selesai'}
-            </div>
+            <span class="badge ${s.badgeClass}">
+              ${s.remainingWeight > 0 ? `Butuh rata-rata ${s.requiredFutureAvg.toFixed(1)} untuk target${state.targetScore}` : 'Selesai'}
+            </span>
           </div>
         `;
       }).join('');
     }
 
     function resetAllData() {
-      if (confirm('Reset semua input nilai kembali ke kosong?')) {
-        localStorage.removeItem('grade_advisor_courses_v1');
+      if (confirm('Hapus semua nilai dan reset kembali ke awal?')) {
+        localStorage.removeItem('grade_advisor_courses_v3');
+        localStorage.removeItem('grade_advisor_semesters_v3');
         state.courses = JSON.parse(JSON.stringify(DEFAULT_COURSES));
+        state.semesters = JSON.parse(JSON.stringify(DEFAULT_SEMESTERS));
         renderAll();
       }
     }
 
     function renderAll() {
-      populateCourseDropdowns();
+      populateDropdowns();
       renderBeranda();
       renderHitungNilai();
+      renderIPK8();
       initSimulasi();
       renderBobot();
       renderAnalitik();
@@ -673,4 +974,3 @@
   </script>
 </body>
 </html>
-
