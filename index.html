@@ -3,309 +3,1131 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Academic Grade Advisor - Clean White Dashboard</title>
+  <title>PacilianKuat - Sistem Evaluasi & Target IPK 8 Smt</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      background-color: #FFFFFF;
-      color: #111827;
-      display: flex;
-      min-height: 100vh;
-      flex-direction: row;
-    }
-    @media (max-width: 768px) {
-      body { flex-direction: column; }
-    }
-    aside {
-      width: 265px;
-      border-right: 1px solid #E5E7EB;
-      background: #FFFFFF;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Inter", Helvetica, Arial, sans-serif;
+      background-color: #F8FAFC;
+      color: #0F172A;
       display: flex;
       flex-direction: column;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .hidden { display: none !important; }
+
+    /* =========================================================
+       HEADER & NAVIGATION AREA (ADAPTIVE PER TAB)
+    ========================================================= */
+    header.beranda-header {
+      background: #FFFFFF;
+      border-bottom: 1px solid #E2E8F0;
+      padding: 20px 40px;
+    }
+    .header-top {
+      display: flex;
       justify-content: space-between;
-      flex-shrink: 0;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
     }
-    @media (max-width: 768px) {
-      aside { width: 100%; border-right: none; border-bottom: 1px solid #E5E7EB; }
+    .brand h1 {
+      font-size: 23px;
+      font-weight: 800;
+      color: #0F172A;
+      letter-spacing: -0.03em;
     }
-    .brand { padding: 24px; border-bottom: 1px solid #E5E7EB; }
-    .brand h1 { font-size: 18px; font-weight: 700; color: #111827; letter-spacing: -0.02em; }
-    .brand p { font-size: 12px; color: #6B7280; margin-top: 4px; }
-    nav { padding: 12px; }
-    .nav-btn {
+    .brand h1 span { color: #E11D48; }
+    .brand p { font-size: 12px; color: #64748B; margin-top: 3px; font-weight: 500; }
+
+    /* KPI Stats Bar (Beranda) */
+    .kpi-container {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(180px, 1fr));
+      gap: 14px;
+      flex: 1;
+      max-width: 920px;
+    }
+    @media (max-width: 1100px) {
+      .kpi-container { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 640px) {
+      .kpi-container { grid-template-columns: 1fr; }
+    }
+    .kpi-card {
+      background: #F8FAFC;
+      border: 1px solid #E2E8F0;
+      border-radius: 10px;
+      padding: 12px 16px;
+    }
+    .kpi-card.highlight-kpi {
+      background: #F8FAFC;
+      border-color: #CBD5E1;
+    }
+    .kpi-title {
+      font-size: 9.5px;
+      font-weight: 800;
+      color: #64748B;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      line-height: 1.3;
+    }
+    .kpi-title.blue-text { color: #1E3A8A; }
+    .kpi-value {
+      font-size: 19px;
+      font-weight: 800;
+      color: #0F172A;
+      margin-top: 6px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .kpi-value.blue-val { color: #1E3A8A; }
+    .kpi-value span { font-size: 12px; font-weight: 500; color: #94A3B8; }
+    .kpi-badge {
+      background: #E11D48;
+      color: #FFFFFF;
+      font-size: 9px;
+      font-weight: 800;
+      padding: 2px 6px;
+      border-radius: 4px;
+      margin-left: 6px;
+      letter-spacing: 0.04em;
+    }
+
+    /* Navigation Bar */
+    .nav-bar {
+      background: #FFFFFF;
+      border-bottom: 1px solid #E2E8F0;
+      padding: 14px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 90;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+    .compact-brand {
+      font-size: 20px;
+      font-weight: 800;
+      color: #0F172A;
+      letter-spacing: -0.03em;
+      cursor: pointer;
+    }
+    .compact-brand span { color: #E11D48; }
+
+    .dropdown-container { position: relative; display: inline-block; }
+    
+    .nav-dropdown-btn {
+      background: #1E3A8A;
+      color: #FFFFFF;
+      border: 1px solid #1E3A8A;
+      padding: 9px 16px;
+      font-size: 13px;
+      font-weight: 700;
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: all 0.15s;
+    }
+    .nav-dropdown-btn.subpage-mode {
+      background: #F8FAFC;
+      color: #0F172A;
+      border: 1px solid #E2E8F0;
+      padding: 7px 14px;
+    }
+    .nav-dropdown-btn:hover { opacity: 0.92; }
+    .nav-num-badge {
+      background: #1E3A8A;
+      color: #FFFFFF;
+      font-size: 11px;
+      font-weight: 800;
+      width: 20px;
+      height: 20px;
+      border-radius: 5px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .dropdown-menu {
+      display: none;
+      position: absolute;
+      top: calc(100% + 6px);
+      left: 0;
+      background: #FFFFFF;
+      border: 1px solid #E2E8F0;
+      border-radius: 8px;
+      box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.12);
+      z-index: 200;
+      min-width: 240px;
+      overflow: hidden;
+    }
+    .dropdown-menu.show { display: block; }
+    .dropdown-item {
       display: block;
       width: 100%;
       text-align: left;
-      padding: 10px 14px;
-      margin-bottom: 4px;
-      font-size: 13.5px;
-      color: #374151;
-      background: transparent;
+      padding: 12px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #334155;
+      background: none;
       border: none;
       border-left: 3px solid transparent;
-      border-radius: 0 6px 6px 0;
       cursor: pointer;
-      transition: 0.15s;
+      border-bottom: 1px solid #F1F5F9;
+      transition: all 0.1s;
     }
-    .nav-btn:hover { background-color: #F9FAFB; }
-    .nav-btn.active {
-      background-color: #F3F4F6;
-      font-weight: 600;
-      color: #111827;
-      border-left: 3px solid #111827;
+    .dropdown-item:last-child { border-bottom: none; }
+    .dropdown-item:hover { background: #F8FAFC; color: #1E3A8A; }
+    .dropdown-item.active {
+      background: #F8FAFC;
+      color: #1E3A8A;
+      font-weight: 700;
+      border-left-color: #E11D48;
     }
-    .sidebar-footer { padding: 16px; border-top: 1px solid #E5E7EB; }
-    .btn-outline {
-      width: 100%;
-      padding: 8px 12px;
-      font-size: 12px;
-      font-weight: 600;
-      color: #374151;
-      background: #FFFFFF;
-      border: 1px solid #D1D5DB;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-    .btn-outline:hover { background: #F3F4F6; }
-    .btn-dark {
-      width: 100%;
-      padding: 9px 12px;
-      font-size: 12px;
-      font-weight: 600;
-      color: #111827;
-      background: #FFFFFF;
-      border: 1px solid #111827;
-      border-radius: 6px;
-      cursor: pointer;
-      margin-top: 14px;
-      transition: 0.15s;
-    }
-    .btn-dark:hover { background: #111827; color: #FFFFFF; }
 
-    main { flex: 1; padding: 32px 40px; background: #FFFFFF; overflow-y: auto; }
-    @media (max-width: 768px) { main { padding: 20px; } }
-    .hidden { display: none !important; }
-    .page-header {
-      border-bottom: 1px solid #E5E7EB;
-      padding-bottom: 16px;
-      margin-bottom: 24px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 12px;
+    /* Contextual Right Controls inside Nav Bar */
+    .nav-right-item { display: flex; align-items: center; gap: 12px; }
+    .global-setting-label {
+      font-size: 11px;
+      font-weight: 800;
+      color: #94A3B8;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
     }
-    .page-header h2 { font-size: 22px; font-weight: 700; color: #111827; }
-    .page-header p { font-size: 13px; color: #6B7280; margin-top: 4px; }
-    select, input[type="text"], input[type="number"] {
-      padding: 8px 12px;
-      border: 1px solid #D1D5DB;
-      border-radius: 6px;
-      font-size: 13px;
+    .global-select-box {
+      border: 1px solid #E2E8F0;
       background: #FFFFFF;
-      color: #111827;
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 12.5px;
+      font-weight: 600;
+      color: #334155;
+      cursor: pointer;
     }
-    select:focus, input:focus { outline: none; border-color: #111827; }
-    .grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 28px; }
-    .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
-    .grid-calc { display: grid; grid-template-columns: 1.65fr 1fr; gap: 24px; }
-    @media (max-width: 960px) { .grid-calc { grid-template-columns: 1fr; } }
+
+    /* Course Selector Box in Tab 2 & Simulasi Header */
+    .header-course-picker {
+      border: 1px solid #E2E8F0;
+      background: #FFFFFF;
+      border-radius: 8px;
+      padding: 5px 14px;
+      display: flex;
+      flex-direction: column;
+      min-width: 280px;
+    }
+    .header-course-picker label {
+      font-size: 9px;
+      font-weight: 800;
+      color: #94A3B8;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .header-course-picker select {
+      border: none;
+      background: transparent;
+      font-size: 13px;
+      font-weight: 700;
+      color: #0F172A;
+      padding: 2px 0 0 0;
+      cursor: pointer;
+      outline: none;
+    }
+
+    /* Dark Target IPK Pill in Tab 3 Header */
+    .target-ipk-pill {
+      background: #0F172A;
+      color: #FFFFFF;
+      padding: 7px 16px;
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .target-ipk-pill span {
+      font-size: 10px;
+      font-weight: 800;
+      color: #94A3B8;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    .target-ipk-pill input {
+      background: transparent;
+      border: none;
+      color: #FFFFFF;
+      font-size: 15px;
+      font-weight: 800;
+      width: 55px;
+      text-align: center;
+      outline: none;
+      border-bottom: 1px dashed #475569;
+    }
+
+    /* Buttons in Tab 4 Header */
+    .btn-reset-red {
+      background: #FFFFFF;
+      border: 1px solid #FECDD3;
+      color: #E11D48;
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: 0.15s;
+    }
+    .btn-reset-red:hover { background: #FFF1F2; }
+    .btn-save-dark {
+      background: #0F172A;
+      color: #FFFFFF;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: 0.15s;
+    }
+    .btn-save-dark:hover { background: #1E293B; }
+
+    /* =========================================================
+       MAIN CONTAINER & COMMON COMPONENTS
+    ========================================================= */
+    main {
+      flex: 1;
+      padding: 32px 40px;
+      max-width: 1360px;
+      width: 100%;
+      margin: 0 auto;
+    }
+    @media (max-width: 768px) {
+      header.beranda-header, .nav-bar, main { padding: 16px 20px; }
+    }
+
+    .section-title {
+      font-size: 17px;
+      font-weight: 800;
+      color: #0F172A;
+      margin-bottom: 22px;
+      letter-spacing: -0.01em;
+    }
+    .section-title span {
+      font-weight: 500;
+      color: #94A3B8;
+      margin-left: 6px;
+    }
+
+    /* Badges */
+    .badge {
+      display: inline-block;
+      padding: 4px 9px;
+      font-size: 9.5px;
+      font-weight: 800;
+      border-radius: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      white-space: nowrap;
+    }
+    .badge-neutral { background: #F1F5F9; color: #64748B; }
+    .badge-safe { background: #ECFDF5; color: #059669; }
+    .badge-ok { background: #EFF6FF; color: #1E40AF; }
+    .badge-warn { background: #FFFBEB; color: #D97706; }
+    .badge-danger { background: #FFF1F2; color: #E11D48; }
+
+    /* =========================================================
+       TAB 1: BERANDA CARDS
+    ========================================================= */
+    .grid-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 22px;
+    }
+    @media (max-width: 1100px) { .grid-cards { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 700px) { .grid-cards { grid-template-columns: 1fr; } }
 
     .card {
-      border: 1px solid #E5E7EB;
-      border-radius: 8px;
-      padding: 20px;
       background: #FFFFFF;
+      border: 1px solid #E2E8F0;
+      border-radius: 12px;
+      padding: 22px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+      box-shadow: 0 1px 2px rgba(15, 23, 42, 0.02);
     }
-    .kpi-label { font-size: 12px; color: #6B7280; }
-    .kpi-val { font-size: 24px; font-weight: 700; margin-top: 6px; color: #111827; }
-
-    .badge {
-      display: inline-block;
-      padding: 3px 8px;
+    .card h3 {
+      font-size: 15px;
+      font-weight: 800;
+      color: #0F172A;
+      line-height: 1.35;
+    }
+    .sks-text {
+      font-size: 10.5px;
+      font-weight: 700;
+      color: #94A3B8;
+      text-transform: uppercase;
+      margin-top: 3px;
+    }
+    .course-note-text {
       font-size: 11px;
-      font-weight: 600;
-      border-radius: 4px;
-      border: 1px solid #D1D5DB;
+      color: #64748B;
+      margin-top: 6px;
+      line-height: 1.4;
     }
-    .badge-safe { background: #ECFDF5; color: #065F46; border-color: #A7F3D0; }
-    .badge-ok { background: #EFF6FF; color: #1E40AF; border-color: #BFDBFE; }
-    .badge-warn { background: #FFFBEB; color: #92400E; border-color: #FDE68A; }
-    .badge-danger { background: #FFF1F2; color: #9F1239; border-color: #FECDD3; }
-    .badge-neutral { background: #F9FAFB; color: #4B5563; border-color: #E5E7EB; }
-
-    .comp-row {
+    .meta-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 12px 0;
-      border-bottom: 1px solid #F3F4F6;
-      gap: 12px;
-      flex-wrap: wrap;
+      font-size: 10px;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: #94A3B8;
+      margin-top: 16px;
+      letter-spacing: 0.04em;
     }
-    .comp-row:last-child { border-bottom: none; }
+    .meta-row span { color: #0F172A; font-size: 11.5px; font-weight: 800; }
+
+    .progress-track {
+      width: 100%;
+      height: 5px;
+      background: #F1F5F9;
+      border-radius: 999px;
+      overflow: hidden;
+      margin-top: 8px;
+    }
+    .progress-fill {
+      height: 100%;
+      background: #1E3A8A;
+      border-radius: 999px;
+      transition: width 0.25s ease;
+    }
+
+    .avg-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 10px;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: #94A3B8;
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px solid #F8FAFC;
+      letter-spacing: 0.04em;
+    }
+    .avg-row span { color: #334155; font-size: 12px; font-weight: 800; }
+
+    .target-highlight {
+      background: #F8FAFC;
+      border-left: 3.5px solid #1E3A8A;
+      padding: 11px 14px;
+      border-radius: 0 8px 8px 0;
+      font-size: 9.5px;
+      font-weight: 800;
+      color: #1E3A8A;
+      margin-top: 16px;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+    .target-highlight.red-variant {
+      border-left-color: #E11D48;
+      color: #E11D48;
+      background: #FFF1F2;
+    }
+    .target-highlight span {
+      display: block;
+      font-weight: 500;
+      color: #334155;
+      margin-top: 4px;
+      font-size: 11.5px;
+      text-transform: none;
+      letter-spacing: 0;
+    }
+    .target-highlight span b { font-weight: 800; color: #0F172A; }
+
+    .btn-card-detail {
+      background: #FFFFFF;
+      border: 1px solid #E2E8F0;
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 11.5px;
+      font-weight: 700;
+      color: #475569;
+      cursor: pointer;
+      margin-top: 16px;
+      text-align: center;
+      transition: all 0.15s;
+    }
+    .btn-card-detail:hover {
+      background: #F8FAFC;
+      border-color: #CBD5E1;
+      color: #0F172A;
+    }
+
+    /* =========================================================
+       TAB 2: HITUNG NILAI MK
+    ========================================================= */
+    .grid-calc {
+      display: grid;
+      grid-template-columns: 1.55fr 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+    @media (max-width: 960px) { .grid-calc { grid-template-columns: 1fr; } }
+
+    .info-banner-blue {
+      background: #F8FAFC;
+      border: 1px solid #E2E8F0;
+      border-radius: 10px;
+      padding: 14px 16px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin: 18px 0 20px 0;
+      font-size: 12px;
+      color: #475569;
+      line-height: 1.5;
+    }
+    .info-icon-circle {
+      background: #1E3A8A;
+      color: #FFFFFF;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 800;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .comp-input-row {
+      display: grid;
+      grid-template-columns: 1.5fr 1.2fr 0.7fr;
+      align-items: center;
+      padding: 14px 0;
+      border-bottom: 1px solid #F1F5F9;
+      gap: 12px;
+    }
+    .comp-input-row:last-child { border-bottom: none; }
+    .comp-title { font-size: 13.5px; font-weight: 700; color: #0F172A; }
+    .comp-detail-sub { font-size: 11px; color: #64748B; margin-top: 2px; }
+    .weight-pill-blue {
+      display: inline-block;
+      background: #EFF6FF;
+      color: #1D4ED8;
+      font-size: 9.5px;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 5px;
+      margin-top: 5px;
+      text-transform: uppercase;
+    }
+    .score-input-field {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid #E2E8F0;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #0F172A;
+      background: #FFFFFF;
+      transition: border 0.15s;
+    }
+    .score-input-field::placeholder { color: #CBD5E1; font-weight: 500; }
+    .score-input-field:focus { border-color: #1E3A8A; outline: none; }
+    .comp-contrib-text {
+      text-align: right;
+      font-size: 13px;
+      font-weight: 700;
+      color: #94A3B8;
+    }
+    .comp-contrib-text.filled { color: #0F172A; }
+
+    .eval-stat-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 0;
+      font-size: 13px;
+      color: #64748B;
+      font-weight: 500;
+    }
+    .eval-stat-row b { font-weight: 800; color: #0F172A; }
+
+    .advisor-bar-item { margin-bottom: 14px; }
+    .advisor-bar-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .advisor-bar-header span.muted { color: #94A3B8; font-weight: 500; }
+    .advisor-track {
+      height: 6px;
+      background: #E2E8F0;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .advisor-fill {
+      height: 100%;
+      background: #CBD5E1;
+      border-radius: 999px;
+    }
+    .advisor-fill.active-target { background: #1E3A8A; }
+
+    .alert-box-red {
+      background: #FFF1F2;
+      border: 1px solid #FFE4E6;
+      border-radius: 10px;
+      padding: 14px 16px;
+      color: #9F1239;
+      font-size: 12px;
+      margin-top: 18px;
+      line-height: 1.5;
+    }
+    .alert-box-red .alert-title {
+      font-size: 10px;
+      font-weight: 800;
+      color: #E11D48;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .alert-box-safe {
+      background: #ECFDF5;
+      border: 1px solid #A7F3D0;
+      border-radius: 10px;
+      padding: 14px 16px;
+      color: #065F46;
+      font-size: 12px;
+      margin-top: 18px;
+      line-height: 1.5;
+    }
+
+    .btn-primary-blue {
+      background: #1E3A8A;
+      color: #FFFFFF;
+      border: none;
+      padding: 11px 20px;
+      border-radius: 8px;
+      font-size: 12.5px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn-primary-blue:hover { background: #172554; }
+
+    /* =========================================================
+       TAB 3: TARGET IPK 8 SEMESTER
+    ========================================================= */
+    .semester-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+    @media (max-width: 640px) { .semester-grid { grid-template-columns: 1fr; } }
+
+    .sem-card {
+      border: 1px solid #E2E8F0;
+      border-radius: 10px;
+      padding: 16px;
+      background: #FFFFFF;
+    }
+    .sem-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+    .sem-card-header h4 { font-size: 13.5px; font-weight: 800; color: #0F172A; }
+    .sem-inputs-grid {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr;
+      gap: 10px;
+    }
+    .sem-field label {
+      display: block;
+      font-size: 9px;
+      font-weight: 800;
+      color: #94A3B8;
+      text-transform: uppercase;
+      margin-bottom: 5px;
+      letter-spacing: 0.04em;
+    }
+    .sem-field input {
+      width: 100%;
+      padding: 9px 12px;
+      border: 1px solid #E2E8F0;
+      border-radius: 7px;
+      font-size: 13px;
+      font-weight: 700;
+      color: #0F172A;
+    }
+
+    .mini-kpi-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+    .mini-kpi-box {
+      background: #FFFFFF;
+      border: 1px solid #E2E8F0;
+      border-radius: 10px;
+      padding: 14px 16px;
+    }
+    .mini-kpi-box .label {
+      font-size: 9.5px;
+      font-weight: 800;
+      color: #94A3B8;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .mini-kpi-box .val {
+      font-size: 22px;
+      font-weight: 800;
+      color: #0F172A;
+      margin-top: 6px;
+    }
+    .mini-kpi-box .val span {
+      font-size: 12px;
+      font-weight: 600;
+      color: #94A3B8;
+    }
+
+    .scenario-card {
+      border-radius: 10px;
+      padding: 16px;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      margin-bottom: 12px;
+    }
+    .scenario-card.blue-scen {
+      background: #F8FAFC;
+      border-left: 4px solid #1E3A8A;
+    }
+    .scenario-card.red-scen {
+      background: #FFF1F2;
+      border-left: 4px solid #E11D48;
+    }
+    .scen-num {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+    .blue-scen .scen-num { background: #E0E7FF; color: #1E3A8A; }
+    .red-scen .scen-num { background: #FFE4E6; color: #E11D48; }
+    .scen-body h5 { font-size: 13px; font-weight: 800; color: #0F172A; margin-bottom: 4px; }
+    .scen-body p { font-size: 12px; color: #475569; line-height: 1.5; }
+
+    .target-ips-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 14px;
+      border-bottom: 1px solid #F1F5F9;
+      font-size: 12.5px;
+      font-weight: 600;
+      color: #475569;
+    }
+    .target-ips-row.active-row {
+      background: #F8FAFC;
+      border-left: 3px solid #1E3A8A;
+      color: #1E3A8A;
+      font-weight: 800;
+    }
+    .dot-indicator {
+      display: inline-block;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      margin-right: 8px;
+    }
+
+    /* =========================================================
+       TAB 4: MANAJEMEN BOBOT MK
+    ========================================================= */
+    .bobot-comp-row {
+      display: grid;
+      grid-template-columns: 1fr 86px 24px;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 8px;
+      padding: 4px;
+      border-radius: 8px;
+    }
+    .bobot-comp-row.overweight-row {
+      background: #FFF1F2;
+      border: 1px solid #FECDD3;
+      padding: 6px;
+    }
+    .bobot-name-input {
+      padding: 8px 10px;
+      border: 1px solid #E2E8F0;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #0F172A;
+      background: #F8FAFC;
+      width: 100%;
+    }
+    .bobot-weight-box {
+      display: flex;
+      align-items: center;
+      border: 1px solid #E2E8F0;
+      border-radius: 6px;
+      background: #FFFFFF;
+      padding: 0 6px;
+    }
+    .overweight-row .bobot-weight-box {
+      border-color: #FDA4AF;
+      color: #E11D48;
+    }
+    .bobot-weight-box input {
+      width: 100%;
+      border: none;
+      padding: 8px 2px;
+      font-size: 12px;
+      font-weight: 800;
+      text-align: center;
+      color: inherit;
+      background: transparent;
+      outline: none;
+    }
+    .bobot-weight-box span {
+      font-size: 11px;
+      font-weight: 700;
+      color: #94A3B8;
+    }
+    .btn-remove-comp {
+      background: none;
+      border: none;
+      color: #CBD5E1;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      line-height: 1;
+    }
+    .btn-remove-comp:hover { color: #E11D48; }
+
+    .btn-add-comp {
+      width: 100%;
+      background: transparent;
+      border: none;
+      border-top: 1px solid #F1F5F9;
+      padding: 12px 0 4px 0;
+      margin-top: 8px;
+      font-size: 11px;
+      font-weight: 800;
+      color: #1E3A8A;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      cursor: pointer;
+    }
+    .btn-add-comp:hover { color: #1D4ED8; }
+
+    /* =========================================================
+       TAB 5 & 6: SKALA, ANALITIK & SIMULASI WHAT-IF
+    ========================================================= */
     table { width: 100%; border-collapse: collapse; font-size: 13px; }
-    th, td { padding: 10px 14px; border-bottom: 1px solid #E5E7EB; text-align: left; }
-    th { background: #F9FAFB; font-weight: 600; }
+    th, td { padding: 12px 16px; border-bottom: 1px solid #E2E8F0; text-align: left; }
+    th { background: #F8FAFC; font-weight: 800; text-transform: uppercase; font-size: 10.5px; color: #64748B; letter-spacing: 0.04em; }
+
+    input[type="range"] {
+      width: 100%;
+      accent-color: #1E3A8A;
+      cursor: pointer;
+    }
+
+    .bottom-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid #F1F5F9;
+      margin-top: 24px;
+      padding-top: 18px;
+    }
+    .btn-text-reset {
+      background: none;
+      border: none;
+      color: #64748B;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .btn-text-reset:hover { color: #0F172A; }
   </style>
 </head>
 <body>
 
-  <aside>
-    <div>
+  <!-- HEADER BESAR (Hanya tampil di Tab 1: Beranda) -->
+  <header class="beranda-header" id="beranda-top-header">
+    <div class="header-top">
       <div class="brand">
-        <h1>GradeAdvisor.</h1>
+        <h1>Pacilian<span>Kuat</span></h1>
         <p>Sistem Evaluasi & Target IPK 8 Smt</p>
       </div>
-      <nav>
-        <button type="button" onclick="switchTab('beranda')" id="tab-beranda" class="nav-btn active">1. Beranda</button>
-        <button type="button" onclick="switchTab('hitung')" id="tab-hitung" class="nav-btn">2. Hitung Nilai MK</button>
-        <button type="button" onclick="switchTab('ipk8')" id="tab-ipk8" class="nav-btn">3. Target IPK 8 Semester</button>
-        <button type="button" onclick="switchTab('simulasi')" id="tab-simulasi" class="nav-btn">4. Simulasi What-If</button>
-        <button type="button" onclick="switchTab('bobot')" id="tab-bobot" class="nav-btn">5. Manajemen Bobot MK</button>
-        <button type="button" onclick="switchTab('skala')" id="tab-skala" class="nav-btn">6. Skala Nilai & Analitik</button>
-      </nav>
+      <div class="kpi-container" id="global-kpi"></div>
     </div>
-    <div class="sidebar-footer">
-      <button type="button" onclick="resetAllData()" class="btn-outline">Reset Semua Data</button>
+  </header>
+
+  <!-- NAVIGATION & CONTEXTUAL BAR -->
+  <div class="nav-bar">
+    <div class="nav-left">
+      <!-- Brand ringkas (Muncul selain di Beranda) -->
+      <div id="compact-brand-logo" class="compact-brand hidden" onclick="selectTab('beranda')">
+        Pacilian<span>Kuat</span>
+      </div>
+
+      <div class="dropdown-container">
+        <button class="nav-dropdown-btn" id="main-dropdown-btn" onclick="toggleNavDropdown()">
+          <span id="active-tab-badge" class="nav-num-badge hidden">1</span>
+          <span id="active-tab-label">1. Beranda</span>
+          <span style="font-size: 11px; opacity: 0.8;">▾</span>
+        </button>
+        <div class="dropdown-menu" id="nav-dropdown-menu">
+          <button type="button" onclick="selectTab('beranda')" class="dropdown-item active" id="tab-beranda">1. Beranda</button>
+          <button type="button" onclick="selectTab('hitung')" class="dropdown-item" id="tab-hitung">2. Hitung Nilai MK</button>
+          <button type="button" onclick="selectTab('ipk8')" class="dropdown-item" id="tab-ipk8">3. Target IPK 8 Semester</button>
+          <button type="button" onclick="selectTab('bobot')" class="dropdown-item" id="tab-bobot">4. Manajemen Bobot MK</button>
+          <button type="button" onclick="selectTab('skala')" class="dropdown-item" id="tab-skala">5. Skala & Analitik</button>
+          <button type="button" onclick="selectTab('simulasi')" class="dropdown-item" id="tab-simulasi">6. Simulasi What-If</button>
+        </div>
+      </div>
     </div>
-  </aside>
+
+    <!-- KONTROL KANAN: Berubah sesuai tab aktif -->
+    <div class="nav-right">
+      <!-- Kontrol Kanan Tab 1 & 5: Global Setting -->
+      <div id="nav-right-beranda" class="nav-right-item">
+        <span class="global-setting-label">Global Setting:</span>
+        <select id="global-target" class="global-select-box" onchange="updateGlobalTarget(this.value)">
+          <option value="85">Target Nilai MK: A (Min. 85 / IP 4.00)</option>
+          <option value="80">Target Nilai MK: A- (Min. 80 / IP 3.70)</option>
+          <option value="75">Target Nilai MK: B+ (Min. 75 / IP 3.30)</option>
+          <option value="70">Target Nilai MK: B (Min. 70 / IP 3.00)</option>
+          <option value="55">Target Nilai MK: C - Lulus Minimal (Min. 55 / IP 2.00)</option>
+        </select>
+      </div>
+
+      <!-- Kontrol Kanan Tab 2: Pemilih Mata Kuliah -->
+      <div id="nav-right-hitung" class="nav-right-item hidden">
+        <div class="header-course-picker">
+          <label>Mata Kuliah Terpilih</label>
+          <select id="select-course-hitung" onchange="renderHitungNilai()"></select>
+        </div>
+      </div>
+
+      <!-- Kontrol Kanan Tab 3: Target IPK Pill -->
+      <div id="nav-right-ipk8" class="nav-right-item hidden">
+        <div class="target-ipk-pill">
+          <span>Target IPK</span>
+          <input type="number" id="ipk-target-input" step="0.05" min="2.00" max="4.00" value="3.70" oninput="updateTargetIPK(this.value)" />
+          <span style="font-size:12px; color:#94A3B8;">✎</span>
+        </div>
+      </div>
+
+      <!-- Kontrol Kanan Tab 4: Reset & Simpan -->
+      <div id="nav-right-bobot" class="nav-right-item hidden">
+        <button type="button" onclick="resetAllData()" class="btn-reset-red">↺ Reset ke Default</button>
+        <button type="button" onclick="selectTab('beranda')" class="btn-save-dark">Simpan Perubahan 💾</button>
+      </div>
+
+      <!-- Kontrol Kanan Tab 6: Pemilih Mata Kuliah Simulasi -->
+      <div id="nav-right-simulasi" class="nav-right-item hidden">
+        <div class="header-course-picker">
+          <label>Simulasi Mata Kuliah</label>
+          <select id="select-course-simulasi" onchange="initSimulasi()"></select>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <main>
 
-    <!-- FITUR 1: BERANDA -->
+    <!-- =========================================================
+         FITUR 1: BERANDA
+    ========================================================= -->
     <section id="view-beranda">
-      <div class="page-header">
-        <div>
-          <h2>Beranda Akademik</h2>
-          <p>Ringkasan posisi nilai dari 7 mata kuliah aktif (20 SKS) dan proyeksi IPK Anda.</p>
-        </div>
-        <div>
-          <label style="font-size:12px; color:#6B7280; font-weight:600; margin-right:6px;">TARGET NILAI MK:</label>
-          <select id="global-target" onchange="updateGlobalTarget(this.value)">
-            <option value="85">A (Min. 85 / IP 4.00)</option>
-            <option value="80">A- (Min. 80 / IP 3.70)</option>
-            <option value="75">B+ (Min. 75 / IP 3.30)</option>
-            <option value="70">B (Min. 70 / IP 3.00)</option>
-            <option value="55">C - Lulus Minimal (Min. 55 / IP 2.00)</option>
-          </select>
-        </div>
-      </div>
-      <div class="grid-4" id="beranda-kpi"></div>
-      <h3 style="font-size:15px; font-weight:600; margin-bottom:14px;">Status Keamanan Nilai per Mata Kuliah (7 MK - 20 SKS)</h3>
-      <div class="grid-3" id="beranda-course-cards"></div>
+      <h2 class="section-title">Status Keamanan Nilai per Mata Kuliah <span>(7 MK - 20 SKS)</span></h2>
+      <div class="grid-cards" id="beranda-course-cards"></div>
     </section>
 
-    <!-- FITUR 2: HITUNG NILAI PER MATA KULIAH -->
+    <!-- =========================================================
+         FITUR 2: HITUNG NILAI PER MATA KULIAH
+    ========================================================= -->
     <section id="view-hitung" class="hidden">
-      <div class="page-header">
-        <div>
-          <h2>Hitung Nilai & Target Advisor</h2>
-          <p>Masukkan nilai yang sudah Anda miliki. Kosongkan komponen yang belum dinilai untuk melihat target ke depannya.</p>
-        </div>
-        <select id="select-course-hitung" onchange="renderHitungNilai()"></select>
-      </div>
       <div class="grid-calc">
+        <!-- Kartu Kiri: Input Komponen -->
         <div class="card" style="justify-content: flex-start;">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-            <h3 id="hitung-course-title" style="font-size:16px; font-weight:700;">Komponen Evaluasi</h3>
-            <span id="hitung-total-weight" class="badge badge-neutral"></span>
+          <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:12px;">
+            <div>
+              <h3 id="hitung-course-title" style="font-size:19px;">Dasar-Dasar Pemrograman 1</h3>
+              <p id="hitung-course-sub" style="font-size:12px; color:#64748B; margin-top:3px;"></p>
+            </div>
+            <span id="hitung-total-weight" class="badge badge-ok" style="font-size:11px; padding:6px 12px; border-radius:999px;">Total Bobot: 105%</span>
           </div>
-          <p style="font-size:12px; color:#6B7280; margin-bottom:14px;">
-            Tips: Ketik satu angka (misal <b>85</b>) atau beberapa nilai dipisahkan koma jika kuis/lab berkali-kali (misal <b>80, 90, 75</b> — otomatis dihitung rata-ratanya).
-          </p>
+
+          <div class="info-banner-blue">
+            <span class="info-icon-circle">i</span>
+            <div>
+              Masukkan nilai asli (0-100) pada setiap komponen. Sistem akan otomatis menghitung kontribusi poin terhadap nilai akhir berdasarkan bobot yang telah diatur. Ketik beberapa angka dipisahkan koma jika kuis/lab berkali-kali (cth: <b>80, 90, 75</b> — otomatis dihitung rata-ratanya).
+            </div>
+          </div>
+
           <div id="hitung-components-list"></div>
+
+          <div class="bottom-bar">
+            <button type="button" onclick="resetCurrentCourseScores()" class="btn-text-reset">↺ Reset Input MK Ini</button>
+            <button type="button" onclick="selectTab('beranda')" class="btn-primary-blue">Simpan Perubahan ✓</button>
+          </div>
         </div>
-        <div class="card" style="justify-content: flex-start; height: fit-content;">
-          <h3 style="font-size:15px; font-weight:700; border-bottom:1px solid #E5E7EB; padding-bottom:8px; margin-bottom:12px;">Hasil Evaluasi Saat Ini</h3>
-          <div id="hitung-summary-box" style="font-size:13px; line-height:1.9; margin-bottom:16px;"></div>
-          <h4 style="font-size:13px; font-weight:700; margin-bottom:8px;">Target Advisor (Harus Dapat Berapa Ke Depannya?)</h4>
-          <div id="hitung-advisor-table" style="display:flex; flex-direction:column; gap:6px; margin-bottom:16px;"></div>
-          <div id="hitung-advice-message"></div>
+
+        <!-- Kartu Kanan: Evaluasi & Target Advisor -->
+        <div style="display:flex; flex-direction:column; gap:20px;">
+          <div class="card" style="justify-content: flex-start;">
+            <h3 style="font-size:11px; font-weight:800; letter-spacing:0.06em; text-transform:uppercase; color:#64748B; margin-bottom:14px; display:flex; align-items:center; gap:8px;">
+              <span style="color:#1E3A8A;">◔</span> Evaluasi Saat Ini
+            </h3>
+            <div id="hitung-summary-box"></div>
+          </div>
+
+          <div class="card" style="justify-content: flex-start;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+              <h3 style="font-size:11px; font-weight:800; letter-spacing:0.06em; text-transform:uppercase; color:#64748B; display:flex; align-items:center; gap:8px;">
+                <span style="color:#E11D48;">◎</span> Target Advisor
+              </h3>
+              <span style="font-size:12px; color:#CBD5E1; font-weight:800;">?</span>
+            </div>
+            <p id="hitung-advisor-prompt" style="font-size:11.5px; font-style:italic; color:#64748B; margin-bottom:16px; line-height:1.45;"></p>
+            <div id="hitung-advisor-table"></div>
+            <div id="hitung-advice-message"></div>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- FITUR 3: TARGET IPK 8 SEMESTER -->
+    <!-- =========================================================
+         FITUR 3: TARGET IPK 8 SEMESTER
+    ========================================================= -->
     <section id="view-ipk8" class="hidden">
-      <div class="page-header">
-        <div>
-          <h2>Perencanaan & Target IPK 8 Semester</h2>
-          <p>Cek berapa IPS minimal yang harus diraih pada semester berikutnya agar IPK mencapai target (misal 3.50 atau 3.70).</p>
-        </div>
-        <div style="display:flex; align-items:center; gap:8px;">
-          <label style="font-size:12px; color:#6B7280; font-weight:600;">TARGET IPK:</label>
-          <input type="number" id="ipk-target-input" step="0.05" min="2.00" max="4.00" value="3.70" oninput="updateTargetIPK(this.value)" style="width:90px; font-weight:700;" />
-        </div>
-      </div>
-
       <div class="grid-calc">
+        <!-- Kiri: Daftar 8 Semester -->
         <div class="card" style="justify-content:flex-start;">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; flex-wrap:wrap; gap:8px;">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:20px; gap:12px; flex-wrap:wrap;">
             <div>
-              <h3 style="font-size:16px; font-weight:700;">Daftar IPS (Semester 1 s.d. Semester 8)</h3>
-              <p style="font-size:12px; color:#6B7280;">Isi IPS yang sudah keluar. Kosongkan semester yang belum dijalani.</p>
+              <h3 style="font-size:17px; font-weight:800;">Daftar IPS & Beban SKS</h3>
+              <p style="font-size:12px; color:#64748B; margin-top:3px;">Input nilai semester yang sudah atau akan dijalani.</p>
             </div>
-            <button type="button" onclick="fillSmt1FromCurrent()" class="btn-outline" style="width:auto; padding:6px 10px;">
-              Tarik IPS Smt 1 dari 7 MK Saat Ini
+            <button type="button" onclick="fillSmt1FromCurrent()" class="btn-card-detail" style="margin-top:0; padding:8px 12px; color:#1E3A8A; border-color:#DBEAFE; background:#EFF6FF;">
+              ☁ Tarik IPS Smt 1 dari 7 MK Saat Ini
             </button>
           </div>
-          <div id="semester-list-container"></div>
+
+          <div class="semester-grid" id="semester-list-container"></div>
         </div>
 
-        <div class="card" style="justify-content:flex-start; height:fit-content;">
-          <h3 style="font-size:15px; font-weight:700; border-bottom:1px solid #E5E7EB; padding-bottom:8px; margin-bottom:12px;">Analisis & Target Semester Berikutnya</h3>
-          <div id="ipk8-summary-box" style="font-size:13px; line-height:1.9; margin-bottom:16px;"></div>
+        <!-- Kanan: Ringkasan, Strategi, & Tabel Target -->
+        <div style="display:flex; flex-direction:column;">
+          <div class="mini-kpi-row" id="ipk8-top-kpis"></div>
 
-          <h4 style="font-size:13px; font-weight:700; margin-bottom:8px;">Strategi Kejar Target di Semester Depan:</h4>
-          <div id="ipk8-Immediate-box" style="margin-bottom:16px;"></div>
+          <div class="card" style="margin-bottom:20px;">
+            <h3 style="font-size:11.5px; font-weight:800; text-transform:uppercase; letter-spacing:0.05em; color:#0F172A; margin-bottom:16px; display:flex; align-items:center; gap:8px;">
+              <span style="color:#1E3A8A;">♟</span> Strategi Kejar Target
+            </h3>
+            <div id="ipk8-strategy-box"></div>
+          </div>
 
-          <h4 style="font-size:13px; font-weight:700; margin-bottom:8px;">Tabel Target Rata-Rata IPS di Sisa Semester:</h4>
-          <div id="ipk8-advisor-table" style="display:flex; flex-direction:column; gap:6px; margin-bottom:16px;"></div>
+          <div class="card">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+              <h3 style="font-size:11.5px; font-weight:800; text-transform:uppercase; letter-spacing:0.05em; color:#0F172A; display:flex; align-items:center; gap:8px;">
+                <span style="color:#64748B;">▤</span> Target Rata-Rata IPS di Sisa Smt
+              </h3>
+              <span style="font-size:12px; color:#CBD5E1; font-weight:800;">ⓘ</span>
+            </div>
 
-          <div id="ipk8-advice-message"></div>
+            <div style="display:flex; justify-content:space-between; font-size:9.5px; font-weight:800; color:#94A3B8; text-transform:uppercase; padding:0 14px 8px 14px; border-bottom:1px solid #F1F5F9;">
+              <span>Gelar Target IPK</span>
+              <span>IPS Perlu Diraih</span>
+            </div>
+            <div id="ipk8-advisor-table"></div>
+            <p id="ipk8-footnote" style="font-size:10.5px; color:#94A3B8; text-align:center; margin-top:14px; font-style:italic;"></p>
+            <div id="ipk8-conclusion-box" style="margin-top:12px;"></div>
+          </div>
+
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-top:18px; padding:0 4px;">
+            <button type="button" onclick="resetIPKTargetData()" class="btn-text-reset">↺ Reset Rencana</button>
+            <button type="button" onclick="selectTab('beranda')" class="btn-save-dark" style="padding:11px 20px; font-size:12.5px;">Simpan Perencanaan 💾</button>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- FITUR 4: SIMULASI WHAT-IF -->
-    <section id="view-simulasi" class="hidden">
-      <div class="page-header">
-        <div>
-          <h2>Simulasi Skenario "What-If"</h2>
-          <p>Geser slider pada komponen mata kuliah untuk mencoba prediksi nilai akhir tanpa mengubah data asli Anda.</p>
-        </div>
-        <select id="select-course-simulasi" onchange="initSimulasi()"></select>
-      </div>
-      <div class="grid-calc">
-        <div class="card" id="simulasi-sliders" style="gap:12px;"></div>
-        <div class="card" id="simulasi-result" style="height:fit-content; text-align:center;"></div>
-      </div>
-    </section>
-
-    <!-- FITUR 5: MANAJEMEN BOBOT MK -->
+    <!-- =========================================================
+         FITUR 4: MANAJEMEN BOBOT MK
+    ========================================================= -->
     <section id="view-bobot" class="hidden">
-      <div class="page-header">
+      <div style="margin-bottom:24px;">
+        <h2 class="section-title" style="margin-bottom:4px;">Kontrak Kuliah & Bobot Penilaian</h2>
+        <p style="font-size:12.5px; color:#64748B;">Atur persentase nilai setiap komponen mata kuliah sesuai silabus resmi.</p>
+      </div>
+
+      <div class="grid-cards" id="bobot-courses-container"></div>
+
+      <div class="info-banner-blue" style="margin-top:28px; padding:18px 20px;">
+        <span class="info-icon-circle" style="width:24px; height:24px; font-size:12px;">i</span>
         <div>
-          <h2>Manajemen Mata Kuliah & Bobot Kontrak Kuliah</h2>
-          <p>Anda dapat menyesuaikan nama komponen, persentase bobot, atau menambah komponen baru sesuai kontrak kuliah.</p>
+          <h4 style="font-size:13px; font-weight:800; color:#0F172A; margin-bottom:4px;">Informasi Sinkronisasi</h4>
+          <p style="font-size:12px; color:#64748B; line-height:1.5;">
+            Perubahan bobot penilaian di sini akan secara otomatis memperbarui kalkulasi pada halaman <b>Hitung Nilai MK</b>. Pastikan total persentase setiap mata kuliah berjumlah tepat 100% (atau 105% untuk DDP 1 dengan bonus Proyek Akhir) untuk hasil yang akurat. Jika total melebihi 100%, sistem akan memberikan penanda visual berwarna merah.
+          </p>
         </div>
       </div>
-      <div class="grid-3" id="bobot-courses-container"></div>
     </section>
 
-    <!-- FITUR 6: SKALA NILAI & ANALITIK -->
+    <!-- =========================================================
+         FITUR 5: SKALA NILAI & ANALITIK
+    ========================================================= -->
     <section id="view-skala" class="hidden">
-      <div class="page-header">
-        <div>
-          <h2>Skala Rentang Nilai, Bobot IP & Analitik Poin</h2>
-          <p>Tabel acuan konversi nilai huruf serta evaluasi poin hilang pada tiap mata kuliah.</p>
-        </div>
-      </div>
+      <h2 class="section-title">Skala Rentang Nilai, Bobot IP & Analitik Poin</h2>
       <div class="grid-calc">
         <div class="card" style="padding:0; overflow:hidden; height:fit-content;">
           <table>
@@ -325,7 +1147,21 @@
             </tbody>
           </table>
         </div>
-        <div style="display:flex; flex-direction:column; gap:12px;" id="analitik-content"></div>
+        <div style="display:flex; flex-direction:column; gap:14px;" id="analitik-content"></div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         FITUR 6: SIMULASI WHAT-IF (DARI WEB LAMA)
+    ========================================================= -->
+    <section id="view-simulasi" class="hidden">
+      <div style="margin-bottom:24px;">
+        <h2 class="section-title" style="margin-bottom:4px;">Simulasi Skenario "What-If"</h2>
+        <p style="font-size:12.5px; color:#64748B;">Geser slider pada komponen mata kuliah untuk mencoba prediksi nilai akhir tanpa mengubah data asli Anda.</p>
+      </div>
+      <div class="grid-calc">
+        <div class="card" id="simulasi-sliders" style="gap:14px; justify-content:flex-start;"></div>
+        <div class="card" id="simulasi-result" style="height:fit-content; text-align:center;"></div>
       </div>
     </section>
 
@@ -333,22 +1169,25 @@
 
   <script>
     const GRADE_SCALE = [
-      { min: 85, letter: 'A', gpa: 4.00, desc: 'Sangat Baik / Excellent' },
+      { min: 85, letter: 'A',  gpa: 4.00, desc: 'Sangat Baik / Excellent' },
       { min: 80, letter: 'A-', gpa: 3.70, desc: 'Sangat Baik / Excellent' },
       { min: 75, letter: 'B+', gpa: 3.30, desc: 'Baik / Good' },
-      { min: 70, letter: 'B', gpa: 3.00, desc: 'Baik / Good' },
+      { min: 70, letter: 'B',  gpa: 3.00, desc: 'Baik / Good' },
       { min: 65, letter: 'B-', gpa: 2.70, desc: 'Baik / Good' },
       { min: 60, letter: 'C+', gpa: 2.30, desc: 'Cukup / Satisfactory' },
-      { min: 55, letter: 'C', gpa: 2.00, desc: 'Cukup (Batas Lulus)' },
-      { min: 40, letter: 'D', gpa: 1.00, desc: 'Kurang / Failed' },
-      { min: 0,  letter: 'E', gpa: 0.00, desc: 'Sangat Kurang / Failed' }
+      { min: 55, letter: 'C',  gpa: 2.00, desc: 'Cukup (Batas Lulus)' },
+      { min: 40, letter: 'D',  gpa: 1.00, desc: 'Kurang / Failed' },
+      { min: 0,  letter: 'E',  gpa: 0.00, desc: 'Sangat Kurang / Failed' }
     ];
 
+    // DATA MATKUL & BOBOT ASLI DARI WEB LAMA
     const DEFAULT_COURSES = [
       {
         id: 'ddp',
+        code: 'CS101',
+        shortName: 'DDP 1',
         sks: 4,
-        name: 'Dasar-Dasar Pemrograman 1 (4 SKS)',
+        name: 'Dasar-Dasar Pemrograman 1',
         note: 'Total bobot 105% (termasuk ekstra 5% dari Tugas Proyek Akhir)',
         components: [
           { name: 'Praktikum Lab (closed book)', weight: 10, detail: '10x Soal Pemrograman', rawInput: '' },
@@ -360,8 +1199,10 @@
       },
       {
         id: 'kalkulus',
+        code: 'MA101',
+        shortName: 'Kalkulus 1',
         sks: 3,
-        name: 'Kalkulus 1 (3 SKS)',
+        name: 'Kalkulus 1',
         note: 'Total 100% - Kuis, Tugas Individu/Kelompok, UTS & UAS',
         components: [
           { name: 'Kuis', weight: 22, detail: 'Komponen kuis', rawInput: '' },
@@ -373,8 +1214,10 @@
       },
       {
         id: 'kombis',
+        code: 'BU102',
+        shortName: 'Kombistek',
         sks: 3,
-        name: 'Komunikasi Bisnis dan Teknis (3 SKS)',
+        name: 'Komunikasi Bisnis dan Teknis',
         note: 'Total 100% - 5 Tugas Kelompok, CV, 3 Kuis & Keaktifan',
         components: [
           { name: 'Tugas Kelompok 1: Laporan Kemajuan Bisnis', weight: 10, detail: 'CS (Sub-CPMK 1)', rawInput: '' },
@@ -391,8 +1234,10 @@
       },
       {
         id: 'manbis',
+        code: 'BU101',
+        shortName: 'Manajemen Bisnis',
         sks: 3,
-        name: 'Manajemen Bisnis (3 SKS)',
+        name: 'Manajemen Bisnis',
         note: 'Total 100% - Fokus pada Kuis, UTS, Proyek Kelompok & Partisipasi',
         components: [
           { name: 'Kuis 1', weight: 7.5, detail: 'Tes Pilihan Ganda dan Benar-Salah', rawInput: '' },
@@ -407,8 +1252,10 @@
       },
       {
         id: 'matdis',
+        code: 'CS102',
+        shortName: 'Matdis 1',
         sks: 3,
-        name: 'Matematika Diskret 1 (3 SKS)',
+        name: 'Matematika Diskret 1',
         note: 'Total 100% - Kuis 40% (Pre-class & Post-class) dan Ujian 60%',
         components: [
           { name: 'Pre-class Quiz (12 Terbaik)', weight: 12, detail: 'Diambil 12 terbaik', rawInput: '' },
@@ -419,8 +1266,10 @@
       },
       {
         id: 'agama',
+        code: 'UI101',
+        shortName: 'MPK Agama',
         sks: 2,
-        name: 'MPK Agama (2 SKS)',
+        name: 'MPK Agama',
         note: 'Total 100% - Komponen dapat disesuaikan di Manajemen Bobot MK',
         components: [
           { name: 'Tugas & Diskusi Kelas', weight: 40, detail: 'Penugasan & keaktifan', rawInput: '' },
@@ -430,8 +1279,10 @@
       },
       {
         id: 'inggris',
+        code: 'UI102',
+        shortName: 'MPK Bhs Inggris',
         sks: 2,
-        name: 'MPK Bahasa Inggris (2 SKS)',
+        name: 'MPK Bahasa Inggris',
         note: 'Total 100% - Fleksibel (Silakan input nilai per komponen / sesuaikan bobot)',
         components: [
           { name: 'Tugas, Latihan & Partisipasi Kelas', weight: 40, detail: 'Reading, Writing, Speaking & Keaktifan', rawInput: '' },
@@ -452,24 +1303,35 @@
       { sem: 8, ips: '', sks: 20 }
     ];
 
+    // Membaca data lama dari grade_advisor_courses_v7 jika sudah ada agar input sebelumnya tidak hilang
+    let savedCourses = JSON.parse(localStorage.getItem('pacilian_courses_v10')) || JSON.parse(localStorage.getItem('grade_advisor_courses_v7'));
+    if (savedCourses) {
+      // Pastikan properti shortName dan code tetap ada
+      savedCourses.forEach((c, idx) => {
+        if (!c.shortName && DEFAULT_COURSES[idx]) c.shortName = DEFAULT_COURSES[idx].shortName;
+        if (!c.code && DEFAULT_COURSES[idx]) c.code = DEFAULT_COURSES[idx].code;
+        c.name = c.name.replace(/\s*\(\d+\s*SKS\)/i, '');
+      });
+    }
+
     let state = {
+      activeTab: 'beranda',
       targetScore: 85,
       targetIPK: 3.70,
-      courses: JSON.parse(localStorage.getItem('grade_advisor_courses_v7')) || JSON.parse(JSON.stringify(DEFAULT_COURSES)),
-      semesters: JSON.parse(localStorage.getItem('grade_advisor_semesters_v7')) || JSON.parse(JSON.stringify(DEFAULT_SEMESTERS))
+      courses: savedCourses || JSON.parse(JSON.stringify(DEFAULT_COURSES)),
+      semesters: JSON.parse(localStorage.getItem('pacilian_semesters_v10')) || JSON.parse(localStorage.getItem('grade_advisor_semesters_v7')) || JSON.parse(JSON.stringify(DEFAULT_SEMESTERS))
     };
 
     function saveState() {
-      localStorage.setItem('grade_advisor_courses_v7', JSON.stringify(state.courses));
-      localStorage.setItem('grade_advisor_semesters_v7', JSON.stringify(state.semesters));
+      localStorage.setItem('pacilian_courses_v10', JSON.stringify(state.courses));
+      localStorage.setItem('pacilian_semesters_v10', JSON.stringify(state.semesters));
     }
 
     function parseScoreInput(raw) {
       if (!raw || String(raw).trim() === '') return null;
-      const nums = String(raw).split(',').map(function(s) { return parseFloat(s.trim()); }).filter(function(n) { return !isNaN(n); });
+      const nums = String(raw).split(',').map(s => parseFloat(s.trim())).filter(n => !isNaN(n));
       if (nums.length === 0) return null;
-      const total = nums.reduce(function(a, b) { return a + b; }, 0);
-      return total / nums.length;
+      return nums.reduce((a, b) => a + b, 0) / nums.length;
     }
 
     function getLetterInfo(score) {
@@ -482,242 +1344,59 @@
     function analyzeCourse(course, targetMin) {
       if (targetMin === undefined) targetMin = state.targetScore;
       let totalWeight = 0, completedWeight = 0, remainingWeight = 0, earnedPoints = 0, lostPoints = 0;
-      course.components.forEach(function(c) {
-        totalWeight += c.weight;
+
+      course.components.forEach(c => {
+        const w = parseFloat(c.weight) || 0;
+        totalWeight += w;
         const avg = parseScoreInput(c.rawInput);
         if (avg !== null) {
-          completedWeight += c.weight;
-          earnedPoints += (avg * c.weight) / 100;
-          lostPoints += ((100 - avg) * c.weight) / 100;
+          completedWeight += w;
+          earnedPoints += (avg * w) / 100;
+          lostPoints += ((100 - avg) * w) / 100;
         } else {
-          remainingWeight += c.weight;
+          remainingWeight += w;
         }
       });
 
-      const currentRunningAvg = completedWeight > 0 ? (earnedPoints / completedWeight) * 100 : 0;
+      const currentRunningAvg = completedWeight > 0 ? (earnedPoints / completedWeight) * 100 : null;
       const neededPoints = Math.max(0, targetMin - earnedPoints);
       const requiredFutureAvg = remainingWeight > 0 ? (neededPoints / remainingWeight) * 100 : 0;
 
-      let statusLabel = 'Belum Diisi';
+      let statusLabel = 'BELUM DIISI';
       let badgeClass = 'badge-neutral';
 
       if (completedWeight > 0) {
         if (remainingWeight === 0) {
           const g = getLetterInfo(earnedPoints);
-          statusLabel = 'Selesai (' + g.letter + ')';
+          statusLabel = 'SELESAI (' + g.letter + ')';
           badgeClass = earnedPoints >= 75 ? 'badge-safe' : 'badge-warn';
         } else if (earnedPoints >= targetMin || requiredFutureAvg <= 75) {
-          statusLabel = 'Sangat Aman';
+          statusLabel = 'SANGAT AMAN';
           badgeClass = 'badge-safe';
         } else if (requiredFutureAvg <= 85) {
-          statusLabel = 'Aman Terkendali';
+          statusLabel = 'AMAN TERKENDALI';
           badgeClass = 'badge-ok';
         } else if (requiredFutureAvg <= 100) {
-          statusLabel = 'Waspada / Fokus';
+          statusLabel = 'WASPADA / FOKUS';
           badgeClass = 'badge-warn';
         } else {
-          statusLabel = 'Rawan (>100)';
+          statusLabel = 'RAWAN (>100)';
           badgeClass = 'badge-danger';
         }
       }
 
       return {
-        totalWeight: totalWeight,
-        completedWeight: completedWeight,
-        remainingWeight: remainingWeight,
-        earnedPoints: earnedPoints,
-        lostPoints: lostPoints,
-        currentRunningAvg: currentRunningAvg,
-        requiredFutureAvg: requiredFutureAvg,
-        statusLabel: statusLabel,
-        badgeClass: badgeClass
+        totalWeight, completedWeight, remainingWeight, earnedPoints, lostPoints,
+        currentRunningAvg, requiredFutureAvg, statusLabel, badgeClass
       };
-    }
-
-    function switchTab(tab) {
-      ['beranda', 'hitung', 'ipk8', 'simulasi', 'bobot', 'skala'].forEach(function(t) {
-        document.getElementById('view-' + t).classList.add('hidden');
-        document.getElementById('tab-' + t).classList.remove('active');
-      });
-      document.getElementById('view-' + tab).classList.remove('hidden');
-      document.getElementById('tab-' + tab).classList.add('active');
-      renderAll();
-    }
-
-    function updateGlobalTarget(val) {
-      state.targetScore = parseFloat(val);
-      renderAll();
-    }
-
-    function openCourseInCalculator(courseId) {
-      document.getElementById('select-course-hitung').value = courseId;
-      switchTab('hitung');
-    }
-
-    function populateDropdowns() {
-      const s1 = document.getElementById('select-course-hitung');
-      const s2 = document.getElementById('select-course-simulasi');
-      const v1 = s1.value || state.courses[0].id;
-      const v2 = s2.value || state.courses[0].id;
-      const html = state.courses.map(function(c) {
-        return '<option value="' + c.id + '">' + c.name + '</option>';
-      }).join('');
-      s1.innerHTML = html;
-      s2.innerHTML = html;
-      s1.value = v1;
-      s2.value = v2;
-    }
-
-    function renderBeranda() {
-      let activeSKS = 0, weightedGpaSum = 0;
-      const cardsHtml = state.courses.map(function(course) {
-        const s = analyzeCourse(course);
-        const sks = course.sks || 3;
-        if (s.completedWeight > 0) {
-          activeSKS += sks;
-          const baseScore = s.remainingWeight === 0 ? s.earnedPoints : s.currentRunningAvg;
-          weightedGpaSum += getLetterInfo(baseScore).gpa * sks;
-        }
-
-        const targetInfo = s.remainingWeight > 0
-          ? (s.requiredFutureAvg > 100
-              ? '<span style="color:#E11D48; font-weight:700;">Butuh ' + s.requiredFutureAvg.toFixed(1) + ' (Melebihi 100)</span>'
-              : 'Minimal <b>' + s.requiredFutureAvg.toFixed(1) + '</b> di sisa ' + s.remainingWeight + '% bobot')
-          : 'Selesai: <b>' + s.earnedPoints.toFixed(1) + ' (' + getLetterInfo(s.earnedPoints).letter + ' / IP ' + getLetterInfo(s.earnedPoints).gpa.toFixed(2) + ')</b>';
-
-        return '<div class="card">' +
-          '<div>' +
-            '<div style="display:flex; justify-content:space-between; align-items:flex-start; gap:8px;">' +
-              '<h4 style="font-size:15px; font-weight:700;">' + course.name + '</h4>' +
-              '<span class="badge ' + s.badgeClass + '">' + s.statusLabel + '</span>' +
-            '</div>' +
-            '<p style="font-size:12px; color:#6B7280; margin-top:4px;">' + course.note + '</p>' +
-            '<div style="margin-top:14px; padding-top:12px; border-top:1px solid #F3F4F6; display:flex; justify-content:space-between; font-size:12px;">' +
-              '<div><span style="color:#6B7280;">Poin Terkumpul:</span><br><b style="font-size:14px;">' + s.earnedPoints.toFixed(2) + ' / ' + s.totalWeight + '%</b></div>' +
-              '<div><span style="color:#6B7280;">Rata-rata Saat Ini:</span><br><b style="font-size:14px;">' + (s.completedWeight > 0 ? s.currentRunningAvg.toFixed(1) + ' (' + getLetterInfo(s.currentRunningAvg).letter + ')' : '-') + '</b></div>' +
-            '</div>' +
-            '<div style="margin-top:12px; background:#F9FAFB; padding:10px; border-radius:6px; border:1px solid #E5E7EB; font-size:12px;">' +
-              '<span style="color:#6B7280; display:block; margin-bottom:2px;">Syarat Capai Target (' + state.targetScore + '):</span>' +
-              targetInfo +
-            '</div>' +
-          '</div>' +
-          '<button type="button" onclick="openCourseInCalculator(\'' + course.id + '\')" class="btn-dark">Input / Hitung Nilai Detail &rarr;</button>' +
-        '</div>';
-      }).join('');
-
-      const estGpa = activeSKS > 0 ? (weightedGpaSum / activeSKS).toFixed(2) : '0.00';
-      const ipkStats = analyzeIPK8();
-
-      document.getElementById('beranda-kpi').innerHTML =
-        '<div class="card"><span class="kpi-label">Total Mata Kuliah Aktif</span><div class="kpi-val">7 MK <span style="font-size:12px; font-weight:400; color:#6B7280;">(20 SKS)</span></div></div>' +
-        '<div class="card"><span class="kpi-label">Estimasi IPS Berjalan</span><div class="kpi-val">' + estGpa + ' <span style="font-size:12px; font-weight:400; color:#6B7280;">/ 4.00</span></div></div>' +
-        '<div class="card"><span class="kpi-label">IPK Simulasi (' + ipkStats.completedSemCount + ' Smt)</span><div class="kpi-val">' + ipkStats.currentIPK.toFixed(2) + '</div></div>' +
-        '<div class="card"><span class="kpi-label">Target IPS Smt Depan (Utk IPK ' + state.targetIPK.toFixed(2) + ')</span><div class="kpi-val">' + (ipkStats.reqNextSemOnly <= 4 && ipkStats.reqNextSemOnly > 0 ? ipkStats.reqNextSemOnly.toFixed(2) : 'Rata2 ' + ipkStats.reqRemainingAvg.toFixed(2)) + '</div></div>';
-
-      document.getElementById('beranda-course-cards').innerHTML = cardsHtml;
-    }
-
-    function renderHitungNilai() {
-      const courseId = document.getElementById('select-course-hitung').value || state.courses[0].id;
-      const course = state.courses.find(function(c) { return c.id === courseId; });
-      const stats = analyzeCourse(course);
-
-      document.getElementById('hitung-course-title').textContent = course.name;
-      document.getElementById('hitung-total-weight').textContent = 'Total Bobot: ' + stats.totalWeight + '%';
-
-      document.getElementById('hitung-components-list').innerHTML = course.components.map(function(comp, idx) {
-        const avg = parseScoreInput(comp.rawInput);
-        const contrib = avg !== null ? ((avg * comp.weight) / 100).toFixed(2) : '-';
-        return '<div class="comp-row">' +
-          '<div style="flex:1; min-width:200px;">' +
-            '<div style="font-size:13px; font-weight:600;">' + comp.name + ' <span class="badge badge-neutral">' + comp.weight + '%</span></div>' +
-            '<div style="font-size:11px; color:#6B7280; margin-top:2px;">' + comp.detail + '</div>' +
-          '</div>' +
-          '<div style="display:flex; align-items:center; gap:12px;">' +
-            '<input type="text" placeholder="Ketik nilai..." value="' + comp.rawInput + '" oninput="handleScoreChange(\'' + course.id + '\', ' + idx + ', this.value)" style="width:140px;" />' +
-            '<div style="width:85px; text-align:right; font-size:12px;">' +
-              '<span style="color:#9CA3AF; display:block; font-size:10px;">Kontribusi</span>' +
-              '<b id="contrib-' + course.id + '-' + idx + '">' + contrib + ' poin</b>' +
-            '</div>' +
-          '</div>' +
-        '</div>';
-      }).join('');
-
-      updateHitungSidebar(course);
-    }
-
-    function handleScoreChange(courseId, idx, val) {
-      const course = state.courses.find(function(c) { return c.id === courseId; });
-      course.components[idx].rawInput = val;
-      saveState();
-      const avg = parseScoreInput(val);
-      const contribEl = document.getElementById('contrib-' + courseId + '-' + idx);
-      if (contribEl) contribEl.textContent = (avg !== null ? ((avg * course.components[idx].weight) / 100).toFixed(2) : '-') + ' poin';
-      updateHitungSidebar(course);
-      renderBeranda();
-    }
-
-    function updateHitungSidebar(course) {
-      const s = analyzeCourse(course);
-      document.getElementById('hitung-summary-box').innerHTML =
-        '<div style="display:flex; justify-content:space-between;"><span>Bobot Sudah Dinilai:</span><b>' + s.completedWeight + '% dari ' + s.totalWeight + '%</b></div>' +
-        '<div style="display:flex; justify-content:space-between;"><span>Tabungan Poin Saat Ini:</span><b>' + s.earnedPoints.toFixed(2) + ' Poin</b></div>' +
-        '<div style="display:flex; justify-content:space-between;"><span>Poin Hilang Sejauh Ini:</span><b style="color:#E11D48;">-' + s.lostPoints.toFixed(2) + ' Poin</b></div>' +
-        '<div style="display:flex; justify-content:space-between;"><span>Sisa Bobot Ke Depan:</span><b>' + s.remainingWeight + '%</b></div>' +
-        '<div style="display:flex; justify-content:space-between; border-top:1px solid #E5E7EB; margin-top:6px; padding-top:6px;">' +
-          '<span>Rata-Rata Berjalan:</span><b>' + (s.completedWeight > 0 ? s.currentRunningAvg.toFixed(2) + ' (' + getLetterInfo(s.currentRunningAvg).letter + ')' : 'Belum ada') + '</b>' +
-        '</div>';
-
-      const targets = [
-        { letter: 'A', min: 85 },
-        { letter: 'A-', min: 80 },
-        { letter: 'B+', min: 75 },
-        { letter: 'B', min: 70 },
-        { letter: 'C (Lulus)', min: 55 }
-      ];
-
-      document.getElementById('hitung-advisor-table').innerHTML = targets.map(function(t) {
-        const needed = Math.max(0, t.min - s.earnedPoints);
-        const req = s.remainingWeight > 0 ? (needed / s.remainingWeight) * 100 : 0;
-        let info = '';
-        if (s.earnedPoints >= t.min) info = '<b style="color:#059669;">Sudah Tercapai &#10003;</b>';
-        else if (s.remainingWeight === 0) info = '<span style="color:#9CA3AF;">Komponen Habis</span>';
-        else if (req > 100) info = '<b style="color:#E11D48;">Tidak Mungkin (' + req.toFixed(1) + ')</b>';
-        else info = '<b>Min. ' + req.toFixed(1) + '</b> di sisa bobot';
-
-        return '<div style="display:flex; justify-content:space-between; font-size:12px; padding:7px 10px; background:#F9FAFB; border:1px solid #E5E7EB; border-radius:5px;">' +
-          '<span>Target <b>' + t.letter + '</b> (&ge;' + t.min + ')</span>' +
-          '<span>' + info + '</span>' +
-        '</div>';
-      }).join('');
-
-      const msgEl = document.getElementById('hitung-advice-message');
-      if (s.remainingWeight === 0) {
-        const fg = getLetterInfo(s.earnedPoints);
-        msgEl.innerHTML = '<div class="badge badge-neutral" style="display:block; padding:12px; font-size:12px; line-height:1.5;">Evaluasi Selesai. Nilai Akhir: <b>' + s.earnedPoints.toFixed(2) + ' (' + fg.letter + ' / IP ' + fg.gpa.toFixed(2) + ')</b></div>';
-      } else {
-        const reqA = Math.max(0, (85 - s.earnedPoints) / s.remainingWeight * 100);
-        const reqAMin = Math.max(0, (80 - s.earnedPoints) / s.remainingWeight * 100);
-        if (reqA <= 80) {
-          msgEl.innerHTML = '<div class="badge badge-safe" style="display:block; padding:12px; font-size:12px; line-height:1.5;"><b>STATUS AMAN:</b> Untuk mendapat <b>A (4.00)</b>, Anda cukup meraih nilai rata-rata minimal <b>' + reqA.toFixed(1) + '</b> pada sisa tugas/kuis/ujian (' + s.remainingWeight + '% bobot).</div>';
-        } else if (reqA <= 100) {
-          msgEl.innerHTML = '<div class="badge badge-warn" style="display:block; padding:12px; font-size:12px; line-height:1.5;"><b>PERLU FOKUS TINGGI:</b> Anda butuh minimal <b>' + reqA.toFixed(1) + '</b> di sisa komponen untuk dapat <b>A</b>, atau minimal <b>' + reqAMin.toFixed(1) + '</b> untuk mengamankan <b>A- (3.70)</b>.</div>';
-        } else {
-          msgEl.innerHTML = '<div class="badge badge-danger" style="display:block; padding:12px; font-size:12px; line-height:1.5;"><b>PERINGATAN TARGET:</b> Nilai A sudah tidak terkejar secara matematis karena poin hilang sudah -' + s.lostPoints.toFixed(1) + '. Kejar minimal <b>' + (reqAMin <= 100 ? reqAMin.toFixed(1) + ' untuk A-' : 'nilai maksimal di sisa ujian') + '</b>.</div>';
-        }
-      }
     }
 
     function analyzeIPK8(customTarget) {
       if (customTarget === undefined) customTarget = state.targetIPK;
-      let completedSKS = 0;
-      let remainingSKS = 0;
-      let earnedQualityPoints = 0;
-      let completedSemCount = 0;
-      let remainingSemCount = 0;
+      let completedSKS = 0, remainingSKS = 0, earnedQualityPoints = 0, completedSemCount = 0, remainingSemCount = 0;
       let nextSemObj = null;
 
-      state.semesters.forEach(function(s) {
+      state.semesters.forEach(s => {
         const sks = parseFloat(s.sks) || 20;
         const ipsVal = s.ips !== '' && s.ips !== null ? parseFloat(String(s.ips).replace(',', '.')) : NaN;
         if (!isNaN(ipsVal) && ipsVal >= 0 && ipsVal <= 4.00) {
@@ -727,7 +1406,7 @@
         } else {
           remainingSKS += sks;
           remainingSemCount++;
-          if (!nextSemObj) nextSemObj = { sem: s.sem, sks: sks };
+          if (!nextSemObj) nextSemObj = { sem: s.sem, sks };
         }
       });
 
@@ -743,232 +1422,537 @@
       }
 
       return {
-        completedSKS: completedSKS,
-        remainingSKS: remainingSKS,
-        totalSKS: totalSKS,
-        completedSemCount: completedSemCount,
-        remainingSemCount: remainingSemCount,
-        currentIPK: currentIPK,
-        reqRemainingAvg: reqRemainingAvg,
-        reqNextSemOnly: reqNextSemOnly,
-        nextSemObj: nextSemObj
+        completedSKS, remainingSKS, totalSKS, completedSemCount, remainingSemCount,
+        currentIPK, reqRemainingAvg, reqNextSemOnly, nextSemObj
       };
     }
 
-    function renderIPK8() {
-      const container = document.getElementById('semester-list-container');
-      container.innerHTML = state.semesters.map(function(s, idx) {
-        const ipsVal = s.ips !== '' ? parseFloat(String(s.ips).replace(',', '.')) : NaN;
-        const isFilled = !isNaN(ipsVal);
-        return '<div class="comp-row">' +
-          '<div style="flex:1; min-width:140px;">' +
-            '<div style="font-size:13.5px; font-weight:600;">' +
-              'Semester ' + s.sem +
-              (isFilled ? '<span class="badge badge-safe" style="margin-left:6px;">Sudah Diisi</span>' : '<span class="badge badge-neutral" style="margin-left:6px;">Belum Dijalani</span>') +
-            '</div>' +
-            '<div style="font-size:11px; color:#6B7280; margin-top:2px;">Skala 0.00 - 4.00</div>' +
-          '</div>' +
-          '<div style="display:flex; align-items:center; gap:10px;">' +
-            '<div>' +
-              '<span style="font-size:10px; color:#6B7280; display:block;">IPS Semester ' + s.sem + '</span>' +
-              '<input type="text" placeholder="Kosong / cth: 3.50" value="' + s.ips + '" oninput="handleSemesterChange(' + idx + ', \'ips\', this.value)" style="width:130px; font-weight:600;" />' +
-            '</div>' +
-            '<div>' +
-              '<span style="font-size:10px; color:#6B7280; display:block;">Beban SKS</span>' +
-              '<input type="number" min="1" max="24" value="' + s.sks + '" oninput="handleSemesterChange(' + idx + ', \'sks\', this.value)" style="width:75px;" />' +
-            '</div>' +
-          '</div>' +
-        '</div>';
-      }).join('');
+    function calculateCurrentSemesterIPS() {
+      let activeSKS = 0;
+      let totalQualityPoints = 0;
+      let allSKS = 0;
 
-      updateIPK8Sidebar();
+      state.courses.forEach(c => {
+        const sks = c.sks || 3;
+        allSKS += sks;
+        const st = analyzeCourse(c);
+        if (st.completedWeight > 0) {
+          const baseScore = st.remainingWeight === 0 ? st.earnedPoints : st.currentRunningAvg;
+          const letterObj = getLetterInfo(baseScore);
+          activeSKS += sks;
+          totalQualityPoints += letterObj.gpa * sks;
+        }
+      });
+
+      const runningIPS = activeSKS > 0 ? totalQualityPoints / activeSKS : 0;
+      return { allSKS, activeSKS, runningIPS };
     }
 
-    function handleSemesterChange(idx, field, val) {
-      state.semesters[idx][field] = val;
+    /* =========================================================
+       RENDER FUNCTIONS
+    ========================================================= */
+    function renderGlobalKPI() {
+      const semStats = calculateCurrentSemesterIPS();
+      const ipkStats = analyzeIPK8(state.targetIPK);
+      const dispNext = (ipkStats.reqNextSemOnly <= 4 && ipkStats.reqNextSemOnly > 0)
+        ? ipkStats.reqNextSemOnly
+        : ipkStats.reqRemainingAvg;
+      const badgeLevel = dispNext > 3.75 ? 'EXTREME' : (dispNext >= 3.50 ? 'HIGH' : 'MODERATE');
+
+      document.getElementById('global-kpi').innerHTML = `
+        <div class="kpi-card">
+          <div class="kpi-title">Total Mata Kuliah Aktif</div>
+          <div class="kpi-value">${state.courses.length} MK <span>(${semStats.allSKS} SKS)</span></div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-title">Estimasi IPS Berjalan</div>
+          <div class="kpi-value">${semStats.runningIPS.toFixed(2)} <span>/ 4.00</span></div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-title">IPK Simulasi (${ipkStats.completedSemCount} Smt)</div>
+          <div class="kpi-value">${ipkStats.currentIPK.toFixed(2)}</div>
+        </div>
+        <div class="kpi-card highlight-kpi">
+          <div class="kpi-title blue-text">Target IPS Smt Depan (Utk IPK ${state.targetIPK.toFixed(2)})</div>
+          <div class="kpi-value blue-val">
+            ${dispNext > 4.00 ? '> 4.00' : Math.max(0, dispNext).toFixed(2)}
+            <span class="kpi-badge">${badgeLevel}</span>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderBeranda() {
+      const container = document.getElementById('beranda-course-cards');
+      container.innerHTML = state.courses.map(course => {
+        const st = analyzeCourse(course, state.targetScore);
+        const progressPct = Math.min(100, Math.max(0, (st.earnedPoints / st.totalWeight) * 100));
+        const avgDisplay = st.currentRunningAvg !== null
+          ? `${st.currentRunningAvg.toFixed(1)} (${getLetterInfo(st.currentRunningAvg).letter})`
+          : '-';
+        const reqDisplay = st.remainingWeight > 0 ? st.requiredFutureAvg.toFixed(1) : '0.0';
+        const isRedCard = course.id === 'kombis' || st.requiredFutureAvg > 100;
+
+        let targetDesc = '';
+        if (st.remainingWeight > 0) {
+          if (st.requiredFutureAvg > 100) {
+            targetDesc = `<b style="color:#E11D48;">Butuh ${reqDisplay} (Melebihi 100)</b> di sisa <b>${st.remainingWeight}%</b> bobot`;
+          } else {
+            targetDesc = `Minimal <b>${reqDisplay}</b> di sisa <b>${st.remainingWeight}%</b> bobot`;
+          }
+        } else {
+          const fg = getLetterInfo(st.earnedPoints);
+          targetDesc = `Selesai: <b>${st.earnedPoints.toFixed(1)} (${fg.letter} / IP ${fg.gpa.toFixed(2)})</b>`;
+        }
+
+        return `
+          <div class="card">
+            <div>
+              <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:10px;">
+                <div>
+                  <h3>${course.name}</h3>
+                  <div class="sks-text">${course.sks} SKS</div>
+                </div>
+                <span class="badge ${st.badgeClass}">${st.statusLabel}</span>
+              </div>
+              <p class="course-note-text">${course.note || ''}</p>
+
+              <div class="meta-row">
+                <div>Poin Terkumpul</div>
+                <span>${st.earnedPoints.toFixed(2)} / ${st.totalWeight}%</span>
+              </div>
+              <div class="progress-track">
+                <div class="progress-fill" style="width: ${progressPct}%;"></div>
+              </div>
+
+              <div class="avg-row">
+                <div>Rata-Rata Saat Ini</div>
+                <span>${avgDisplay}</span>
+              </div>
+
+              <div class="target-highlight ${isRedCard ? 'red-variant' : ''}">
+                Syarat Capai Target (${state.targetScore})
+                <span>${targetDesc}</span>
+              </div>
+            </div>
+
+            <button type="button" class="btn-card-detail" onclick="openCourseInHitung('${course.id}')">
+              Input / Hitung Nilai Detail →
+            </button>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function populateCourseDropdowns() {
+      const s1 = document.getElementById('select-course-hitung');
+      const s2 = document.getElementById('select-course-simulasi');
+      const v1 = s1.value || state.courses[0].id;
+      const v2 = s2.value || state.courses[0].id;
+      const html = state.courses.map(c =>
+        `<option value="${c.id}">${c.name} (${c.sks} SKS)</option>`
+      ).join('');
+      s1.innerHTML = html;
+      s2.innerHTML = html;
+      s1.value = v1;
+      s2.value = v2;
+    }
+
+    function openCourseInHitung(courseId) {
+      populateCourseDropdowns();
+      document.getElementById('select-course-hitung').value = courseId;
+      selectTab('hitung');
+    }
+
+    function renderHitungNilai() {
+      const select = document.getElementById('select-course-hitung');
+      const courseId = select.value || state.courses[0].id;
+      const course = state.courses.find(c => c.id === courseId) || state.courses[0];
+      const st = analyzeCourse(course, state.targetScore);
+
+      document.getElementById('hitung-course-title').textContent = `${course.name} (${course.sks} SKS)`;
+      document.getElementById('hitung-course-sub').textContent = `${course.note || ('Semester 1 • Kode: ' + (course.code || 'CS101'))}`;
+      document.getElementById('hitung-total-weight').textContent = `Total Bobot: ${st.totalWeight}%`;
+
+      const listEl = document.getElementById('hitung-components-list');
+      listEl.innerHTML = course.components.map((comp, idx) => {
+        const avg = parseScoreInput(comp.rawInput);
+        const contrib = avg !== null ? ((avg * comp.weight) / 100).toFixed(2) + ' poin' : '- poin';
+        return `
+          <div class="comp-input-row">
+            <div>
+              <div class="comp-title">${comp.name}</div>
+              ${comp.detail ? `<div class="comp-detail-sub">${comp.detail}</div>` : ''}
+              <span class="weight-pill-blue">${comp.weight}% BOBOT</span>
+            </div>
+            <div>
+              <input
+                type="text"
+                class="score-input-field"
+                placeholder="Ketik nilai..."
+                value="${comp.rawInput}"
+                oninput="handleScoreInput('${course.id}', ${idx}, this.value)"
+              />
+            </div>
+            <div class="comp-contrib-text ${avg !== null ? 'filled' : ''}" id="contrib-${course.id}-${idx}">
+              ${contrib}
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      updateHitungEvaluationPanel(course);
+    }
+
+    function handleScoreInput(courseId, compIndex, val) {
+      const course = state.courses.find(c => c.id === courseId);
+      if (!course) return;
+      course.components[compIndex].rawInput = val;
       saveState();
-      updateIPK8Sidebar();
+
+      const avg = parseScoreInput(val);
+      const contribEl = document.getElementById(`contrib-${courseId}-${compIndex}`);
+      if (contribEl) {
+        contribEl.textContent = avg !== null ? ((avg * course.components[compIndex].weight) / 100).toFixed(2) + ' poin' : '- poin';
+        contribEl.className = 'comp-contrib-text ' + (avg !== null ? 'filled' : '');
+      }
+
+      updateHitungEvaluationPanel(course);
+      renderGlobalKPI();
       renderBeranda();
     }
 
-    function updateTargetIPK(val) {
-      const parsed = parseFloat(val);
-      if (!isNaN(parsed) && parsed > 0 && parsed <= 4.00) {
-        state.targetIPK = parsed;
-        updateIPK8Sidebar();
-        renderBeranda();
+    function updateHitungEvaluationPanel(course) {
+      const st = analyzeCourse(course, state.targetScore);
+
+      document.getElementById('hitung-summary-box').innerHTML = `
+        <div class="eval-stat-row">
+          <span>Bobot Sudah Dinilai</span>
+          <b>${st.completedWeight}% <span style="font-weight:500; color:#94A3B8;">/ ${st.totalWeight}%</span></b>
+        </div>
+        <div class="eval-stat-row">
+          <span>Tabungan Poin</span>
+          <b>${st.earnedPoints.toFixed(2)} Poin</b>
+        </div>
+        <div class="eval-stat-row">
+          <span>Poin Hilang</span>
+          <b style="color:#E11D48;">-${st.lostPoints.toFixed(2)} Poin</b>
+        </div>
+        <div class="eval-stat-row" style="padding-bottom:14px; border-bottom:1px solid #F1F5F9;">
+          <span>Sisa Bobot Terbuka</span>
+          <b style="color:#1E3A8A;">${st.remainingWeight}%</b>
+        </div>
+        <div class="eval-stat-row" style="padding-top:14px;">
+          <span style="font-weight:800; color:#0F172A;">Rata-Rata Berjalan</span>
+          <b style="color:${st.currentRunningAvg !== null ? '#0F172A' : '#94A3B8'}; font-style:${st.currentRunningAvg !== null ? 'normal' : 'italic'};">
+            ${st.currentRunningAvg !== null ? `${st.currentRunningAvg.toFixed(2)} (${getLetterInfo(st.currentRunningAvg).letter})` : 'Belum Ada'}
+          </b>
+        </div>
+      `;
+
+      document.getElementById('hitung-advisor-prompt').textContent =
+        `"Berapa nilai rata-rata yang harus Anda dapatkan di sisa komponen (${st.remainingWeight}%) untuk mencapai target nilai akhir?"`;
+
+      const advisorTargets = [
+        { label: 'Target A', min: 85 },
+        { label: 'Target A-', min: 80 },
+        { label: 'Target B+', min: 75 },
+        { label: 'Target B', min: 70 },
+        { label: 'Target C', min: 55 }
+      ];
+
+      document.getElementById('hitung-advisor-table').innerHTML = advisorTargets.map((t, i) => {
+        const needed = Math.max(0, t.min - st.earnedPoints);
+        const reqAvg = st.remainingWeight > 0 ? (needed / st.remainingWeight) * 100 : 0;
+        const barWidth = Math.min(100, Math.max(0, reqAvg));
+        const isPrimary = t.min === state.targetScore || (i === 0 && !advisorTargets.some(x => x.min === state.targetScore));
+
+        let rightLabel = `Min. ${reqAvg.toFixed(1)}`;
+        if (st.earnedPoints >= t.min) rightLabel = 'Sudah Tercapai ✓';
+        else if (st.remainingWeight === 0) rightLabel = 'Komponen Habis';
+        else if (reqAvg > 100) rightLabel = `Tidak Mungkin (${reqAvg.toFixed(1)})`;
+
+        return `
+          <div class="advisor-bar-item">
+            <div class="advisor-bar-header">
+              <span>${t.label} <span class="muted">(≥${t.min})</span></span>
+              <span style="color:${st.earnedPoints >= t.min ? '#059669' : (reqAvg > 100 ? '#E11D48' : (isPrimary ? '#1E3A8A' : '#334155'))}; font-weight:800;">${rightLabel}</span>
+            </div>
+            <div class="advisor-track">
+              <div class="advisor-fill ${isPrimary ? 'active-target' : ''}" style="width:${barWidth}%;"></div>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      const msgEl = document.getElementById('hitung-advice-message');
+      if (st.remainingWeight === 0) {
+        const fg = getLetterInfo(st.earnedPoints);
+        msgEl.innerHTML = `
+          <div class="alert-box-safe">
+            <b>EVALUASI SELESAI:</b> Nilai Akhir Anda adalah <b>${st.earnedPoints.toFixed(2)} (${fg.letter} / IP ${fg.gpa.toFixed(2)})</b>.
+          </div>
+        `;
+      } else {
+        const reqA = Math.max(0, (85 - st.earnedPoints) / st.remainingWeight * 100);
+        const reqAMin = Math.max(0, (80 - st.earnedPoints) / st.remainingWeight * 100);
+        if (reqA <= 80) {
+          msgEl.innerHTML = `
+            <div class="alert-box-safe">
+              <b>✓ STATUS AMAN:</b> Untuk mendapat <b>A (4.00)</b>, Anda cukup meraih nilai rata-rata minimal <b><u>${reqA.toFixed(1)}</u></b> pada sisa komponen (${st.remainingWeight}% bobot).
+            </div>
+          `;
+        } else if (reqA <= 100) {
+          msgEl.innerHTML = `
+            <div class="alert-box-red">
+              <div class="alert-title">▲ PERLU FOKUS TINGGI</div>
+              <div>Anda butuh minimal <b><u>${reqA.toFixed(1)}</u></b> di sisa komponen untuk dapat A, atau minimal <b><u>${reqAMin.toFixed(1)}</u></b> untuk mengamankan A- (3.70).</div>
+            </div>
+          `;
+        } else {
+          msgEl.innerHTML = `
+            <div class="alert-box-red">
+              <div class="alert-title">▲ PERINGATAN TARGET</div>
+              <div>Nilai A sudah tidak terkejar secara matematis karena poin hilang sudah -${st.lostPoints.toFixed(1)}. Kejar minimal <b><u>${reqAMin <= 100 ? reqAMin.toFixed(1) + ' untuk A-' : 'nilai maksimal di sisa ujian'}</u></b>.</div>
+            </div>
+          `;
+        }
       }
+    }
+
+    function resetCurrentCourseScores() {
+      const courseId = document.getElementById('select-course-hitung').value;
+      const course = state.courses.find(c => c.id === courseId);
+      if (!course) return;
+      course.components.forEach(c => c.rawInput = '');
+      saveState();
+      renderHitungNilai();
+      renderGlobalKPI();
+      renderBeranda();
+    }
+
+    /* =========================================================
+       TAB 3: TARGET IPK 8 SEMESTER
+    ========================================================= */
+    function renderIPK8() {
+      const container = document.getElementById('semester-list-container');
+      container.innerHTML = state.semesters.map((s, idx) => {
+        const hasIPS = s.ips !== '' && s.ips !== null && !isNaN(parseFloat(String(s.ips).replace(',', '.')));
+        return `
+          <div class="sem-card">
+            <div class="sem-card-header">
+              <h4>Semester ${s.sem}</h4>
+              <span class="badge ${hasIPS ? 'badge-safe' : 'badge-neutral'}">
+                ${hasIPS ? 'SUDAH DIISI' : 'BELUM DIJALANI'}
+              </span>
+            </div>
+            <div class="sem-inputs-grid">
+              <div class="sem-field">
+                <label>IPS Input</label>
+                <input
+                  type="text"
+                  placeholder="cth: 3.5"
+                  value="${s.ips}"
+                  oninput="handleSemChange(${idx}, 'ips', this.value)"
+                />
+              </div>
+              <div class="sem-field">
+                <label>SKS</label>
+                <input
+                  type="number"
+                  min="1"
+                  max="24"
+                  value="${s.sks}"
+                  oninput="handleSemChange(${idx}, 'sks', this.value)"
+                />
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      updateIPK8RightPanel();
+    }
+
+    function handleSemChange(idx, field, value) {
+      state.semesters[idx][field] = value;
+      saveState();
+      updateIPK8RightPanel();
+      renderGlobalKPI();
+    }
+
+    function updateIPK8RightPanel() {
+      const st = analyzeIPK8(state.targetIPK);
+
+      document.getElementById('ipk8-top-kpis').innerHTML = `
+        <div class="mini-kpi-box">
+          <div class="label">Smt Selesai</div>
+          <div class="val">${st.completedSemCount} <span>/ 8</span></div>
+        </div>
+        <div class="mini-kpi-box">
+          <div class="label">Sisa SKS</div>
+          <div class="val" style="color:#1E3A8A;">${st.remainingSKS} <span>SKS</span></div>
+        </div>
+        <div class="mini-kpi-box">
+          <div class="label">IPK Saat Ini</div>
+          <div class="val" style="color:#E11D48;">${st.currentIPK.toFixed(2)} <span>/ 4.00</span></div>
+        </div>
+      `;
+
+      const nextSemNum = st.nextSemObj ? st.nextSemObj.sem : 1;
+      const imm = st.reqNextSemOnly;
+      const reqAvg = st.reqRemainingAvg;
+
+      document.getElementById('ipk8-strategy-box').innerHTML = `
+        <div class="scenario-card blue-scen">
+          <div class="scen-num">1</div>
+          <div class="scen-body">
+            <h5>Scenario: "Flash Strike" (Tembus di Semester ${nextSemNum} Saja)</h5>
+            <p>
+              ${imm <= 4.00
+                ? `Tembus langsung IPK <b>${state.targetIPK.toFixed(2)}</b> di Semester ${nextSemNum} ini dengan meraih IPS minimal <b style="color:#1E3A8A; text-decoration:underline;">${Math.max(0, imm).toFixed(2)}</b>.`
+                : `Butuh IPS <b style="color:#E11D48;">${imm.toFixed(2)}</b> di Semester ${nextSemNum} (melebihi 4.00 jika hanya mengandalkan 1 semester). Gunakan strategi cicil di bawah!`}
+            </p>
+          </div>
+        </div>
+        <div class="scenario-card red-scen" style="margin-bottom:0;">
+          <div class="scen-num">2</div>
+          <div class="scen-body">
+            <h5>Scenario: "Balanced Growth" (Dicicil ${st.remainingSemCount || 8} Semester)</h5>
+            <p>
+              ${reqAvg <= 4.00
+                ? `Cicil rata di sisa ${st.remainingSemCount || 8} semester. Anda butuh konsisten meraih <b><i>IPS ${Math.max(0, reqAvg).toFixed(2)}</i></b> setiap semester untuk lulus dengan target IPK ${state.targetIPK.toFixed(2)}.`
+                : `Target IPK ${state.targetIPK.toFixed(2)} sudah melewati batas maksimal 4.00 (${reqAvg.toFixed(2)}).`}
+            </p>
+          </div>
+        </div>
+      `;
+
+      const tiers = [
+        { label: '3.85 (Summa Cum Laude)', val: 3.85, color: '#F59E0B', isUser: false },
+        { label: `${state.targetIPK.toFixed(2)} (Target Anda)`, val: state.targetIPK, color: '#1E3A8A', isUser: true },
+        { label: '3.51 (Cum Laude)', val: 3.51, color: '#CBD5E1', isUser: false },
+        { label: '3.30 (Sangat Memuaskan)', val: 3.30, color: '#CBD5E1', isUser: false },
+        { label: '3.00 (Memuaskan)', val: 3.00, color: '#CBD5E1', isUser: false }
+      ];
+
+      document.getElementById('ipk8-advisor-table').innerHTML = tiers.map(t => {
+        const calc = analyzeIPK8(t.val);
+        const req = calc.reqRemainingAvg;
+        let disp = '';
+        if (st.remainingSKS === 0) disp = st.currentIPK >= t.val ? 'Tercapai ✓' : `Selesai (${st.currentIPK.toFixed(2)})`;
+        else if (req > 4.00) disp = `Tidak Mungkin (${req.toFixed(2)})`;
+        else if (req <= 0) disp = 'Sudah Terkunci ✓';
+        else disp = req.toFixed(2);
+
+        return `
+          <div class="target-ips-row ${t.isUser ? 'active-row' : ''}">
+            <div>
+              <span class="dot-indicator" style="background:${t.color};"></span>
+              ${t.label}
+            </div>
+            <div style="font-weight:800; color:${req > 4.00 ? '#E11D48' : (t.isUser ? '#1E3A8A' : '#0F172A')};">${disp}</div>
+          </div>
+        `;
+      }).join('');
+
+      document.getElementById('ipk8-footnote').textContent =
+        `*Angka target dihitung berdasarkan sisa ${st.remainingSKS} SKS yang belum ditempuh.`;
     }
 
     function fillSmt1FromCurrent() {
-      let activeSKS = 0;
-      let totalMutu = 0;
-      state.courses.forEach(function(course) {
-        const s = analyzeCourse(course);
-        const sks = course.sks || 3;
-        if (s.completedWeight > 0) {
-          activeSKS += sks;
-          const baseScore = s.remainingWeight === 0 ? s.earnedPoints : s.currentRunningAvg;
-          totalMutu += getLetterInfo(baseScore).gpa * sks;
-        }
-      });
-      if (activeSKS === 0) {
+      const semStats = calculateCurrentSemesterIPS();
+      if (semStats.activeSKS === 0) {
         alert('Belum ada nilai mata kuliah yang diisi pada menu Hitung Nilai MK. Silakan isi nilai terlebih dahulu atau ketik langsung IPS Semester 1 Anda.');
         return;
       }
-      state.semesters[0].ips = (totalMutu / activeSKS).toFixed(2);
-      state.semesters[0].sks = 20;
+      state.semesters[0].ips = semStats.runningIPS.toFixed(2);
+      state.semesters[0].sks = semStats.allSKS;
       saveState();
       renderIPK8();
-      renderBeranda();
+      renderGlobalKPI();
     }
 
-    function updateIPK8Sidebar() {
-      const stats = analyzeIPK8(state.targetIPK);
-      const summaryEl = document.getElementById('ipk8-summary-box');
-      const immediateEl = document.getElementById('ipk8-Immediate-box');
-      const tableEl = document.getElementById('ipk8-advisor-table');
-      const msgEl = document.getElementById('ipk8-advice-message');
+    function resetIPKTargetData() {
+      state.semesters = JSON.parse(JSON.stringify(DEFAULT_SEMESTERS));
+      saveState();
+      renderIPK8();
+      renderGlobalKPI();
+    }
 
-      summaryEl.innerHTML =
-        '<div style="display:flex; justify-content:space-between;"><span>Semester Selesai:</span><b>' + stats.completedSemCount + ' dari 8 Semester (' + stats.completedSKS + ' SKS)</b></div>' +
-        '<div style="display:flex; justify-content:space-between;"><span>Sisa Semester Ke Depan:</span><b>' + stats.remainingSemCount + ' Semester (' + stats.remainingSKS + ' SKS)</b></div>' +
-        '<div style="display:flex; justify-content:space-between; border-top:1px solid #E5E7EB; margin-top:6px; padding-top:6px;">' +
-          '<span>IPK Kumulatif Saat Ini:</span><b style="font-size:15px;">' + stats.currentIPK.toFixed(2) + ' / 4.00</b>' +
-        '</div>';
-
-      if (stats.nextSemObj) {
-        const nextSemNum = stats.nextSemObj.sem;
-        const imm = stats.reqNextSemOnly;
-        const avgRest = stats.reqRemainingAvg;
-
-        immediateEl.innerHTML =
-          '<div style="background:#F9FAFB; border:1px solid #E5E7EB; border-radius:6px; padding:12px; font-size:12px; line-height:1.6;">' +
-            '<div style="margin-bottom:8px;">' +
-              '<b>1. Jika ingin langsung tembus IPK ' + state.targetIPK.toFixed(2) + ' di Semester ' + nextSemNum + ' saja:</b><br>' +
-              (imm <= 4.00
-                ? 'Anda harus meraih IPS minimal <b style="color:#065F46; font-size:13.5px;">' + Math.max(0, imm).toFixed(2) + '</b> pada Semester ' + nextSemNum + '.'
-                : 'Butuh IPS <b style="color:#E11D48;">' + imm.toFixed(2) + '</b> di Semester ' + nextSemNum + ' (Melebihi batas 4.00 jika hanya mengandalkan 1 semester). Tapi tenang, Anda masih punya <b>' + stats.remainingSemCount + ' semester</b> untuk mencicilnya!') +
-            '</div>' +
-            '<div style="border-top:1px solid #E5E7EB; padding-top:8px;">' +
-              '<b>2. Jika dicicil rata pada sisa ' + stats.remainingSemCount + ' semester (Smt ' + nextSemNum + ' - Smt 8):</b><br>' +
-              (avgRest <= 4.00
-                ? 'Anda cukup menjaga IPS rata-rata minimal <b style="color:#1E40AF; font-size:13.5px;">' + Math.max(0, avgRest).toFixed(2) + '</b> di setiap semester berikutnya.'
-                : '<span style="color:#E11D48; font-weight:600;">Target ' + state.targetIPK.toFixed(2) + ' sudah melewati batas maksimal 4.00 (' + avgRest.toFixed(2) + ').</span>') +
-            '</div>' +
-          '</div>';
-      } else {
-        immediateEl.innerHTML = '<div style="font-size:12px; color:#6B7280;">Seluruh 8 semester sudah terisi.</div>';
-      }
-
-      const ipkTargets = [
-        { label: 'Target 3.85 (Summa / A)', val: 3.85 },
-        { label: 'Target 3.70 (A- / Cum Laude)', val: 3.70 },
-        { label: 'Target 3.51 (Batas Cum Laude)', val: 3.51 },
-        { label: 'Target 3.30 (B+ / Sangat Memuaskan)', val: 3.30 },
-        { label: 'Target 3.00 (B / Memuaskan)', val: 3.00 }
-      ];
-
-      tableEl.innerHTML = ipkTargets.map(function(t) {
-        const st = analyzeIPK8(t.val);
-        let rightText = '';
-        if (st.remainingSemCount === 0) {
-          rightText = st.currentIPK >= t.val ? '<b style="color:#059669;">Tercapai &#10003;</b>' : '<span style="color:#9CA3AF;">Selesai (' + st.currentIPK.toFixed(2) + ')</span>';
-        } else if (st.reqRemainingAvg > 4.00) {
-          rightText = '<b style="color:#E11D48;">Tidak Mungkin (' + st.reqRemainingAvg.toFixed(2) + ')</b>';
-        } else if (st.reqRemainingAvg <= 0) {
-          rightText = '<b style="color:#059669;">Sudah Terkunci &#10003;</b>';
-        } else {
-          rightText = 'Rata-rata IPS <b>min. ' + st.reqRemainingAvg.toFixed(2) + '</b> / smt';
-        }
-        return '<div style="display:flex; justify-content:space-between; font-size:12px; padding:7px 10px; background:#F9FAFB; border:1px solid #E5E7EB; border-radius:5px;">' +
-          '<span><b>' + t.label + '</b></span>' +
-          '<span>' + rightText + '</span>' +
-        '</div>';
-      }).join('');
-
-      if (stats.remainingSemCount > 0) {
-        if (stats.completedSemCount === 0) {
-          msgEl.innerHTML = '<div class="badge badge-neutral" style="display:block; padding:12px; font-size:12px; line-height:1.5;">Silakan isi IPS Semester 1 Anda di sebelah kiri (atau klik tombol <b>Tarik IPS Smt 1 dari 7 MK Saat Ini</b>) untuk melihat rekomendasi IPS semester berikutnya.</div>';
-        } else if (stats.reqRemainingAvg <= 3.75) {
-          msgEl.innerHTML = '<div class="badge badge-safe" style="display:block; padding:12px; font-size:12px; line-height:1.5;"><b>KESIMPULAN: SANGAT BISA DICAPAI!</b> Dengan IPK saat ini ' + stats.currentIPK.toFixed(2) + ', Anda hanya perlu mempertahankan rata-rata IPS minimal <b>' + Math.max(0, stats.reqRemainingAvg).toFixed(2) + '</b> pada ' + stats.remainingSemCount + ' semester ke depan untuk lulus dengan IPK <b>' + state.targetIPK.toFixed(2) + '</b>.</div>';
-        } else if (stats.reqRemainingAvg <= 4.00) {
-          msgEl.innerHTML = '<div class="badge badge-warn" style="display:block; padding:12px; font-size:12px; line-height:1.5;"><b>KESIMPULAN: MASIH MUNGKIN TAPI KETAT.</b> Anda wajib meraih IPS rata-rata <b>' + stats.reqRemainingAvg.toFixed(2) + '</b> di seluruh sisa ' + stats.remainingSemCount + ' semester.</div>';
-        } else {
-          msgEl.innerHTML = '<div class="badge badge-danger" style="display:block; padding:12px; font-size:12px; line-height:1.5;"><b>KESIMPULAN:</b> Target IPK ' + state.targetIPK.toFixed(2) + ' sudah melebihi batas 4.00. Turunkan sedikit target IPK ke angka yang masih hijau/biru di tabel atas.</div>';
-        }
-      } else {
-        msgEl.innerHTML = '';
+    function updateTargetIPK(val) {
+      const num = parseFloat(val);
+      if (!isNaN(num) && num >= 0 && num <= 4.0) {
+        state.targetIPK = num;
+        updateIPK8RightPanel();
+        renderGlobalKPI();
       }
     }
 
-    function initSimulasi() {
-      const courseId = document.getElementById('select-course-simulasi').value || state.courses[0].id;
-      const course = state.courses.find(function(c) { return c.id === courseId; });
-      document.getElementById('simulasi-sliders').innerHTML = course.components.map(function(c, idx) {
-        const avg = parseScoreInput(c.rawInput);
-        const val = avg !== null ? avg : 80;
-        return '<div style="border-bottom:1px solid #F3F4F6; padding-bottom:10px;">' +
-          '<div style="display:flex; justify-content:space-between; font-size:13px; margin-bottom:4px;">' +
-            '<span><b>' + c.name + '</b> (' + c.weight + '%) ' + (avg !== null ? '<span style="color:#059669; font-size:11px;">[Nilai Asli]</span>' : '<span style="color:#2563EB; font-size:11px;">[Simulasi]</span>') + '</span>' +
-            '<b id="sim-val-' + idx + '">' + val.toFixed(0) + '</b>' +
-          '</div>' +
-          '<input type="range" min="0" max="100" value="' + val + '" id="sim-slider-' + idx + '" oninput="updateSimulasi(\'' + course.id + '\')" style="width:100%;" />' +
-        '</div>';
-      }).join('');
-      updateSimulasi(course.id);
-    }
+    /* =========================================================
+       TAB 4: MANAJEMEN BOBOT MK
+    ========================================================= */
+    function renderBobotMK() {
+      const container = document.getElementById('bobot-courses-container');
+      container.innerHTML = state.courses.map((course, cIdx) => {
+        const totalW = course.components.reduce((acc, c) => acc + (parseFloat(c.weight) || 0), 0);
+        const isOver = totalW > 100;
+        const badgeCls = totalW === 100 ? 'badge-neutral' : (isOver ? 'badge-ok' : 'badge-warn');
 
-    function updateSimulasi(courseId) {
-      const course = state.courses.find(function(c) { return c.id === courseId; });
-      let total = 0;
-      course.components.forEach(function(c, idx) {
-        const v = parseFloat(document.getElementById('sim-slider-' + idx).value);
-        document.getElementById('sim-val-' + idx).textContent = v;
-        total += (v * c.weight) / 100;
-      });
-      const g = getLetterInfo(total);
-      document.getElementById('simulasi-result').innerHTML =
-        '<h3 style="font-size:15px; font-weight:700; border-bottom:1px solid #E5E7EB; padding-bottom:8px;">Hasil Simulasi Akhir</h3>' +
-        '<div style="padding:20px 0;">' +
-          '<div style="font-size:11px; color:#6B7280;">PREDIKSI TOTAL NILAI</div>' +
-          '<div style="font-size:38px; font-weight:800; margin:6px 0;">' + total.toFixed(2) + '</div>' +
-          '<div style="font-size:18px; font-weight:700;">Indeks ' + g.letter + ' (IP ' + g.gpa.toFixed(2) + ')</div>' +
-          '<div style="font-size:12px; color:#6B7280; margin-top:4px;">' + g.desc + '</div>' +
-        '</div>';
-    }
+        const compRows = course.components.map((comp, compIdx) => {
+          const highlightRed = isOver && compIdx === course.components.length - 1;
+          return `
+            <div class="bobot-comp-row ${highlightRed ? 'overweight-row' : ''}">
+              <input
+                type="text"
+                class="bobot-name-input"
+                value="${comp.name}"
+                onchange="updateCompName(${cIdx}, ${compIdx}, this.value)"
+                title="${comp.detail || comp.name}"
+              />
+              <div class="bobot-weight-box">
+                <input
+                  type="number"
+                  step="0.5"
+                  min="0"
+                  max="100"
+                  value="${comp.weight}"
+                  onchange="updateCompWeight(${cIdx}, ${compIdx}, this.value)"
+                />
+                <span>%</span>
+              </div>
+              <button type="button" class="btn-remove-comp" onclick="removeComponent(${cIdx}, ${compIdx})" title="Hapus komponen">×</button>
+            </div>
+          `;
+        }).join('');
 
-    // FITUR 5: MANAJEMEN BOBOT MK (BISA EDIT KOMPONEN & BOBOT SECARA FLEKSIBEL)
-    function renderBobot() {
-      document.getElementById('bobot-courses-container').innerHTML = state.courses.map(function(c, cIdx) {
-        const totalW = c.components.reduce(function(sum, item) { return sum + (parseFloat(item.weight) || 0); }, 0);
-        return '<div class="card" style="justify-content:flex-start;">' +
-          '<div style="display:flex; justify-content:space-between; align-items:center;">' +
-            '<h4 style="font-size:15px; font-weight:700;">' + c.name + '</h4>' +
-            '<span class="badge badge-neutral">Total: ' + totalW + '%</span>' +
-          '</div>' +
-          '<p style="font-size:12px; color:#6B7280; margin:4px 0 12px 0;">' + c.note + '</p>' +
-          '<div style="display:flex; flex-direction:column; gap:8px;">' +
-            c.components.map(function(comp, compIdx) {
-              return '<div style="display:flex; gap:6px; align-items:center;">' +
-                '<input type="text" value="' + comp.name + '" onchange="updateComponentMeta(' + cIdx + ', ' + compIdx + ', \'name\', this.value)" style="flex:1; padding:5px 8px; font-size:12px;" title="Nama Komponen" />' +
-                '<input type="number" step="0.5" value="' + comp.weight + '" onchange="updateComponentMeta(' + cIdx + ', ' + compIdx + ', \'weight\', this.value)" style="width:65px; padding:5px 8px; font-size:12px;" title="Bobot (%)" />' +
-                '<span style="font-size:12px; color:#6B7280;">%</span>' +
-                '<button type="button" onclick="removeComponent(' + cIdx + ', ' + compIdx + ')" style="border:1px solid #FECDD3; background:#FFF1F2; color:#9F1239; border-radius:4px; padding:4px 8px; font-size:11px; cursor:pointer;" title="Hapus">✕</button>' +
-              '</div>';
-            }).join('') +
-          '</div>' +
-          '<button type="button" onclick="addComponent(' + cIdx + ')" class="btn-outline" style="margin-top:12px;">+ Tambah Komponen Penilaian</button>' +
-        '</div>';
+        return `
+          <div class="card">
+            <div>
+              <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:6px;">
+                <div>
+                  <h3>${course.shortName || course.name}</h3>
+                  <div class="sks-text">${course.sks} SKS</div>
+                </div>
+                <span class="badge ${badgeCls}" id="bobot-total-badge-${cIdx}">TOTAL: ${totalW}%</span>
+              </div>
+              <p style="font-size:11px; color:#64748B; margin-bottom:14px;">${course.note || ''}</p>
+              <div>${compRows}</div>
+            </div>
+            <button type="button" class="btn-add-comp" onclick="addComponent(${cIdx})">+ Tambah Komponen</button>
+          </div>
+        `;
       }).join('');
     }
 
-    function updateComponentMeta(cIdx, compIdx, field, val) {
-      if (field === 'weight') {
-        state.courses[cIdx].components[compIdx].weight = parseFloat(val) || 0;
-      } else {
-        state.courses[cIdx].components[compIdx][field] = val;
-      }
+    function updateCompName(cIdx, compIdx, val) {
+      state.courses[cIdx].components[compIdx].name = val;
+      saveState();
+      renderAll();
+    }
+
+    function updateCompWeight(cIdx, compIdx, val) {
+      state.courses[cIdx].components[compIdx].weight = parseFloat(val) || 0;
       saveState();
       renderAll();
     }
@@ -994,41 +1978,175 @@
       renderAll();
     }
 
-    function renderAnalitik() {
-      document.getElementById('analitik-content').innerHTML = state.courses.map(function(c) {
-        const s = analyzeCourse(c);
-        return '<div class="card" style="flex-direction:row; align-items:center; flex-wrap:wrap; gap:12px;">' +
-          '<div>' +
-            '<h4 style="font-size:14px; font-weight:700;">' + c.name + '</h4>' +
-            '<p style="font-size:12px; color:#6B7280; margin-top:2px;">' +
-              'Poin Terkumpul: <b>' + s.earnedPoints.toFixed(2) + '</b> | Poin Hilang: <b style="color:#E11D48;">-' + s.lostPoints.toFixed(2) + '</b> | Sisa Bobot: <b>' + s.remainingWeight + '%</b>' +
-            '</p>' +
-          '</div>' +
-          '<span class="badge ' + s.badgeClass + '">' +
-            (s.remainingWeight > 0 ? 'Butuh rata-rata ' + s.requiredFutureAvg.toFixed(1) + ' untuk target ' + state.targetScore : 'Selesai (' + getLetterInfo(s.earnedPoints).letter + ')') +
-          '</span>' +
-        '</div>';
-      }).join('');
-    }
-
     function resetAllData() {
-      if (confirm('Hapus semua nilai dan reset kembali ke awal?')) {
+      if (confirm('Hapus semua perubahan dan kembalikan ke bobot kontrak kuliah awal?')) {
+        localStorage.removeItem('pacilian_courses_v10');
+        localStorage.removeItem('pacilian_semesters_v10');
         localStorage.removeItem('grade_advisor_courses_v7');
         localStorage.removeItem('grade_advisor_semesters_v7');
         state.courses = JSON.parse(JSON.stringify(DEFAULT_COURSES));
         state.semesters = JSON.parse(JSON.stringify(DEFAULT_SEMESTERS));
+        saveState();
         renderAll();
       }
     }
 
+    /* =========================================================
+       TAB 5: SKALA & ANALITIK
+    ========================================================= */
+    function renderAnalitik() {
+      const container = document.getElementById('analitik-content');
+      container.innerHTML = state.courses.map(course => {
+        const st = analyzeCourse(course, state.targetScore);
+        const letter = getLetterInfo(st.earnedPoints);
+        return `
+          <div class="card" style="padding:18px 20px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+              <div>
+                <h4 style="font-size:14px; font-weight:800;">${course.name} (${course.sks} SKS)</h4>
+                <p style="font-size:12px; color:#64748B; margin-top:3px;">
+                  Poin Terkumpul: <b>${st.earnedPoints.toFixed(2)}</b> • Poin Hilang: <b style="color:#E11D48;">-${st.lostPoints.toFixed(2)}</b> • Sisa Bobot: <b>${st.remainingWeight}%</b>
+                </p>
+              </div>
+              <span class="badge ${st.badgeClass}">
+                ${st.remainingWeight > 0 ? `Butuh rata-rata ${st.requiredFutureAvg.toFixed(1)} utk target ${state.targetScore}` : `Selesai (${letter.letter})`}
+              </span>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    /* =========================================================
+       TAB 6: SIMULASI WHAT-IF
+    ========================================================= */
+    function initSimulasi() {
+      const select = document.getElementById('select-course-simulasi');
+      const courseId = select.value || state.courses[0].id;
+      const course = state.courses.find(c => c.id === courseId) || state.courses[0];
+
+      document.getElementById('simulasi-sliders').innerHTML = course.components.map((c, idx) => {
+        const avg = parseScoreInput(c.rawInput);
+        const val = avg !== null ? avg : 80;
+        return `
+          <div style="border-bottom:1px solid #F1F5F9; padding-bottom:12px;">
+            <div style="display:flex; justify-content:space-between; font-size:13px; margin-bottom:6px;">
+              <span>
+                <b>${c.name}</b> (${c.weight}%)
+                ${avg !== null
+                  ? '<span class="badge badge-safe" style="margin-left:6px;">Nilai Asli</span>'
+                  : '<span class="badge badge-ok" style="margin-left:6px;">Simulasi</span>'}
+              </span>
+              <b id="sim-val-${idx}" style="color:#1E3A8A; font-size:14px;">${val.toFixed(0)}</b>
+            </div>
+            <input type="range" min="0" max="100" value="${val}" id="sim-slider-${idx}" oninput="updateSimulasi('${course.id}')" />
+          </div>
+        `;
+      }).join('');
+
+      updateSimulasi(course.id);
+    }
+
+    function updateSimulasi(courseId) {
+      const course = state.courses.find(c => c.id === courseId);
+      if (!course) return;
+      let total = 0;
+      course.components.forEach((c, idx) => {
+        const slider = document.getElementById('sim-slider-' + idx);
+        const v = slider ? parseFloat(slider.value) : 0;
+        const label = document.getElementById('sim-val-' + idx);
+        if (label) label.textContent = v;
+        total += (v * c.weight) / 100;
+      });
+      const g = getLetterInfo(total);
+      document.getElementById('simulasi-result').innerHTML = `
+        <h3 style="font-size:13px; font-weight:800; text-transform:uppercase; color:#64748B; border-bottom:1px solid #F1F5F9; padding-bottom:10px;">
+          Hasil Simulasi Akhir — ${course.shortName || course.name}
+        </h3>
+        <div style="padding:28px 0;">
+          <div style="font-size:11px; font-weight:800; color:#94A3B8; letter-spacing:0.05em;">PREDIKSI TOTAL NILAI</div>
+          <div style="font-size:44px; font-weight:800; color:#1E3A8A; margin:8px 0;">${total.toFixed(2)}</div>
+          <div style="font-size:18px; font-weight:800; color:#0F172A;">Indeks ${g.letter} (IP ${g.gpa.toFixed(2)})</div>
+          <div style="font-size:12px; color:#64748B; margin-top:4px;">${g.desc}</div>
+        </div>
+      `;
+    }
+
+    /* =========================================================
+       NAVIGATION & GLOBAL CONTROLS
+    ========================================================= */
+    function toggleNavDropdown() {
+      document.getElementById('nav-dropdown-menu').classList.toggle('show');
+    }
+
+    window.addEventListener('click', function(e) {
+      if (!e.target.closest('.dropdown-container')) {
+        document.getElementById('nav-dropdown-menu').classList.remove('show');
+      }
+    });
+
+    function selectTab(tabId) {
+      state.activeTab = tabId;
+      document.getElementById('nav-dropdown-menu').classList.remove('show');
+
+      const views = ['beranda', 'hitung', 'ipk8', 'bobot', 'skala', 'simulasi'];
+      views.forEach(v => {
+        document.getElementById('view-' + v).classList.toggle('hidden', v !== tabId);
+        document.getElementById('tab-' + v).classList.toggle('active', v === tabId);
+      });
+
+      const tabConfig = {
+        beranda:  { num: '1', label: '1. Beranda' },
+        hitung:   { num: '2', label: 'Hitung Nilai MK' },
+        ipk8:     { num: '3', label: '3. Target IPK 8 Semester' },
+        bobot:    { num: '4', label: '4. Manajemen Bobot MK' },
+        skala:    { num: '5', label: '5. Skala & Analitik' },
+        simulasi: { num: '6', label: '6. Simulasi What-If' }
+      };
+
+      const isBeranda = tabId === 'beranda';
+      document.getElementById('beranda-top-header').classList.toggle('hidden', !isBeranda);
+      document.getElementById('compact-brand-logo').classList.toggle('hidden', isBeranda);
+
+      const mainBtn = document.getElementById('main-dropdown-btn');
+      const numBadge = document.getElementById('active-tab-badge');
+      const labelSpan = document.getElementById('active-tab-label');
+
+      if (isBeranda) {
+        mainBtn.classList.remove('subpage-mode');
+        numBadge.classList.add('hidden');
+        labelSpan.textContent = '1. Beranda';
+      } else {
+        mainBtn.classList.add('subpage-mode');
+        numBadge.classList.remove('hidden');
+        numBadge.textContent = tabConfig[tabId].num;
+        labelSpan.textContent = tabConfig[tabId].label;
+      }
+
+      // Toggle contextual right controls
+      document.getElementById('nav-right-beranda').classList.toggle('hidden', tabId !== 'beranda' && tabId !== 'skala');
+      document.getElementById('nav-right-hitung').classList.toggle('hidden', tabId !== 'hitung');
+      document.getElementById('nav-right-ipk8').classList.toggle('hidden', tabId !== 'ipk8');
+      document.getElementById('nav-right-bobot').classList.toggle('hidden', tabId !== 'bobot');
+      document.getElementById('nav-right-simulasi').classList.toggle('hidden', tabId !== 'simulasi');
+
+      renderAll();
+    }
+
+    function updateGlobalTarget(val) {
+      state.targetScore = parseFloat(val) || 85;
+      renderAll();
+    }
+
     function renderAll() {
-      populateDropdowns();
+      populateCourseDropdowns();
+      renderGlobalKPI();
       renderBeranda();
       renderHitungNilai();
       renderIPK8();
-      initSimulasi();
-      renderBobot();
+      renderBobotMK();
       renderAnalitik();
+      initSimulasi();
     }
 
     window.addEventListener('DOMContentLoaded', renderAll);
