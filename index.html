@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PacilianKuat — Tracking Nilai & Strategi Belajar</title>
+  <title>PacilianKuat — Tracking Nilai & Strategi IPK Mahasiswa</title>
   
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -11,7 +11,7 @@
   <!-- Google Fonts: Plus Jakarta Sans & JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <script>
     tailwind.config = {
@@ -24,11 +24,11 @@
           colors: {
             brand: {
               blue: '#1D4ED8',
-              blueDark: '#1E40AF',
+              blueDark: '#1E3A8A',
               blueLight: '#EFF6FF',
               red: '#DC2626',
-              redDark: '#B91C1C',
-              redLight: '#FEF2F2'
+              redDark: '#991B1B',
+              redLight: '#FEF2F2',
             }
           }
         }
@@ -37,18 +37,15 @@
   </script>
 
   <style>
-    /* ==========================================================================
-       DESIGN TOKENS & MOTION SYSTEM (Blue & Red High-Contrast Theme)
-       ========================================================================== */
     :root {
-      --bg-primary: #F8FAFC;
+      --bg-primary: #FAF8F5;
       --bg-card: #FFFFFF;
       --text-primary: #0F172A;
       --text-secondary: #475569;
-      --accent-blue: #1D4ED8;
-      --accent-red: #DC2626;
+      --brand-blue: #1D4ED8;
+      --brand-red: #DC2626;
       --duration-fast: 160ms;
-      --duration-normal: 260ms;
+      --duration-normal: 280ms;
       --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
       --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
     }
@@ -60,21 +57,22 @@
       overflow-x: hidden;
     }
 
-    /* Tabular numbers for metrics & calculators */
     .t-num {
       font-variant-numeric: tabular-nums;
       font-family: 'JetBrains Mono', monospace;
     }
 
-    /* Subtle Blue & Red Academic Grid Background */
-    .bg-academic-grid {
-      background-size: 40px 40px;
+    /* Warm Cream Editorial Background */
+    .bg-editorial-cream {
+      background-color: #FAF8F5;
       background-image: 
-        linear-gradient(to right, rgba(29, 78, 216, 0.04) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(220, 38, 38, 0.03) 1px, transparent 1px);
+        radial-gradient(rgba(29, 78, 216, 0.07) 1.5px, transparent 1.5px),
+        radial-gradient(rgba(220, 38, 38, 0.05) 1.5px, transparent 1.5px);
+      background-size: 28px 28px;
+      background-position: 0 0, 14px 14px;
     }
 
-    /* Origin-aware Dropdown Transition */
+    /* Dropdown Transition */
     .t-dropdown {
       transform-origin: top left;
       transition: opacity var(--duration-fast) var(--ease-out-expo),
@@ -103,21 +101,28 @@
       display: block;
     }
     @keyframes pageFadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(8px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
-    /* Custom Scrollbar */
-    ::-webkit-scrollbar { width: 8px; height: 8px; }
-    ::-webkit-scrollbar-track { background: #F1F5F9; }
-    ::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 9999px; }
-    ::-webkit-scrollbar-thumb:hover { background: #1D4ED8; }
+    /* Nature Park & Swaying Grass Animations */
+    @keyframes cloudDrift {
+      0%, 100% { transform: translateX(0px); }
+      50% { transform: translateX(14px); }
+    }
+    @keyframes treeSway {
+      0%, 100% { transform: rotate(0deg); }
+      50% { transform: rotate(1.8deg); }
+    }
+    @keyframes leafFloat {
+      0% { transform: translateY(0px) rotate(0deg); opacity: 0.85; }
+      50% { transform: translateY(8px) rotate(12deg); opacity: 1; }
+      100% { transform: translateY(0px) rotate(0deg); opacity: 0.85; }
+    }
+    .cloud-drift-slow { animation: cloudDrift 9s ease-in-out infinite; }
+    .cloud-drift-fast { animation: cloudDrift 6.5s ease-in-out infinite reverse; }
+    .tree-canopy-sway { transform-origin: bottom center; animation: treeSway 5s ease-in-out infinite; }
+    .bamboo-sway { transform-origin: bottom center; animation: treeSway 4s ease-in-out infinite reverse; }
 
     /* Card hover lift */
     .card-lift {
@@ -129,58 +134,72 @@
       transform: translateY(-3px);
       box-shadow: 0 18px 35px -12px rgba(29, 78, 216, 0.12);
     }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: #F1F5F9; }
+    ::-webkit-scrollbar-thumb { background: #94A3B8; border-radius: 9999px; }
+    ::-webkit-scrollbar-thumb:hover { background: #1D4ED8; }
   </style>
 </head>
 <body class="min-h-screen flex flex-col selection:bg-brand-blue selection:text-white">
 
   <!-- ==========================================================================
-       TOP NAVIGATION BAR (ENLARGED BLUE & RED LOGO + MENU)
+       TOP NAVIGATION BAR (ENLARGED BLUE-RED LOGO + 4 MAIN NAV ITEMS + ACTIVE MAJOR)
        ========================================================================== -->
   <header class="sticky top-0 z-50 backdrop-blur-md bg-white/95 border-b border-slate-200 shadow-sm">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex items-center justify-between gap-4">
       
-      <!-- Brand Logo: Enlarged Pacilian (Blue) Kuat (Red) without extra subtitles -->
+      <!-- Enlarged Brand Logo: Pacilian (Blue) Kuat (Red) -->
       <div class="flex items-center gap-3 cursor-pointer group" onclick="navigateTo('beranda')">
         <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-brand-blue to-brand-red p-0.5 shadow-md group-hover:scale-105 transition-transform">
           <div class="w-full h-full bg-white rounded-[14px] flex items-center justify-center">
-            <span class="font-extrabold text-lg tracking-tighter">
-              <span class="text-brand-blue">P</span><span class="text-brand-red">K</span>
-            </span>
+            <!-- Mini PandaKecil (Pacil) Icon in Header -->
+            <svg class="w-7 h-7" viewBox="0 0 64 64" fill="none">
+              <circle cx="16" cy="16" r="8" fill="#1E293B"/>
+              <circle cx="48" cy="16" r="8" fill="#1E293B"/>
+              <circle cx="32" cy="34" r="20" fill="#F8FAFC" stroke="#1E293B" stroke-width="3.5"/>
+              <ellipse cx="24" cy="32" rx="5.5" ry="6.5" fill="#1D4ED8"/>
+              <ellipse cx="40" cy="32" rx="5.5" ry="6.5" fill="#DC2626"/>
+              <circle cx="25" cy="30" r="2" fill="#FFFFFF"/>
+              <circle cx="41" cy="30" r="2" fill="#FFFFFF"/>
+              <ellipse cx="32" cy="39" rx="3.5" ry="2.5" fill="#1E293B"/>
+            </svg>
           </div>
         </div>
-        <div class="flex items-center">
-          <span class="font-extrabold text-2xl sm:text-3xl tracking-tight">
+        <div>
+          <span class="font-extrabold text-2xl sm:text-3xl tracking-tight leading-none">
             <span class="text-brand-blue">Pacilian</span><span class="text-brand-red">Kuat</span>
           </span>
         </div>
       </div>
 
-      <!-- Desktop Navigation Items -->
-      <nav class="hidden lg:flex items-center gap-1.5 bg-slate-100 p-1.5 rounded-full border border-slate-200">
+      <!-- Desktop 4 Navigation Items -->
+      <nav class="hidden lg:flex items-center gap-1.5 bg-slate-100/90 p-1.5 rounded-full border border-slate-200/80 shadow-inner">
         
         <!-- 1. Beranda -->
         <button id="nav-beranda" onclick="navigateTo('beranda')" class="nav-btn px-4 py-2 rounded-full text-sm font-bold transition-all flex items-center gap-1.5 bg-brand-blue text-white shadow-sm">
           <span>Beranda</span>
         </button>
 
-        <!-- 2. Jurusan (Dropdown 3 Prodi) -->
+        <!-- 2. Jurusan (Dropdown 3 Prodi: SI & IK Active, KA Coming Soon) -->
         <div class="relative" id="jurusan-dropdown-wrapper">
-          <button id="nav-jurusan" onclick="toggleJurusanDropdown(event)" class="nav-btn px-4 py-2 rounded-full text-sm font-semibold text-slate-600 hover:text-brand-blue transition-all flex items-center gap-1.5">
-            <span>Jurusan</span>
+          <button id="nav-jurusan" onclick="toggleJurusanDropdown(event)" class="nav-btn px-4 py-2 rounded-full text-sm font-bold text-slate-600 hover:text-brand-blue transition-all flex items-center gap-1.5">
+            <span id="nav-jurusan-label">Jurusan</span>
             <svg id="jurusan-chevron" class="w-4 h-4 transition-transform duration-200" viewBox="0 0 20 20" fill="currentColor">
               <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
             </svg>
           </button>
 
           <!-- Dropdown Menu -->
-          <div id="jurusan-menu" class="t-dropdown hidden-menu absolute left-0 mt-2.5 w-80 rounded-2xl bg-white shadow-xl border border-slate-200 p-2 z-50">
+          <div id="jurusan-menu" class="t-dropdown hidden-menu absolute left-0 mt-2.5 w-84 rounded-2xl bg-white shadow-xl border border-slate-200 p-2 z-50">
             <div class="px-3 py-2 border-b border-slate-100 flex items-center justify-between">
-              <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Pilih Program Studi</span>
-              <span class="text-[10px] font-mono text-brand-blue bg-blue-50 px-2 py-0.5 rounded-full font-bold border border-blue-200">1 Aktif</span>
+              <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Pilih Program Studi Fasilkom</span>
+              <span class="text-[10px] font-mono text-brand-blue bg-blue-50 px-2 py-0.5 rounded-full font-bold border border-blue-200">2 Aktif</span>
             </div>
 
-            <!-- Option 1: Sistem Informasi (ACTIVE) -->
-            <button onclick="selectJurusan('si')" class="w-full mt-1 text-left p-3 rounded-xl hover:bg-blue-50/80 transition-colors flex items-start justify-between group border border-transparent hover:border-blue-200">
+            <!-- Option 1: Sistem Informasi (ACTIVE - 7 MK • 20 SKS) -->
+            <button onclick="selectJurusan('SI')" class="w-full mt-1 text-left p-3 rounded-xl hover:bg-blue-50/80 transition-colors flex items-start justify-between group border border-transparent hover:border-blue-200">
               <div class="flex items-start gap-3">
                 <div class="w-9 h-9 rounded-lg bg-brand-blue text-white flex items-center justify-center font-bold text-xs shadow-sm shrink-0 mt-0.5">
                   SI
@@ -190,67 +209,72 @@
                     Sistem Informasi
                     <svg class="w-3.5 h-3.5 text-brand-blue opacity-0 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
                   </div>
-                  <p class="text-xs text-slate-500 mt-0.5">7 Mata Kuliah Aktif • 20 SKS</p>
+                  <p class="text-xs text-slate-500 mt-0.5">7 MK • 20 SKS (Termasuk Manbis &amp; Kombistek)</p>
                 </div>
               </div>
-              <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-blue-100 text-brand-blue">Dibuka</span>
+              <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-blue-100 text-brand-blue shrink-0">7 MK • 20 SKS</span>
             </button>
 
-            <!-- Option 2: Ilmu Komputer (COMING SOON) -->
-            <button onclick="selectJurusan('ik')" class="w-full mt-1 text-left p-3 rounded-xl hover:bg-slate-50 transition-colors flex items-start justify-between opacity-75">
+            <!-- Option 2: Ilmu Komputer (NOW ACTIVE - 6 MK • 18 SKS) -->
+            <button onclick="selectJurusan('IK')" class="w-full mt-1 text-left p-3 rounded-xl hover:bg-red-50/80 transition-colors flex items-start justify-between group border border-transparent hover:border-red-200">
               <div class="flex items-start gap-3">
-                <div class="w-9 h-9 rounded-lg bg-slate-200 text-slate-600 flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">
+                <div class="w-9 h-9 rounded-lg bg-brand-red text-white flex items-center justify-center font-bold text-xs shadow-sm shrink-0 mt-0.5">
                   IK
                 </div>
                 <div>
-                  <div class="font-semibold text-sm text-slate-700">Ilmu Komputer</div>
-                  <p class="text-xs text-slate-400 mt-0.5">Belum tersedia saat ini</p>
+                  <div class="font-bold text-sm text-slate-900 group-hover:text-brand-red flex items-center gap-1.5">
+                    Ilmu Komputer
+                    <svg class="w-3.5 h-3.5 text-brand-red opacity-0 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
+                  </div>
+                  <p class="text-xs text-slate-500 mt-0.5">6 MK • 18 SKS (Termasuk PSD • Quiz 8x)</p>
                 </div>
               </div>
-              <span class="text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full bg-red-50 text-brand-red border border-red-200">Segera</span>
+              <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-red-100 text-brand-red shrink-0">6 MK • 18 SKS</span>
             </button>
 
             <!-- Option 3: Kecerdasan Artifisial (COMING SOON) -->
-            <button onclick="selectJurusan('ka')" class="w-full mt-1 text-left p-3 rounded-xl hover:bg-slate-50 transition-colors flex items-start justify-between opacity-75">
+            <button onclick="selectJurusan('KA')" class="w-full mt-1 text-left p-3 rounded-xl hover:bg-slate-50 transition-colors flex items-start justify-between opacity-75">
               <div class="flex items-start gap-3">
                 <div class="w-9 h-9 rounded-lg bg-slate-200 text-slate-600 flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">
                   KA
                 </div>
                 <div>
                   <div class="font-semibold text-sm text-slate-700">Kecerdasan Artifisial</div>
-                  <p class="text-xs text-slate-400 mt-0.5">Belum tersedia saat ini</p>
+                  <p class="text-xs text-slate-400 mt-0.5">Program Studi Baru • Segera</p>
                 </div>
               </div>
-              <span class="text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full bg-red-50 text-brand-red border border-red-200">Segera</span>
+              <span class="text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full bg-slate-100 text-slate-500 border border-slate-200 shrink-0">Segera</span>
             </button>
           </div>
         </div>
 
-        <!-- 3. Input Nilai MK -->
-        <button id="nav-hitung" onclick="navigateTo('hitung')" class="nav-btn px-4 py-2 rounded-full text-sm font-semibold text-slate-600 hover:text-brand-blue transition-all flex items-center gap-1.5">
-          <span>Input Nilai MK</span>
-        </button>
-
-        <!-- 4. Simulasi IPK -->
-        <button id="nav-simulasi" onclick="navigateTo('simulasi')" class="nav-btn px-4 py-2 rounded-full text-sm font-semibold text-slate-600 hover:text-brand-blue transition-all flex items-center gap-1.5">
+        <!-- 3. Simulasi IPK (Page 4) -->
+        <button id="nav-simulasi" onclick="navigateTo('simulasi')" class="nav-btn px-4 py-2 rounded-full text-sm font-bold text-slate-600 hover:text-brand-blue transition-all flex items-center gap-1.5">
           <span>Simulasi IPK</span>
         </button>
 
-        <!-- 5. Kontrak & Bobot Penilaian -->
-        <button id="nav-bobot" onclick="navigateTo('bobot')" class="nav-btn px-4 py-2 rounded-full text-sm font-semibold text-slate-600 hover:text-brand-blue transition-all flex items-center gap-1.5">
+        <!-- 4. Kontrak & Bobot Penilaian (Page 5) -->
+        <button id="nav-bobot" onclick="navigateTo('bobot')" class="nav-btn px-4 py-2 rounded-full text-sm font-bold text-slate-600 hover:text-brand-blue transition-all flex items-center gap-1.5">
           <span>Kontrak &amp; Bobot Penilaian</span>
         </button>
       </nav>
 
-      <!-- Right Action Pill & Mobile Menu Toggle -->
-      <div class="flex items-center gap-2.5">
-        <button onclick="navigateTo('simulasi')" class="px-4 py-2 rounded-full bg-gradient-to-r from-brand-blue to-blue-800 hover:from-blue-800 hover:to-brand-blue text-white text-xs font-semibold flex items-center gap-2 transition-all shadow-sm" title="Klik untuk atur Target IPK 8 Semester">
-          <span class="text-blue-100 uppercase tracking-wider text-[10px] font-bold">Target IPK</span>
-          <span id="nav-target-ipk-badge" class="t-num font-extrabold text-sm bg-brand-red px-2 py-0.5 rounded-full text-white">3.70</span>
+      <!-- Right Action Pills: Active Major Quick Switcher + Target IPK -->
+      <div class="flex items-center gap-2">
+        <!-- Quick Active Major Indicator Pill -->
+        <button onclick="toggleActiveMajorQuick()" id="header-active-major-pill" class="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-blue-50 hover:bg-blue-100 border border-blue-200 text-brand-blue text-xs font-extrabold transition-all" title="Klik untuk ganti cepat antara Sistem Informasi & Ilmu Komputer">
+          <span class="w-2 h-2 rounded-full bg-brand-blue"></span>
+          <span id="header-major-text">Prodi: SI (20 SKS)</span>
+          <span class="text-[10px] opacity-60">⇄</span>
+        </button>
+
+        <button onclick="navigateTo('simulasi')" class="px-3.5 py-2 rounded-full bg-gradient-to-r from-brand-blue to-brand-red hover:opacity-95 text-white text-xs font-bold flex items-center gap-2 transition-all shadow-sm" title="Klik untuk atur Target IPK 8 Semester">
+          <span class="text-white/90 uppercase tracking-wider text-[10px] hidden sm:inline">Target IPK</span>
+          <span id="nav-target-ipk-badge" class="t-num font-extrabold text-sm bg-white text-brand-blue px-2 py-0.5 rounded-full">3.70</span>
         </button>
 
         <!-- Mobile Menu Button -->
-        <button onclick="toggleMobileNav()" class="lg:hidden p-2.5 rounded-xl bg-slate-100 border border-slate-200 text-slate-700 hover:bg-slate-200">
+        <button onclick="toggleMobileNav()" class="lg:hidden p-2 rounded-xl bg-white border border-slate-200 text-slate-700 hover:bg-slate-50">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
           </svg>
@@ -260,17 +284,19 @@
 
     <!-- Mobile Responsive Navigation Drawer -->
     <div id="mobile-nav" class="hidden lg:hidden bg-white border-b border-slate-200 px-4 pt-2 pb-4 space-y-1.5">
-      <button onclick="navigateTo('beranda'); toggleMobileNav();" class="w-full text-left px-3 py-2 rounded-lg text-sm font-bold text-brand-blue hover:bg-blue-50">Beranda</button>
-      <div class="px-3 py-1 text-xs font-bold uppercase text-slate-400">Pilih Jurusan</div>
-      <button onclick="selectJurusan('si'); toggleMobileNav();" class="w-full text-left pl-6 pr-3 py-2 rounded-lg text-sm font-bold text-brand-blue bg-blue-50 flex justify-between items-center">
-        <span>↳ Sistem Informasi (7 MK)</span>
-        <span class="text-[10px] bg-brand-blue text-white px-2 py-0.5 rounded-full">Aktif</span>
+      <button onclick="navigateTo('beranda'); toggleMobileNav();" class="w-full text-left px-3 py-2 rounded-lg text-sm font-bold text-slate-800 hover:bg-blue-50">1. Beranda</button>
+      <div class="px-3 py-1.5 text-xs font-bold uppercase text-slate-400">2. Pilih Jurusan</div>
+      <button onclick="selectJurusan('SI'); toggleMobileNav();" class="w-full text-left pl-6 pr-3 py-2 rounded-lg text-sm font-bold text-brand-blue bg-blue-50/70 flex justify-between items-center">
+        <span>↳ Sistem Informasi (7 MK • 20 SKS)</span>
+        <span class="text-[10px] bg-brand-blue text-white px-2 py-0.5 rounded-full">Tersedia</span>
       </button>
-      <button onclick="selectJurusan('ik')" class="w-full text-left pl-6 pr-3 py-1.5 rounded-lg text-xs font-medium text-slate-400">↳ Ilmu Komputer (Segera)</button>
-      <button onclick="selectJurusan('ka')" class="w-full text-left pl-6 pr-3 py-1.5 rounded-lg text-xs font-medium text-slate-400">↳ Kecerdasan Artifisial (Segera)</button>
-      <button onclick="navigateTo('hitung'); toggleMobileNav();" class="w-full text-left px-3 py-2 rounded-lg text-sm font-semibold text-slate-800 hover:bg-blue-50">Input Nilai MK</button>
-      <button onclick="navigateTo('simulasi'); toggleMobileNav();" class="w-full text-left px-3 py-2 rounded-lg text-sm font-semibold text-slate-800 hover:bg-blue-50">Simulasi IPK</button>
-      <button onclick="navigateTo('bobot'); toggleMobileNav();" class="w-full text-left px-3 py-2 rounded-lg text-sm font-semibold text-slate-800 hover:bg-blue-50">Kontrak &amp; Bobot Penilaian</button>
+      <button onclick="selectJurusan('IK'); toggleMobileNav();" class="w-full text-left pl-6 pr-3 py-2 rounded-lg text-sm font-bold text-brand-red bg-red-50/70 flex justify-between items-center">
+        <span>↳ Ilmu Komputer (6 MK • 18 SKS)</span>
+        <span class="text-[10px] bg-brand-red text-white px-2 py-0.5 rounded-full">Tersedia</span>
+      </button>
+      <button onclick="selectJurusan('KA')" class="w-full text-left pl-6 pr-3 py-1.5 rounded-lg text-xs font-medium text-slate-400">↳ Kecerdasan Artifisial (Segera Hadir)</button>
+      <button onclick="navigateTo('simulasi'); toggleMobileNav();" class="w-full text-left px-3 py-2 rounded-lg text-sm font-bold text-slate-800 hover:bg-blue-50">3. Simulasi IPK 8 Semester</button>
+      <button onclick="navigateTo('bobot'); toggleMobileNav();" class="w-full text-left px-3 py-2 rounded-lg text-sm font-bold text-slate-800 hover:bg-blue-50">4. Kontrak &amp; Bobot Penilaian</button>
     </div>
   </header>
 
@@ -280,144 +306,472 @@
   <main class="flex-1">
 
     <!-- ========================================================================
-         BERANDA (LANDING PAGE — CLEAN, REVISED HEADLINE, NO 3D SCENE/PILLS)
+         PAGE 1: BERANDA (Left: Headline & Controls | Right: Interactive PandaKecil/Pacil in Nature Park)
          ======================================================================== -->
-    <section id="page-beranda" class="page-section active bg-academic-grid min-h-[calc(100vh-5rem)] relative overflow-hidden">
-      <!-- Subtle Blue & Red Ambient Accents -->
-      <div class="pointer-events-none absolute -top-24 -left-24 w-96 h-96 rounded-full bg-blue-500/10 blur-3xl"></div>
-      <div class="pointer-events-none absolute top-32 -right-24 w-96 h-96 rounded-full bg-red-500/10 blur-3xl"></div>
-
-      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-20 relative z-10">
+    <section id="page-beranda" class="page-section active bg-editorial-cream min-h-[calc(100vh-4.5rem)] relative overflow-hidden">
+      
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-14 relative z-10">
         
-        <!-- Centered Hero Section -->
-        <div class="max-w-4xl mx-auto text-center space-y-6">
+        <!-- 2-COLUMN SPLIT HERO -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center">
           
-          <!-- Revised Main Hero Headline -->
-          <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-slate-900 leading-[1.12]">
-            <span class="text-brand-blue">Tracking nilaimu</span> untuk menentukan <span class="text-brand-red underline decoration-red-300 decoration-4 underline-offset-8">metode belajar yang tepat!</span>
-          </h1>
+          <!-- LEFT COLUMN: Headline, Subtitle, CTAs, & Live Status Card (5 cols) -->
+          <div class="lg:col-span-5 space-y-6">
+            
+            <!-- Main Hero Headline -->
+            <h1 class="text-4xl sm:text-5xl lg:text-[48px] font-extrabold tracking-tight text-slate-900 leading-[1.09]">
+              Tracking nilaimu untuk <span class="text-brand-blue">menentukan metode belajar</span> <span class="text-brand-red">yang tepat!</span>
+            </h1>
 
-          <!-- Hero Subtitle -->
-          <p class="text-base sm:text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed font-normal pt-2">
-            Pantau tabungan poin per mata kuliah secara <em>real-time</em>, ketahui berapa nilai minimal yang harus kamu kejar di sisa komponen ujian, dan susun strategi pencapaian target IPK setiap semester.
-          </p>
+            <!-- Hero Subtitle mentioning PandaKecil alias Pacil -->
+            <p class="text-base sm:text-lg text-slate-600 leading-relaxed font-normal">
+              Kenalin <strong class="text-brand-blue font-bold">PandaKecil</strong> (alias <strong class="text-brand-red font-bold">Pacil</strong>), maskot kesayangan mahasiswa Fasilkom UI. Pantau keamanan nilai per mata kuliah untuk <strong class="text-slate-800">Sistem Informasi</strong> maupun <strong class="text-slate-800">Ilmu Komputer</strong>, input banyak nilai kuis sekaligus, dan rancang strategi lulus <em>Cum Laude</em> 8 semester.
+            </p>
 
-          <!-- Primary & Secondary Pill Buttons (Blue & Red Theme) -->
-          <div class="flex flex-wrap items-center justify-center gap-4 pt-3">
-            <button onclick="selectJurusan('si')" class="px-7 py-4 rounded-full bg-brand-blue hover:bg-brand-blueDark text-white font-bold text-sm shadow-lg shadow-blue-600/25 transition-all flex items-center gap-2.5 group">
-              <span>Buka Jurusan Sistem Informasi</span>
-              <span class="group-hover:translate-x-1 transition-transform">→</span>
-            </button>
-            <button onclick="navigateTo('simulasi')" class="px-7 py-4 rounded-full bg-white hover:bg-red-50 text-brand-red font-bold text-sm border-2 border-brand-red/80 shadow-sm transition-all">
-              Simulasi Target IPK
-            </button>
-            <button onclick="loadDemoData()" class="px-5 py-4 rounded-full bg-blue-50 hover:bg-blue-100 text-brand-blue font-bold text-xs border border-blue-200 transition-all flex items-center gap-1.5">
-              <span>✨ Isi Data Contoh</span>
-            </button>
-          </div>
+            <!-- Primary & Secondary Pill Buttons -->
+            <div class="flex flex-wrap items-center gap-2.5 pt-1">
+              <button onclick="selectJurusan('SI')" class="px-5 py-3.5 rounded-full bg-brand-blue hover:bg-brand-blueDark text-white font-bold text-xs sm:text-sm shadow-lg shadow-brand-blue/25 transition-all flex items-center gap-2 group">
+                <span>💻 Sistem Informasi (7 MK)</span>
+                <span class="group-hover:translate-x-1 transition-transform">→</span>
+              </button>
+              <button onclick="selectJurusan('IK')" class="px-5 py-3.5 rounded-full bg-brand-red hover:bg-brand-redDark text-white font-bold text-xs sm:text-sm shadow-lg shadow-brand-red/25 transition-all flex items-center gap-2 group">
+                <span>⚙️ Ilmu Komputer (6 MK)</span>
+                <span class="group-hover:translate-x-1 transition-transform">→</span>
+              </button>
+              <button onclick="loadDemoData()" class="px-4 py-2.5 rounded-full bg-white hover:bg-blue-50 text-brand-blue font-bold text-xs border border-blue-200 shadow-sm transition-all flex items-center gap-1.5">
+                <span>✨ Isi Contoh Multi-Nilai</span>
+              </button>
+            </div>
 
-          <!-- Live Academic Status Card -->
-          <div class="pt-6 max-w-3xl mx-auto">
-            <div class="bg-white rounded-3xl p-6 sm:p-7 border border-slate-200 shadow-lg text-left">
-              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-4 border-b border-slate-100">
-                <div class="flex items-center gap-2">
-                  <span class="w-2.5 h-2.5 rounded-full bg-brand-red animate-pulse"></span>
-                  <span class="text-xs font-mono uppercase tracking-wider text-brand-blue font-extrabold">
-                    RINGKASAN EVALUASI AKADEMIK SAAT INI
+            <!-- Live Academic Status Card -->
+            <div class="pt-1">
+              <div class="bg-white/95 backdrop-blur-md rounded-2xl p-5 border border-slate-200/90 shadow-lg shadow-blue-950/5">
+                <div class="flex items-center justify-between mb-2.5">
+                  <span id="hero-card-major-tag" class="text-[11px] font-mono uppercase tracking-[0.12em] text-brand-blue font-bold">
+                    PRODI AKTIF: SISTEM INFORMASI • STATUS SAAT INI
                   </span>
+                  <button onclick="navigateTo('jurusan-si')" class="p-1.5 rounded-lg hover:bg-blue-50 text-brand-blue transition-colors" title="Ke Dashboard Jurusan">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
+                  </button>
                 </div>
-                <button onclick="selectJurusan('si')" class="text-xs font-bold text-brand-blue hover:text-brand-red transition-colors flex items-center gap-1">
-                  <span>Lihat Detail 7 Mata Kuliah</span>
-                  <span>→</span>
-                </button>
-              </div>
 
-              <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4">
-                <div class="bg-blue-50/70 border border-blue-100 px-4 py-3.5 rounded-2xl">
-                  <div class="text-[11px] font-bold uppercase text-brand-blue">Program Studi Aktif</div>
-                  <div class="font-extrabold text-base text-slate-900 mt-1">Sistem Informasi</div>
-                  <div class="text-xs text-slate-500 font-medium mt-0.5">7 Mata Kuliah • 20 SKS</div>
-                </div>
-                <div class="bg-slate-50 border border-slate-200/80 px-4 py-3.5 rounded-2xl">
-                  <div class="text-[11px] font-bold uppercase text-slate-500">Estimasi IPS Berjalan</div>
-                  <div id="hero-live-ips" class="t-num font-extrabold text-xl text-brand-blue mt-1">0.00 <span class="text-xs font-normal text-slate-400">/ 4.00</span></div>
-                  <div class="text-xs text-slate-500 mt-0.5">Berdasarkan komponen terisi</div>
-                </div>
-                <div class="bg-red-50/70 border border-red-100 px-4 py-3.5 rounded-2xl">
-                  <div class="text-[11px] font-bold uppercase text-brand-red">Target IPK Lulus</div>
-                  <div id="hero-live-target" class="t-num font-extrabold text-xl text-brand-red mt-1">3.70 <span class="text-[10px] font-sans font-bold bg-brand-red text-white px-2 py-0.5 rounded-full ml-1">HIGH</span></div>
-                  <div class="text-xs text-slate-500 mt-0.5">8 Semester (160 SKS)</div>
+                <p class="text-xs sm:text-sm text-slate-600 leading-relaxed mb-4">
+                  Pilih kurikulum <strong class="text-brand-blue underline cursor-pointer" onclick="selectJurusan('SI')">Sistem Informasi (20 SKS)</strong> atau <strong class="text-brand-red underline cursor-pointer" onclick="selectJurusan('IK')">Ilmu Komputer (18 SKS)</strong>. Kontrak kuliah &amp; simulasi IPS tiap jurusan terisolasi rapi sehingga tidak saling memengaruhi!
+                </p>
+
+                <!-- Mini Live Bar -->
+                <div class="grid grid-cols-3 gap-2 pt-3 border-t border-slate-100 text-center sm:text-left">
+                  <div class="bg-blue-50/60 px-3 py-2 rounded-xl border border-blue-100">
+                    <div class="text-[10px] font-bold uppercase text-slate-500">MK Aktif</div>
+                    <div id="hero-live-mk" class="t-num font-extrabold text-sm text-brand-blue mt-0.5">7 MK <span class="text-[11px] font-normal text-slate-500">(20 SKS)</span></div>
+                  </div>
+                  <div class="bg-blue-50/60 px-3 py-2 rounded-xl border border-blue-100">
+                    <div class="text-[10px] font-bold uppercase text-slate-500">Est. IPS Smt 1</div>
+                    <div id="hero-live-ips" class="t-num font-extrabold text-sm text-brand-blue mt-0.5">0.00 <span class="text-[11px] font-normal text-slate-400">/ 4.00</span></div>
+                  </div>
+                  <div class="bg-red-50/70 px-3 py-2 rounded-xl border border-red-100">
+                    <div class="text-[10px] font-bold uppercase text-slate-500">Target IPK Lulus</div>
+                    <div id="hero-live-target" class="t-num font-extrabold text-sm text-brand-red mt-0.5">3.70 <span class="text-[9px] font-sans font-extrabold bg-brand-red text-white px-1.5 py-0.5 rounded">HIGH</span></div>
+                  </div>
                 </div>
               </div>
             </div>
+
           </div>
 
-          <!-- Pilihan Jurusan Strip -->
-          <div class="pt-4 max-w-3xl mx-auto">
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-left">
-              <button onclick="selectJurusan('si')" class="p-4 rounded-2xl bg-white border-2 border-brand-blue shadow-sm hover:bg-blue-50/40 transition-all group">
-                <div class="flex items-center justify-between">
-                  <span class="text-[10px] font-mono font-bold uppercase text-white bg-brand-blue px-2.5 py-0.5 rounded-full">Dibuka</span>
-                  <span class="text-brand-blue font-bold text-sm group-hover:translate-x-1 transition-transform">→</span>
-                </div>
-                <div class="font-extrabold text-sm text-slate-900 mt-2">Sistem Informasi</div>
-                <div class="text-xs text-slate-500 mt-0.5">7 Mata Kuliah (20 SKS)</div>
-              </button>
+          <!-- RIGHT COLUMN: INTERACTIVE "PandaKecil (Pacil)" IN NATURE PARK (Trees, Grass, Cursor Follow & Poses) -->
+          <div class="lg:col-span-7 relative">
+            <div class="relative mx-auto max-w-2xl">
+              
+              <!-- Interactive Nature Park Stage (No Orbit, No Floating Course Icons, No Emote Buttons) -->
+              <div 
+                id="pacil-park-stage"
+                class="relative rounded-3xl border-2 border-slate-200/90 shadow-2xl overflow-hidden h-[470px] sm:h-[500px] select-none cursor-grab active:cursor-grabbing bg-gradient-to-b from-[#DBEAFE] via-[#EFF6FF] to-[#DCFCE7]"
+                style="touch-action: none;"
+              >
+                
+                <!-- Top Floating Interactive Hint & Mode Switcher -->
+                <div class="absolute top-4 inset-x-4 z-30 flex flex-wrap items-center justify-between gap-2 pointer-events-none">
+                  <div class="pointer-events-auto inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/90 backdrop-blur-md border border-emerald-200 shadow-sm text-xs font-extrabold text-slate-800">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                    <span>Taman Fasilkom • <span class="text-brand-blue">PandaKecil</span> (<span class="text-brand-red">Pacil</span>)</span>
+                  </div>
 
-              <button onclick="selectJurusan('ik')" class="p-4 rounded-2xl bg-white/80 border border-slate-200 hover:border-red-200 transition-all opacity-80">
-                <div class="flex items-center justify-between">
-                  <span class="text-[10px] font-mono font-bold uppercase text-brand-red bg-red-50 border border-red-200 px-2.5 py-0.5 rounded-full">Segera</span>
+                  <button 
+                    type="button"
+                    onclick="togglePandaFollowMode(event)" 
+                    id="panda-mode-btn"
+                    class="pointer-events-auto px-3 py-1.5 rounded-full bg-slate-900/90 hover:bg-slate-900 text-white text-[11px] font-bold shadow-md transition-all flex items-center gap-1.5"
+                  >
+                    <span id="panda-mode-indicator" class="w-2 h-2 rounded-full bg-amber-400"></span>
+                    <span id="panda-mode-label">Mode: Klik &amp; Tahan Kursor</span>
+                  </button>
                 </div>
-                <div class="font-bold text-sm text-slate-700 mt-2">Ilmu Komputer</div>
-                <div class="text-xs text-slate-400 mt-0.5">Segera Hadir</div>
-              </button>
 
-              <button onclick="selectJurusan('ka')" class="p-4 rounded-2xl bg-white/80 border border-slate-200 hover:border-red-200 transition-all opacity-80">
-                <div class="flex items-center justify-between">
-                  <span class="text-[10px] font-mono font-bold uppercase text-brand-red bg-red-50 border border-red-200 px-2.5 py-0.5 rounded-full">Segera</span>
+                <!-- Dynamic Pose Indicator Pill -->
+                <div class="absolute top-14 left-4 z-30 pointer-events-none">
+                  <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/80 backdrop-blur border border-slate-200/80 text-[11px] font-mono font-bold text-slate-600 shadow-sm">
+                    <span id="pacil-pose-badge">🌿 Klik &amp; tahan lalu arahkan kursor: Kiri, Kanan, Atas, atau Bawah (Tiduran)!</span>
+                  </div>
                 </div>
-                <div class="font-bold text-sm text-slate-700 mt-2">Kecerdasan Artifisial</div>
-                <div class="text-xs text-slate-400 mt-0.5">Segera Hadir</div>
-              </button>
+
+                <!-- SCENERY BACKGROUND SVG: Sky, Sun, Clouds, Shady Trees, Bamboo, Rolling Hills & Grass -->
+                <svg class="absolute inset-0 w-full h-full pointer-events-none select-none" viewBox="0 0 700 500" preserveAspectRatio="xMidYMid slice" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <defs>
+                    <linearGradient id="skyGradient" x1="350" y1="0" x2="350" y2="340" gradientUnits="userSpaceOnUse">
+                      <stop offset="0%" stop-color="#DBEAFE"/>
+                      <stop offset="60%" stop-color="#F0F9FF"/>
+                      <stop offset="100%" stop-color="#ECFCCB"/>
+                    </linearGradient>
+                    <linearGradient id="farHillGrad" x1="350" y1="240" x2="350" y2="420" gradientUnits="userSpaceOnUse">
+                      <stop offset="0%" stop-color="#86EFAC"/>
+                      <stop offset="100%" stop-color="#4ADE80"/>
+                    </linearGradient>
+                    <linearGradient id="midHillGrad" x1="350" y1="285" x2="350" y2="460" gradientUnits="userSpaceOnUse">
+                      <stop offset="0%" stop-color="#4ADE80"/>
+                      <stop offset="100%" stop-color="#22C55E"/>
+                    </linearGradient>
+                    <linearGradient id="frontMeadowGrad" x1="350" y1="330" x2="350" y2="500" gradientUnits="userSpaceOnUse">
+                      <stop offset="0%" stop-color="#22C55E"/>
+                      <stop offset="100%" stop-color="#15803D"/>
+                    </linearGradient>
+                  </defs>
+
+                  <!-- Sky Backdrop -->
+                  <rect width="700" height="500" fill="url(#skyGradient)"/>
+
+                  <!-- Warm Morning Sun -->
+                  <circle cx="590" cy="95" r="46" fill="#FEF08A" fill-opacity="0.65"/>
+                  <circle cx="590" cy="95" r="32" fill="#FDE047" fill-opacity="0.9"/>
+
+                  <!-- Soft Drifting Clouds -->
+                  <g class="cloud-drift-slow" opacity="0.88">
+                    <rect x="85" y="72" width="110" height="32" rx="16" fill="#FFFFFF"/>
+                    <circle cx="115" cy="70" r="22" fill="#FFFFFF"/>
+                    <circle cx="150" cy="65" r="26" fill="#FFFFFF"/>
+                  </g>
+                  <g class="cloud-drift-fast" opacity="0.82">
+                    <rect x="420" y="95" width="95" height="28" rx="14" fill="#FFFFFF"/>
+                    <circle cx="448" cy="92" r="18" fill="#FFFFFF"/>
+                    <circle cx="480" cy="88" r="22" fill="#FFFFFF"/>
+                  </g>
+
+                  <!-- Distant Background Hills -->
+                  <path d="M-40 360 Q 170 235 410 330 T 750 310 L 750 500 L -40 500 Z" fill="url(#farHillGrad)" opacity="0.75"/>
+
+                  <!-- LEFT SHADY OAK/PARK TREE (Pohon Rindang Kiri) -->
+                  <g class="tree-canopy-sway">
+                    <!-- Tree Trunk & Branches -->
+                    <path d="M88 365 L88 210 Q88 190 66 172" stroke="#78350F" stroke-width="22" stroke-linecap="round"/>
+                    <path d="M90 250 Q122 225 138 202" stroke="#78350F" stroke-width="13" stroke-linecap="round"/>
+                    <path d="M84 230 Q52 210 38 190" stroke="#78350F" stroke-width="11" stroke-linecap="round"/>
+                    <!-- Lush Layered Foliage Canopy -->
+                    <circle cx="50" cy="175" r="48" fill="#15803D"/>
+                    <circle cx="130" cy="182" r="46" fill="#166534"/>
+                    <circle cx="92" cy="140" r="56" fill="#16A34A"/>
+                    <circle cx="65" cy="155" r="42" fill="#22C55E"/>
+                    <circle cx="118" cy="158" r="40" fill="#22C55E"/>
+                    <circle cx="92" cy="122" r="38" fill="#4ADE80"/>
+                    <!-- Red/Blue Fasilkom Blossom Berries on Tree -->
+                    <circle cx="62" cy="148" r="4.5" fill="#DC2626"/>
+                    <circle cx="112" cy="136" r="4.5" fill="#1D4ED8"/>
+                    <circle cx="88" cy="168" r="4" fill="#FEF08A"/>
+                  </g>
+
+                  <!-- RIGHT BAMBOO GROVE & PARK TREE (Rumpun Bambu & Pohon Kanan Kesukaan Panda) -->
+                  <g class="bamboo-sway">
+                    <!-- Tall Bamboo Stalks -->
+                    <g stroke="#15803D" stroke-width="8" stroke-linecap="round">
+                      <line x1="615" y1="365" x2="630" y2="120"/>
+                      <line x1="642" y1="365" x2="652" y2="145"/>
+                      <line x1="590" y1="360" x2="582" y2="170"/>
+                    </g>
+                    <!-- Bamboo Nodes -->
+                    <g stroke="#86EFAC" stroke-width="3">
+                      <line x1="613" y1="280" x2="623" y2="280"/>
+                      <line x1="617" y1="220" x2="627" y2="220"/>
+                      <line x1="621" y1="165" x2="631" y2="165"/>
+                      <line x1="640" y1="260" x2="650" y2="260"/>
+                      <line x1="644" y1="200" x2="654" y2="200"/>
+                    </g>
+                    <!-- Bamboo Leaves -->
+                    <ellipse cx="602" cy="175" rx="22" ry="7" transform="rotate(-28 602 175)" fill="#16A34A"/>
+                    <ellipse cx="645" cy="155" rx="24" ry="7" transform="rotate(24 645 155)" fill="#22C55E"/>
+                    <ellipse cx="612" cy="132" rx="22" ry="6.5" transform="rotate(-18 612 132)" fill="#4ADE80"/>
+                    <ellipse cx="566" cy="198" rx="20" ry="6" transform="rotate(-32 566 198)" fill="#22C55E"/>
+                    <ellipse cx="666" cy="192" rx="22" ry="6.5" transform="rotate(30 666 192)" fill="#16A34A"/>
+                  </g>
+
+                  <!-- Midground Rolling Green Meadow -->
+                  <path d="M-30 375 Q 230 290 480 355 T 740 345 L 740 500 L -30 500 Z" fill="url(#midHillGrad)"/>
+
+                  <!-- Main Foreground Lush Lawn / Grass Field (Tempat PandaKecil Jalan & Tiduran) -->
+                  <path d="M-20 390 Q 340 335 720 385 L 720 500 L -20 500 Z" fill="url(#frontMeadowGrad)"/>
+
+                  <!-- Soft Winding Garden Stepping Stones -->
+                  <ellipse cx="235" cy="435" rx="34" ry="10" fill="#E2E8F0" fill-opacity="0.55"/>
+                  <ellipse cx="315" cy="452" rx="42" ry="12" fill="#E2E8F0" fill-opacity="0.55"/>
+                  <ellipse cx="410" cy="440" rx="36" ry="10" fill="#E2E8F0" fill-opacity="0.55"/>
+
+                  <!-- Decorative Grass Blades & Wildflowers across the Meadow -->
+                  <g stroke="#14532D" stroke-width="2.5" stroke-linecap="round" opacity="0.45">
+                    <path d="M70 430 L65 416 M74 430 L74 414 M78 430 L84 418"/>
+                    <path d="M165 410 L160 398 M169 410 L171 395"/>
+                    <path d="M525 418 L520 404 M529 418 L531 402 M533 418 L539 406"/>
+                    <path d="M615 445 L610 431 M620 445 L622 429"/>
+                    <path d="M275 398 L271 386 M279 398 L283 387"/>
+                    <path d="M455 395 L451 384 M459 395 L463 385"/>
+                  </g>
+
+                  <!-- Cute Park Flowers (Blue, Red, Yellow) -->
+                  <g>
+                    <circle cx="115" cy="422" r="5" fill="#FEF08A"/>
+                    <circle cx="115" cy="422" r="2" fill="#DC2626"/>
+                    <circle cx="560" cy="428" r="5.5" fill="#DBEAFE"/>
+                    <circle cx="560" cy="428" r="2.2" fill="#1D4ED8"/>
+                    <circle cx="195" cy="448" r="4.5" fill="#FECACA"/>
+                    <circle cx="195" cy="448" r="2" fill="#DC2626"/>
+                    <circle cx="490" cy="452" r="5" fill="#FEF08A"/>
+                    <circle cx="490" cy="452" r="2" fill="#F59E0B"/>
+                  </g>
+                </svg>
+
+                <!-- DYNAMIC GROUND SHADOW UNDER PANDAKecil -->
+                <div 
+                  id="pacil-ground-shadow"
+                  class="absolute pointer-events-none rounded-full bg-emerald-950/25 blur-[2px] transition-transform duration-75"
+                  style="width: 110px; height: 22px; left: 50%; top: 76%; transform: translate(-50%, -50%);"
+                ></div>
+
+                <!-- INTERACTIVE "PandaKecil (Pacil)" CHARACTER CONTAINER -->
+                <div 
+                  id="pacil-actor"
+                  class="absolute z-20 pointer-events-none select-none will-change-transform"
+                  style="left: 50%; top: 62%; transform: translate(-50%, -50%);"
+                >
+                  <!-- Speech Bubble Above PandaKecil -->
+                  <div id="pacil-bubble" class="mb-1 px-3.5 py-1.5 rounded-2xl bg-slate-900/95 text-white text-[11px] font-bold shadow-lg border border-slate-700 whitespace-nowrap text-center relative mx-auto w-max transition-all duration-200">
+                    <span id="pacil-bubble-text">Halo! Aku PandaKecil (Pacil) 🐼🌿</span>
+                    <div class="w-2.5 h-2.5 bg-slate-900 rotate-45 absolute -bottom-1 left-1/2 -translate-x-1/2"></div>
+                  </div>
+
+                  <!-- PandaKecil Body Wrapper (Tilts/Rotates/Scales dynamically with cursor velocity & pose) -->
+                  <div id="pacil-body-rig" class="transition-transform duration-100 origin-center">
+                    
+                    <!-- POSE 1: UPRIGHT / WALKING / JUMPING PANDA SVG -->
+                    <svg id="pacil-svg-upright" class="w-36 h-36 sm:w-40 sm:h-40 drop-shadow-xl" viewBox="0 0 220 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <!-- Ears (Bob with movement) -->
+                      <g id="pacil-ears">
+                        <circle cx="58" cy="48" r="23" fill="#0F172A"/>
+                        <circle cx="58" cy="48" r="11" fill="#DC2626" fill-opacity="0.85"/>
+                        <circle cx="162" cy="48" r="23" fill="#0F172A"/>
+                        <circle cx="162" cy="48" r="11" fill="#1D4ED8" fill-opacity="0.85"/>
+                      </g>
+
+                      <!-- Fasilkom Blue-Red Cap -->
+                      <polygon points="110,14 156,30 110,44 64,30" fill="#1D4ED8" stroke="#0F172A" stroke-width="4" stroke-linejoin="round"/>
+                      <rect x="88" y="38" width="44" height="8" rx="4" fill="#DC2626" stroke="#0F172A" stroke-width="3"/>
+                      <path d="M144 33 L154 50" stroke="#FACC15" stroke-width="3.5" stroke-linecap="round"/>
+                      <circle cx="154" cy="52" r="4" fill="#FACC15"/>
+
+                      <!-- Legs (Animated stepping when walking left/right) -->
+                      <g id="pacil-leg-left" style="transform-origin: 82px 180px;">
+                        <ellipse cx="82" cy="192" rx="18" ry="12" fill="#0F172A"/>
+                        <ellipse cx="82" cy="193" rx="8" ry="5" fill="#F8FAFC"/>
+                      </g>
+                      <g id="pacil-leg-right" style="transform-origin: 138px 180px;">
+                        <ellipse cx="138" cy="192" rx="18" ry="12" fill="#0F172A"/>
+                        <ellipse cx="138" cy="193" rx="8" ry="5" fill="#F8FAFC"/>
+                      </g>
+
+                      <!-- Chubby Body in Fasilkom Blue-Red Varsity Hoodie -->
+                      <rect x="58" y="124" width="104" height="66" rx="33" fill="#1D4ED8" stroke="#0F172A" stroke-width="5"/>
+                      <path d="M89 126 H131 V190 H89 Z" fill="#DC2626"/>
+                      <rect x="95" y="145" width="30" height="18" rx="5" fill="#FFFFFF" stroke="#0F172A" stroke-width="2.5"/>
+                      <text x="110" y="158" text-anchor="middle" fill="#1D4ED8" font-family="JetBrains Mono, monospace" font-weight="800" font-size="10">PACIL</text>
+
+                      <!-- Left Arm -->
+                      <g id="pacil-arm-left" style="transform-origin: 62px 142px; transition: transform 0.15s ease;">
+                        <ellipse cx="44" cy="148" rx="18" ry="13" transform="rotate(-24 44 148)" fill="#0F172A"/>
+                        <circle cx="35" cy="143" r="5.5" fill="#FFFFFF" fill-opacity="0.22"/>
+                      </g>
+
+                      <!-- Right Arm (Holding Green Bamboo Shoot) -->
+                      <g id="pacil-arm-right" style="transform-origin: 158px 142px; transition: transform 0.15s ease;">
+                        <ellipse cx="176" cy="146" rx="18" ry="13" transform="rotate(24 176 146)" fill="#0F172A"/>
+                        <!-- Fresh Bamboo Twig in Paw -->
+                        <path d="M182 115 L194 152" stroke="#15803D" stroke-width="5" stroke-linecap="round"/>
+                        <ellipse cx="176" cy="122" rx="10" ry="4" transform="rotate(-30 176 122)" fill="#22C55E"/>
+                        <ellipse cx="195" cy="126" rx="10" ry="4" transform="rotate(25 195 126)" fill="#4ADE80"/>
+                      </g>
+
+                      <!-- Panda Head -->
+                      <rect x="48" y="42" width="124" height="94" rx="45" fill="#FFFFFF" stroke="#0F172A" stroke-width="5"/>
+
+                      <!-- Face Group (Shifts with gaze direction) -->
+                      <g id="pacil-face-gaze">
+                        <!-- Panda Eye Patches -->
+                        <ellipse cx="81" cy="88" rx="18" ry="21" transform="rotate(-10 81 88)" fill="#0F172A"/>
+                        <ellipse cx="139" cy="88" rx="18" ry="21" transform="rotate(10 139 88)" fill="#0F172A"/>
+
+                        <!-- Pupils (Move toward cursor) -->
+                        <g id="pacil-pupils">
+                          <circle cx="83" cy="86" r="7.5" fill="#FFFFFF"/>
+                          <circle cx="85" cy="84" r="3.2" fill="#60A5FA"/>
+                          <circle cx="137" cy="86" r="7.5" fill="#FFFFFF"/>
+                          <circle cx="139" cy="84" r="3.2" fill="#60A5FA"/>
+                        </g>
+
+                        <!-- Rosy Cheeks -->
+                        <ellipse cx="63" cy="105" rx="9" ry="5" fill="#FB7185" fill-opacity="0.8"/>
+                        <ellipse cx="157" cy="105" rx="9" ry="5" fill="#FB7185" fill-opacity="0.8"/>
+
+                        <!-- Cute Nose & Expressive Mouth -->
+                        <ellipse cx="110" cy="98" rx="8" ry="5.5" fill="#0F172A"/>
+                        <path id="pacil-mouth-upright" d="M100 108 Q110 118 120 108" stroke="#0F172A" stroke-width="4" stroke-linecap="round" fill="none"/>
+                      </g>
+
+                      <!-- Blue-Red Fasilkom Scarf -->
+                      <rect x="66" y="125" width="88" height="14" rx="7" fill="#DC2626" stroke="#0F172A" stroke-width="3.5"/>
+                      <path d="M85 125 H102 V139 H85 Z" fill="#1D4ED8"/>
+                      <path d="M118 125 H135 V139 H118 Z" fill="#1D4ED8"/>
+                    </svg>
+
+                    <!-- POSE 2: TIDURAN / REBAHAN DI RUMPUT SVG (Shown when cursor is low on the grass or resting down) -->
+                    <svg id="pacil-svg-lying" class="hidden w-44 h-32 sm:w-48 sm:h-36 drop-shadow-xl" viewBox="0 0 260 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <!-- Lying Chubby Body on Side/Back on the Grass -->
+                      <rect x="85" y="72" width="126" height="78" rx="39" fill="#1D4ED8" stroke="#0F172A" stroke-width="5"/>
+                      <path d="M128 74 H172 V148 H128 Z" fill="#DC2626"/>
+                      <!-- White Tummy Patch -->
+                      <ellipse cx="150" cy="112" rx="34" ry="24" fill="#FFFFFF" stroke="#0F172A" stroke-width="3"/>
+                      <text x="150" y="116" text-anchor="middle" fill="#1D4ED8" font-family="JetBrains Mono, monospace" font-weight="800" font-size="11">REBAHAN</text>
+
+                      <!-- Wiggly Relaxed Hind Feet on the Right -->
+                      <g id="pacil-lying-feet">
+                        <ellipse cx="212" cy="96" rx="14" ry="20" transform="rotate(20 212 96)" fill="#0F172A"/>
+                        <ellipse cx="213" cy="96" rx="6" ry="9" transform="rotate(20 213 96)" fill="#F8FAFC"/>
+                        <ellipse cx="218" cy="130" rx="14" ry="20" transform="rotate(38 218 130)" fill="#0F172A"/>
+                        <ellipse cx="219" cy="130" rx="6" ry="9" transform="rotate(38 219 130)" fill="#F8FAFC"/>
+                      </g>
+
+                      <!-- Tilted Relaxed Panda Head Resting on Grass (Left Side) -->
+                      <g transform="rotate(-14 78 96)">
+                        <circle cx="38" cy="48" r="20" fill="#0F172A"/>
+                        <circle cx="38" cy="48" r="9" fill="#DC2626"/>
+                        <circle cx="118" cy="44" r="20" fill="#0F172A"/>
+                        <circle cx="118" cy="44" r="9" fill="#1D4ED8"/>
+
+                        <rect x="26" y="42" width="106" height="84" rx="42" fill="#FFFFFF" stroke="#0F172A" stroke-width="5"/>
+
+                        <!-- Eye Patches -->
+                        <ellipse cx="58" cy="82" rx="16" ry="18" fill="#0F172A"/>
+                        <ellipse cx="102" cy="82" rx="16" ry="18" fill="#0F172A"/>
+
+                        <!-- Happy Relaxed Closed/Crescent Eyes (Tiduran Santai) -->
+                        <path d="M50 82 Q58 73 66 82" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round" fill="none"/>
+                        <path d="M94 82 Q102 73 110 82" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round" fill="none"/>
+
+                        <!-- Blush Cheeks -->
+                        <ellipse cx="44" cy="98" rx="8" ry="4.5" fill="#FB7185" fill-opacity="0.85"/>
+                        <ellipse cx="116" cy="98" rx="8" ry="4.5" fill="#FB7185" fill-opacity="0.85"/>
+
+                        <!-- Nose & Chill Smile with Bamboo Leaf -->
+                        <ellipse cx="80" cy="92" rx="7" ry="5" fill="#0F172A"/>
+                        <path d="M71 102 Q80 110 89 102" stroke="#0F172A" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+
+                        <!-- Bamboo Stem being munched while lying down -->
+                        <path d="M84 105 L118 122" stroke="#15803D" stroke-width="4.5" stroke-linecap="round"/>
+                        <ellipse cx="118" cy="116" rx="11" ry="4.5" transform="rotate(-15 118 116)" fill="#22C55E"/>
+                      </g>
+
+                      <!-- Front Paws Resting on Tummy -->
+                      <ellipse cx="122" cy="128" rx="16" ry="11" transform="rotate(15 122 128)" fill="#0F172A"/>
+                      <ellipse cx="152" cy="68" rx="15" ry="11" transform="rotate(-20 152 68)" fill="#0F172A"/>
+
+                      <!-- Floating Zzz / Chill Sparkles -->
+                      <text x="28" y="26" fill="#1D4ED8" font-family="Plus Jakarta Sans, sans-serif" font-weight="800" font-size="16">z</text>
+                      <text x="44" y="16" fill="#DC2626" font-family="Plus Jakarta Sans, sans-serif" font-weight="800" font-size="20">Z</text>
+                    </svg>
+
+                  </div>
+                </div>
+
+                <!-- Subtle Bottom Park Floor Sign -->
+                <div class="absolute bottom-3 inset-x-4 z-20 flex items-center justify-between text-[11px] font-bold text-white/95 drop-shadow pointer-events-none">
+                  <span>🌱 Area Rumput PandaKecil (Pacil)</span>
+                  <span id="pacil-coords-status" class="font-mono bg-black/35 backdrop-blur-sm px-2.5 py-0.5 rounded-full">Pose: Berdiri Santai</span>
+                </div>
+
+              </div>
+
+              <!-- Quick 3-Jurusan Status Strip Below Panda Park -->
+              <div class="grid grid-cols-3 gap-2.5 mt-3.5">
+                <button onclick="selectJurusan('SI')" id="hero-strip-si" class="p-3 rounded-2xl bg-white border-2 border-brand-blue shadow-sm text-left hover:bg-blue-50/40 transition-all group">
+                  <div class="flex items-center justify-between">
+                    <span class="text-[10px] font-mono font-bold uppercase text-white bg-brand-blue px-2 py-0.5 rounded-md">Tersedia</span>
+                    <span class="text-brand-blue font-bold text-xs group-hover:translate-x-0.5 transition-transform">→</span>
+                  </div>
+                  <div class="font-extrabold text-xs sm:text-sm text-slate-900 mt-1.5">Sistem Informasi</div>
+                  <div class="text-[11px] text-slate-500">7 Mata Kuliah (20 SKS)</div>
+                </button>
+
+                <button onclick="selectJurusan('IK')" id="hero-strip-ik" class="p-3 rounded-2xl bg-white border-2 border-brand-red/70 hover:border-brand-red shadow-sm text-left hover:bg-red-50/40 transition-all group">
+                  <div class="flex items-center justify-between">
+                    <span class="text-[10px] font-mono font-bold uppercase text-white bg-brand-red px-2 py-0.5 rounded-md">Tersedia</span>
+                    <span class="text-brand-red font-bold text-xs group-hover:translate-x-0.5 transition-transform">→</span>
+                  </div>
+                  <div class="font-extrabold text-xs sm:text-sm text-slate-900 mt-1.5">Ilmu Komputer</div>
+                  <div class="text-[11px] text-slate-500">6 Mata Kuliah (18 SKS)</div>
+                </button>
+
+                <button onclick="selectJurusan('KA')" class="p-3 rounded-2xl bg-white/80 border border-slate-200 text-left hover:bg-white transition-all opacity-80">
+                  <div class="flex items-center justify-between">
+                    <span class="text-[10px] font-mono font-semibold uppercase text-slate-500 bg-slate-100 border border-slate-200 px-2 py-0.5 rounded-md">Segera</span>
+                  </div>
+                  <div class="font-bold text-xs sm:text-sm text-slate-700 mt-1.5">Kecerdasan Artifisial</div>
+                  <div class="text-[11px] text-slate-400">Kurikulum AI UI</div>
+                </button>
+              </div>
+
             </div>
           </div>
 
         </div>
 
-        <!-- Bottom Feature Overview Cards: ARSITEKTUR 4 HALAMAN -->
-        <div class="mt-16 pt-10 border-t border-slate-200">
+        <!-- Bottom Feature Overview Cards: Arsitektur 4 Halaman -->
+        <div class="mt-12 pt-10 border-t border-slate-200">
           <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-6 gap-2">
             <div>
               <span class="text-xs font-mono uppercase tracking-widest text-brand-red font-extrabold">Arsitektur 4 Halaman PacilianKuat</span>
-              <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900 mt-1">Alur evaluasi nilai &amp; penentuan strategi belajar</h2>
+              <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900 mt-1">Mendukung Kurikulum Sistem Informasi &amp; Ilmu Komputer</h2>
             </div>
-            <p class="text-xs text-slate-500">Semua perubahan nilai &amp; bobot tersinkronisasi otomatis di seluruh halaman.</p>
+            <p class="text-xs text-slate-500">Data nilai dan bobot kontrak kuliah disimpan terpisah per jurusan agar tidak saling mencampur.</p>
           </div>
 
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <!-- Halaman 1 -->
-            <div onclick="selectJurusan('si')" class="cursor-pointer bg-white rounded-2xl p-5 border border-slate-200 hover:border-brand-blue card-lift">
-              <div class="w-9 h-9 rounded-xl bg-blue-100 text-brand-blue font-mono font-extrabold text-xs flex items-center justify-center mb-3.5">01</div>
-              <h3 class="font-extrabold text-slate-900 text-sm">Jurusan (Sistem Informasi)</h3>
-              <p class="text-xs text-slate-500 mt-1.5 leading-relaxed">Pantau status keamanan 7 mata kuliah Semester 1 (20 SKS) beserta syarat nilai minimal untuk mencapai target.</p>
+            <!-- Step 1 -->
+            <div onclick="navigateTo('jurusan-si')" class="cursor-pointer bg-white rounded-2xl p-5 border border-slate-200 hover:border-brand-blue card-lift">
+              <div class="w-8 h-8 rounded-lg bg-blue-100 text-brand-blue font-mono font-extrabold text-xs flex items-center justify-center mb-3">01</div>
+              <h3 class="font-extrabold text-slate-900 text-sm">Dashboard MK per Jurusan</h3>
+              <p class="text-xs text-slate-500 mt-1 leading-relaxed">Beralih instan antara <strong>Sistem Informasi (7 MK • 20 SKS)</strong> dan <strong>Ilmu Komputer (6 MK • 18 SKS termasuk PSD)</strong>.</p>
             </div>
-            <!-- Halaman 2 -->
+            <!-- Step 2 -->
             <div onclick="navigateTo('hitung')" class="cursor-pointer bg-white rounded-2xl p-5 border border-slate-200 hover:border-brand-red card-lift">
-              <div class="w-9 h-9 rounded-xl bg-red-100 text-brand-red font-mono font-extrabold text-xs flex items-center justify-center mb-3.5">02</div>
-              <h3 class="font-extrabold text-slate-900 text-sm">Input &amp; Hitung Nilai MK</h3>
-              <p class="text-xs text-slate-500 mt-1.5 leading-relaxed">Masukkan nilai komponen yang sudah keluar, lihat tabungan poin, dan cek rata-rata minimal di sisa bobot.</p>
+              <div class="w-8 h-8 rounded-lg bg-red-100 text-brand-red font-mono font-extrabold text-xs flex items-center justify-center mb-3">02</div>
+              <h3 class="font-extrabold text-slate-900 text-sm">Input Multi-Nilai &amp; Advisor</h3>
+              <p class="text-xs text-slate-500 mt-1 leading-relaxed">Input 8x Quiz/Lab PSD atau Kuis Kalkulus sekaligus (cth: <code class="text-brand-blue font-bold">100, 80, 93, 85</code>). Rata-rata dihitung otomatis.</p>
             </div>
-            <!-- Halaman 3 -->
+            <!-- Step 3 -->
             <div onclick="navigateTo('simulasi')" class="cursor-pointer bg-white rounded-2xl p-5 border border-slate-200 hover:border-brand-blue card-lift">
-              <div class="w-9 h-9 rounded-xl bg-blue-100 text-brand-blue font-mono font-extrabold text-xs flex items-center justify-center mb-3.5">03</div>
-              <h3 class="font-extrabold text-slate-900 text-sm">Simulasi IPK 8 Semester</h3>
-              <p class="text-xs text-slate-500 mt-1.5 leading-relaxed">Input IPS semester saat ini dan hitung berapa IPS yang harus diraih pada semester sisanya sesuai target IPK.</p>
+              <div class="w-8 h-8 rounded-lg bg-blue-100 text-brand-blue font-mono font-extrabold text-xs flex items-center justify-center mb-3">03</div>
+              <h3 class="font-extrabold text-slate-900 text-sm">Simulasi Target IPK 8 Semester</h3>
+              <p class="text-xs text-slate-500 mt-1 leading-relaxed">Tarik IPS Semester 1 otomatis sesuai SKS jurusan aktif (20 SKS SI / 18 SKS Ilkom) menuju Cum Laude.</p>
             </div>
-            <!-- Halaman 4 -->
+            <!-- Step 4 -->
             <div onclick="navigateTo('bobot')" class="cursor-pointer bg-white rounded-2xl p-5 border border-slate-200 hover:border-brand-red card-lift">
-              <div class="w-9 h-9 rounded-xl bg-red-100 text-brand-red font-mono font-extrabold text-xs flex items-center justify-center mb-3.5">04</div>
-              <h3 class="font-extrabold text-slate-900 text-sm">Kontrak &amp; Bobot Penilaian</h3>
-              <p class="text-xs text-slate-500 mt-1.5 leading-relaxed">Sesuaikan daftar komponen penilaian dan bobot persentase masing-masing mata kuliah sesuai kontrak kuliah.</p>
+              <div class="w-8 h-8 rounded-lg bg-red-100 text-brand-red font-mono font-extrabold text-xs flex items-center justify-center mb-3">04</div>
+              <h3 class="font-extrabold text-slate-900 text-sm">Kontrak &amp; Bobot Terisolasi</h3>
+              <p class="text-xs text-slate-500 mt-1 leading-relaxed">Atur bobot PSD untuk Ilkom atau Manbis &amp; Kombistek untuk SI tanpa saling mengganggu perhitungan jurusan lain.</p>
             </div>
           </div>
         </div>
@@ -426,38 +780,55 @@
     </section>
 
     <!-- ========================================================================
-         HALAMAN JURUSAN -> SISTEM INFORMASI (Status Keamanan 7 MK)
+         PAGE 2: DASHBOARD JURUSAN (Supports BOTH Sistem Informasi & Ilmu Komputer)
          ======================================================================== -->
     <section id="page-jurusan-si" class="page-section py-8">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
 
-        <!-- Top Summary Header Banner (4 Metric Cards in Blue & Red Theme) -->
+        <!-- Segmented Major Switcher Banner -->
+        <div class="bg-white rounded-2xl p-4 sm:px-6 border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div class="flex items-center gap-3">
+            <span class="text-xs font-extrabold uppercase tracking-wider text-slate-400">Pilih Kurikulum Jurusan:</span>
+            <div class="inline-flex p-1 rounded-xl bg-slate-100 border border-slate-200">
+              <button onclick="switchMajor('SI')" id="tab-major-si" class="px-4 py-2 rounded-lg text-xs font-extrabold transition-all bg-brand-blue text-white shadow-sm">
+                💻 Sistem Informasi (7 MK • 20 SKS)
+              </button>
+              <button onclick="switchMajor('IK')" id="tab-major-ik" class="px-4 py-2 rounded-lg text-xs font-extrabold transition-all text-slate-600 hover:text-brand-red">
+                ⚙️ Ilmu Komputer (6 MK • 18 SKS)
+              </button>
+            </div>
+          </div>
+          <div class="text-xs text-slate-500 flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+            <span id="dashboard-isolation-note">Profil nilai &amp; bobot terisolasi khusus untuk Sistem Informasi</span>
+          </div>
+        </div>
+
+        <!-- Top Summary Header Banner -->
         <div class="bg-white rounded-2xl p-5 sm:p-6 border border-slate-200 shadow-sm">
           <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-center">
             
             <!-- Left Title Info -->
-            <div class="lg:col-span-4 space-y-1.5">
-              <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-brand-blue text-xs font-extrabold">
-                <span>🎓 Jurusan: Sistem Informasi</span>
+            <div class="lg:col-span-4 space-y-1">
+              <div id="si-prodi-badge" class="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-blue-50 border border-blue-200 text-brand-blue text-xs font-bold">
+                <span>🎓 Program Studi Sistem Informasi</span>
               </div>
               <h1 class="text-2xl font-extrabold tracking-tight">
-                <span class="text-brand-blue">Pacilian</span><span class="text-brand-red">Kuat</span>
+                <span class="text-brand-blue">Pacilian</span><span class="text-brand-red">Kuat</span> <span class="text-slate-900">Dashboard</span>
               </h1>
-              <p class="text-xs text-slate-500 font-medium">Evaluasi Keamanan Nilai &amp; Strategi Belajar per Mata Kuliah</p>
+              <p id="si-prodi-subtitle" class="text-xs text-slate-500">Evaluasi Keamanan Nilai &amp; Target IPK — Kurikulum Semester 1</p>
             </div>
 
             <!-- 4 Metric Summary Cards -->
             <div class="lg:col-span-8 grid grid-cols-2 sm:grid-cols-4 gap-3">
-              <!-- Card 1: Total MK -->
               <div class="bg-slate-50 rounded-xl p-3.5 border border-slate-200">
                 <div class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Total Mata Kuliah Aktif</div>
                 <div class="mt-1.5 flex items-baseline gap-1.5">
-                  <span class="t-num text-xl font-extrabold text-slate-900">7 MK</span>
-                  <span class="text-xs text-slate-500 font-medium">(20 SKS)</span>
+                  <span id="si-total-mk-count" class="t-num text-xl font-extrabold text-slate-900">7 MK</span>
+                  <span id="si-total-sks-count" class="text-xs text-slate-500 font-medium">(20 SKS)</span>
                 </div>
               </div>
 
-              <!-- Card 2: Estimasi IPS Berjalan -->
               <div class="bg-blue-50/50 rounded-xl p-3.5 border border-blue-200">
                 <div class="text-[10px] font-bold uppercase tracking-wider text-brand-blue">Estimasi IPS Berjalan</div>
                 <div class="mt-1.5 flex items-baseline gap-1">
@@ -466,7 +837,6 @@
                 </div>
               </div>
 
-              <!-- Card 3: IPK Simulasi -->
               <div class="bg-slate-50 rounded-xl p-3.5 border border-slate-200">
                 <div id="si-sim-ipk-label" class="text-[10px] font-bold uppercase tracking-wider text-slate-400">IPK Simulasi (0 Smt)</div>
                 <div class="mt-1.5 flex items-baseline gap-1">
@@ -474,7 +844,6 @@
                 </div>
               </div>
 
-              <!-- Card 4: Target IPS Smt Depan -->
               <div class="bg-red-50/60 rounded-xl p-3.5 border border-red-200">
                 <div id="si-target-header-label" class="text-[10px] font-bold uppercase tracking-wider text-brand-red">Target IPS Smt Depan (Utk IPK 3.70)</div>
                 <div class="mt-1.5 flex items-center gap-2">
@@ -487,21 +856,21 @@
           </div>
         </div>
 
-        <!-- Sub-Toolbar: Title + Global Setting Target Nilai MK + Quick Demo Button -->
+        <!-- Sub-Toolbar: Title + Global Setting Target Nilai MK -->
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pt-1">
           <div class="flex items-center gap-3">
             <div class="w-1.5 h-7 rounded-full bg-brand-red"></div>
             <div>
               <h2 class="text-lg sm:text-xl font-extrabold text-slate-900 flex items-center gap-2">
                 <span>Status Keamanan Nilai per Mata Kuliah</span>
-                <span class="text-sm font-semibold text-slate-400">(7 MK - 20 SKS)</span>
+                <span id="si-section-subtitle-count" class="text-sm font-semibold text-slate-400">(7 MK - 20 SKS)</span>
               </h2>
             </div>
           </div>
 
           <div class="flex flex-wrap items-center gap-3">
-            <button onclick="loadDemoData()" class="px-3.5 py-2 rounded-xl bg-blue-50 hover:bg-blue-100 text-brand-blue border border-blue-200 text-xs font-bold transition-colors">
-              ✨ Isi Contoh Nilai
+            <button onclick="loadDemoData()" class="px-3.5 py-2 rounded-xl bg-red-50 hover:bg-red-100 text-brand-red border border-red-200 text-xs font-bold transition-colors">
+              ✨ Isi Contoh Multi-Nilai
             </button>
 
             <div class="flex items-center gap-2 bg-white px-3.5 py-2 rounded-xl border border-slate-200 shadow-sm">
@@ -518,39 +887,41 @@
           </div>
         </div>
 
-        <!-- 7 Course Cards Grid -->
-        <div id="si-courses-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-          <!-- Populated by renderSICoursesGrid() -->
-        </div>
+        <!-- Course Cards Grid -->
+        <div id="si-courses-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"></div>
 
       </div>
     </section>
 
     <!-- ========================================================================
-         HALAMAN INPUT NILAI MK / KALKULATOR KOMPONEN & TARGET ADVISOR
+         PAGE 3: INPUT & HITUNG NILAI MK (WITH MULTI-VALUE GRADE INPUT & MAJOR FILTER)
          ======================================================================== -->
     <section id="page-hitung" class="page-section py-8">
       <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
 
-        <!-- Top Course Switcher Bar -->
-        <div class="bg-white rounded-2xl p-4 sm:px-6 border border-slate-200 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div class="flex items-center gap-3">
-            <button onclick="navigateTo('jurusan-si')" class="px-3.5 py-2 rounded-xl bg-slate-50 hover:bg-blue-50 text-brand-blue border border-slate-200 text-xs font-bold flex items-center gap-1.5 transition-colors">
+        <!-- Top Course Switcher & Major Switcher Bar -->
+        <div class="bg-white rounded-2xl p-4 sm:px-6 border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div class="flex flex-wrap items-center gap-2.5">
+            <button onclick="navigateTo('jurusan-si')" class="px-3.5 py-2 rounded-xl bg-slate-50 hover:bg-blue-50 text-slate-700 hover:text-brand-blue border border-slate-200 text-xs font-bold flex items-center gap-1.5 transition-colors">
               <span>←</span>
-              <span>Kembali ke Daftar MK Sistem Informasi</span>
+              <span id="calc-back-major-label">Daftar MK Sistem Informasi</span>
             </button>
-            <div class="hidden sm:block h-5 w-[1px] bg-slate-200"></div>
-            <span class="text-xs font-bold text-brand-red bg-red-50 px-3 py-1 rounded-full border border-red-200">
-              Kalkulator Komponen Nilai
-            </span>
+
+            <div class="inline-flex p-1 rounded-xl bg-slate-100 border border-slate-200">
+              <button onclick="switchMajor('SI')" id="calc-tab-si" class="px-3 py-1.5 rounded-lg text-[11px] font-extrabold transition-all bg-brand-blue text-white">
+                SI (7 MK)
+              </button>
+              <button onclick="switchMajor('IK')" id="calc-tab-ik" class="px-3 py-1.5 rounded-lg text-[11px] font-extrabold transition-all text-slate-600 hover:text-brand-red">
+                Ilkom (6 MK)
+              </button>
+            </div>
           </div>
 
-          <!-- Dropdown Mata Kuliah Terpilih -->
-          <div class="flex items-center gap-3 bg-blue-50/60 px-4 py-2 rounded-xl border border-blue-200">
+          <!-- Dropdown Mata Kuliah Terpilih (Filtered by Active Major!) -->
+          <div class="flex items-center gap-3 bg-blue-50/50 px-4 py-2 rounded-xl border border-blue-200">
             <div>
-              <div class="text-[10px] font-bold uppercase tracking-wider text-brand-blue">Mata Kuliah Terpilih</div>
+              <div id="calc-dropdown-major-tag" class="text-[10px] font-bold uppercase tracking-wider text-brand-blue">Mata Kuliah Terpilih (SI)</div>
               <select id="calc-course-select" onchange="selectCourseForCalc(this.value)" class="text-sm font-extrabold text-slate-900 bg-transparent focus:outline-none cursor-pointer pr-2">
-                <!-- Populated dynamically -->
               </select>
             </div>
           </div>
@@ -559,7 +930,7 @@
         <!-- Main Two-Column Calculator & Target Advisor Layout -->
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
           
-          <!-- Left Column: Input Nilai Komponen (7 cols) -->
+          <!-- Left Column: Multi-Score Component Input (7 cols) -->
           <div class="lg:col-span-7 bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
             
             <!-- Course Header -->
@@ -567,37 +938,37 @@
               <div>
                 <h1 id="calc-course-title" class="text-xl sm:text-2xl font-extrabold text-slate-900">Dasar-Dasar Pemrograman 1</h1>
                 <p id="calc-course-meta" class="text-xs text-slate-500 font-medium mt-1">Semester 1 • Kode: CS101 • 4 SKS</p>
-                <p id="calc-course-desc" class="text-xs text-brand-blue font-semibold mt-1"></p>
               </div>
               <span id="calc-total-weight-badge" class="t-num text-xs font-bold px-3 py-1.5 rounded-full bg-blue-50 text-brand-blue border border-blue-200 shrink-0">
                 Total Bobot: 105%
               </span>
             </div>
 
-            <!-- Info Callout Box -->
+            <!-- Multi-Value Instruction Callout Box -->
             <div class="px-6 pt-5">
-              <div class="bg-blue-50/60 border border-blue-200/80 rounded-xl p-3.5 flex items-start gap-3">
-                <div class="w-5 h-5 rounded-full bg-brand-blue text-white text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">i</div>
-                <p class="text-xs text-slate-700 leading-relaxed">
-                  Masukkan nilai asli (<strong>0–100</strong>) pada setiap komponen. Sistem akan otomatis menghitung kontribusi poin terhadap nilai akhir berdasarkan bobot yang telah diatur di halaman <button onclick="navigateTo('bobot')" class="text-brand-blue font-extrabold underline">Kontrak &amp; Bobot Penilaian</button>.
-                </p>
+              <div class="bg-blue-50/70 border border-blue-200/90 rounded-xl p-4 flex items-start gap-3">
+                <div class="w-6 h-6 rounded-full bg-brand-blue text-white text-xs font-extrabold flex items-center justify-center shrink-0 mt-0.5">i</div>
+                <div class="text-xs text-slate-700 leading-relaxed space-y-1">
+                  <p class="font-bold text-brand-blue">Mendukung Input Banyak Nilai Sekaligus (Multi-Nilai)!</p>
+                  <p>
+                    Ketik <strong>1 nilai</strong> (cth: <code class="bg-white px-1.5 py-0.5 rounded border border-blue-200 font-mono font-bold text-slate-900">85</code>) atau <strong>banyak nilai dipisah koma</strong> untuk kuis/lab/tugas berulang seperti 8x Quiz PSD atau Kuis Kalkulus (cth: <code class="bg-white px-1.5 py-0.5 rounded border border-blue-200 font-mono font-bold text-brand-red">100, 80, 93, 85</code>). Sistem otomatis menghitung <strong>rata-rata</strong> dan kontribusi poinnya.
+                  </p>
+                </div>
               </div>
             </div>
 
             <!-- Component Rows Container -->
-            <div id="calc-components-list" class="p-6 space-y-4">
-              <!-- Populated by renderCalculatorView() -->
-            </div>
+            <div id="calc-components-list" class="p-6 space-y-5"></div>
 
             <!-- Bottom Action Bar -->
             <div class="px-6 py-4 bg-slate-50 border-t border-slate-200 flex flex-wrap items-center justify-between gap-3">
               <div class="flex items-center gap-3">
                 <button onclick="resetCurrentCourseGrades()" class="text-xs font-bold text-slate-500 hover:text-brand-red flex items-center gap-1.5 transition-colors">
-                  <span>↺ Reset Input</span>
+                  <span>↺ Reset Input MK Ini</span>
                 </button>
                 <span class="text-slate-300">|</span>
                 <button onclick="fillSampleGradesForCurrentCourse()" class="text-xs font-bold text-brand-blue hover:underline">
-                  ✨ Isi Contoh Nilai MK Ini
+                  ✨ Isi Contoh Multi-Nilai (Kuis/Lab)
                 </button>
               </div>
 
@@ -650,17 +1021,15 @@
                   <span class="w-2.5 h-2.5 rounded-full bg-brand-red"></span>
                   <span>Target Advisor</span>
                 </div>
-                <span class="text-[11px] font-mono text-slate-400">Skala Nilai Fasilkom</span>
+                <span class="text-[11px] font-mono text-slate-400">Skala Fasilkom UI</span>
               </div>
 
               <p id="advisor-subtitle" class="text-xs italic text-slate-500 leading-relaxed">
-                "Berapa nilai rata-rata yang harus Anda dapatkan di sisa komponen (105%) untuk mencapai target nilai akhir?"
+                "Berapa nilai rata-rata yang harus Anda dapatkan di sisa komponen untuk mencapai target nilai akhir?"
               </p>
 
-              <!-- 5 Grade Targets Progress List (A, A-, B+, B, C) -->
-              <div id="advisor-targets-list" class="space-y-3.5 pt-1">
-                <!-- Populated by renderCalculatorView() -->
-              </div>
+              <!-- 5 Grade Targets Progress List -->
+              <div id="advisor-targets-list" class="space-y-3.5 pt-1"></div>
 
               <!-- Dynamic Bottom Alert Box -->
               <div id="advisor-alert-box" class="mt-4 rounded-xl p-4 bg-red-50 border border-red-200">
@@ -681,7 +1050,7 @@
     </section>
 
     <!-- ========================================================================
-         HALAMAN SIMULASI IPK — TARGET IPK 8 SEMESTER
+         PAGE 4: SIMULASI IPK — TARGET IPK 8 SEMESTER
          ======================================================================== -->
     <section id="page-simulasi" class="page-section py-8">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
@@ -690,48 +1059,51 @@
         <div class="bg-white rounded-2xl p-5 sm:px-6 border border-slate-200 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
             <span class="text-xs font-bold text-brand-blue bg-blue-50 px-3 py-1 rounded-full border border-blue-200">
-              Simulasi Target IPK 8 Semester
+              Perencanaan Karir Akademik 8 Semester
             </span>
-            <h1 class="text-xl sm:text-2xl font-extrabold text-slate-900 mt-2">Perencanaan IPS &amp; Target IPK Kelulusan</h1>
+            <h1 class="text-xl sm:text-2xl font-extrabold text-slate-900 mt-2">Simulasi Target IPK &amp; Strategi Beban SKS</h1>
           </div>
 
-          <!-- Editable Target IPK Pill -->
-          <div class="flex items-center gap-3 bg-brand-blue text-white px-4 py-2.5 rounded-2xl shadow-sm self-start sm:self-auto">
-            <span class="text-[11px] font-mono uppercase tracking-wider text-blue-100 font-bold">TARGET IPK:</span>
-            <input id="sim-target-ipk-input" type="number" step="0.05" min="2.00" max="4.00" value="3.70" onchange="handleTargetIPKChange(this.value)" class="t-num w-20 bg-white text-brand-red font-extrabold text-base px-2.5 py-1 rounded-lg border border-blue-300 focus:outline-none text-center" />
+          <div class="flex flex-wrap items-center gap-3">
+            <!-- Major Switcher inside Simulasi -->
+            <div class="inline-flex p-1 rounded-xl bg-slate-100 border border-slate-200">
+              <button onclick="switchMajor('SI')" id="sim-tab-si" class="px-3 py-1.5 rounded-lg text-xs font-extrabold transition-all bg-brand-blue text-white">
+                SI (20 SKS)
+              </button>
+              <button onclick="switchMajor('IK')" id="sim-tab-ik" class="px-3 py-1.5 rounded-lg text-xs font-extrabold transition-all text-slate-600 hover:text-brand-red">
+                Ilkom (18 SKS)
+              </button>
+            </div>
+
+            <div class="flex items-center gap-3 bg-slate-900 text-white px-4 py-2 rounded-2xl shadow-sm">
+              <span class="text-[11px] font-mono uppercase tracking-wider text-slate-300">TARGET IPK:</span>
+              <input id="sim-target-ipk-input" type="number" step="0.05" min="2.00" max="4.00" value="3.70" onchange="handleTargetIPKChange(this.value)" class="t-num w-20 bg-slate-800 text-white font-extrabold text-base px-2.5 py-1 rounded-lg border border-brand-blue focus:outline-none text-center" />
+            </div>
           </div>
         </div>
 
-        <!-- Two Column Layout (Left: 8 Semesters Grid, Right: Strategy & Required IPS) -->
+        <!-- Two Column Layout -->
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
           
           <!-- Left Column: Daftar IPS & Beban SKS (7 cols) -->
           <div class="lg:col-span-7 bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-6">
-            
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-100">
               <div>
                 <h2 class="text-lg font-extrabold text-slate-900">Daftar IPS &amp; Beban SKS</h2>
-                <p class="text-xs text-slate-500 mt-0.5">Input nilai semester yang sudah atau sedang dijalani.</p>
+                <p class="text-xs text-slate-500 mt-0.5">Input nilai semester yang sudah atau akan dijalani.</p>
               </div>
 
-              <!-- Pull Semester 1 IPS from the 7 SI Courses -->
-              <button onclick="pullSmt1FromSICourses()" class="px-4 py-2.5 rounded-xl bg-blue-50 hover:bg-blue-100 text-brand-blue border border-blue-200 text-xs font-extrabold transition-all flex items-center gap-2 shrink-0 shadow-sm">
+              <button onclick="pullSmt1FromActiveMajor()" class="px-4 py-2.5 rounded-xl bg-blue-50 hover:bg-blue-100 text-brand-blue border border-blue-200 text-xs font-extrabold transition-all flex items-center gap-2 shrink-0 shadow-sm">
                 <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M5.5 13a3.5 3.5 0 01-.369-6.98 4 4 0 117.753-1.977A4.5 4.5 0 1113.5 13H11V9.413l1.293 1.293a1 1 0 001.414-1.414l-3-3a1 1 0 00-1.414 0l-3 3a1 1 0 001.414 1.414L9 9.414V13H5.5z"/></svg>
-                <span>Tarik IPS Smt 1 dari 7 MK Saat Ini</span>
+                <span id="sim-pull-btn-label">Tarik IPS Smt 1 dari 7 MK SI Saat Ini</span>
               </button>
             </div>
 
-            <!-- 8 Semester Input Cards Grid -->
-            <div id="sim-semesters-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <!-- Populated by renderSimulasiIPKView() -->
-            </div>
-
+            <div id="sim-semesters-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-4"></div>
           </div>
 
-          <!-- Right Column: Metrics, Strategi Kejar Target, & Tabel Predikat (5 cols) -->
+          <!-- Right Column: Metrics & Strategy (5 cols) -->
           <div class="lg:col-span-5 space-y-5">
-            
-            <!-- 3 Mini Metric Cards -->
             <div class="grid grid-cols-3 gap-3">
               <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm">
                 <div class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Smt Selesai</div>
@@ -758,42 +1130,38 @@
               </div>
             </div>
 
-            <!-- Card: STRATEGI KEJAR TARGET -->
+            <!-- Strategi Kejar Target -->
             <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-4">
               <div class="flex items-center gap-2 text-xs font-extrabold uppercase tracking-wider text-slate-700">
                 <span class="text-base">♟️</span>
                 <span>Strategi Kejar Target</span>
               </div>
 
-              <!-- Scenario 1: Flash Strike -->
               <div class="rounded-xl p-4 bg-blue-50/70 border-l-4 border-brand-blue flex items-start gap-3.5">
                 <div class="w-7 h-7 rounded-full bg-brand-blue text-white font-mono font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">1</div>
                 <div>
                   <h3 class="text-xs font-extrabold text-slate-900">Scenario: "Flash Strike"</h3>
                   <p id="sim-strategy-flash" class="text-xs text-slate-600 mt-1 leading-relaxed">
-                    Tembus langsung IPK <strong>3.70</strong> di Semester 1 ini. Membutuhkan rata-rata nilai <strong class="text-brand-blue underline">A (4.0)</strong> di sebagian besar MK utama.
+                    Tembus langsung IPK <strong>3.70</strong> di semester terdekat. Membutuhkan rata-rata nilai <strong class="text-brand-blue underline">A (4.0)</strong> di sebagian besar MK utama.
                   </p>
                 </div>
               </div>
 
-              <!-- Scenario 2: Balanced Growth -->
               <div class="rounded-xl p-4 bg-red-50/70 border-l-4 border-brand-red flex items-start gap-3.5">
                 <div class="w-7 h-7 rounded-full bg-brand-red text-white font-mono font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">2</div>
                 <div>
                   <h3 class="text-xs font-extrabold text-slate-900">Scenario: "Balanced Growth"</h3>
                   <p id="sim-strategy-balanced" class="text-xs text-slate-600 mt-1 leading-relaxed">
-                    Cicil rata di 8 semester. Anda butuh konsisten meraih <strong>IPS 3.70</strong> setiap semester untuk lulus sesuai target.
+                    Cicil rata di sisa semester. Anda butuh konsisten meraih <strong>IPS 3.70</strong> setiap semester untuk lulus dengan predikat Pujian.
                   </p>
                 </div>
               </div>
             </div>
 
-            <!-- Card: TARGET RATA-RATA IPS DI SISA SMT -->
+            <!-- Target Rata-Rata IPS di Sisa Smt -->
             <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-4">
-              <div class="flex items-center justify-between">
-                <div class="text-xs font-extrabold uppercase tracking-wider text-slate-700">
-                  Target Rata-Rata IPS di Sisa Smt
-                </div>
+              <div class="text-xs font-extrabold uppercase tracking-wider text-slate-700">
+                Target Rata-Rata IPS di Sisa Smt
               </div>
 
               <div class="divide-y divide-slate-100 text-xs">
@@ -802,16 +1170,14 @@
                   <span>IPS Perlu Diraih</span>
                 </div>
 
-                <!-- 3.85 Summa Cum Laude -->
                 <div class="py-3 flex items-center justify-between">
                   <div class="flex items-center gap-2">
-                    <span class="w-2 h-2 rounded-full bg-brand-red"></span>
+                    <span class="w-2 h-2 rounded-full bg-amber-400"></span>
                     <span class="font-bold text-slate-700">3.85 (Summa Cum Laude)</span>
                   </div>
                   <span id="req-ips-385" class="t-num font-extrabold text-slate-900">3.85</span>
                 </div>
 
-                <!-- User's Custom Target -->
                 <div class="py-3 px-3 -mx-3 bg-blue-50/80 border-l-4 border-brand-blue rounded-r-lg flex items-center justify-between">
                   <div class="flex items-center gap-2">
                     <span class="w-2 h-2 rounded-full bg-brand-blue"></span>
@@ -820,16 +1186,14 @@
                   <span id="req-ips-user" class="t-num font-extrabold text-brand-blue">3.70</span>
                 </div>
 
-                <!-- 3.51 Cum Laude -->
                 <div class="py-3 flex items-center justify-between">
                   <div class="flex items-center gap-2">
-                    <span class="w-2 h-2 rounded-full bg-blue-400"></span>
+                    <span class="w-2 h-2 rounded-full bg-brand-red"></span>
                     <span class="font-semibold text-slate-600">3.51 (Cum Laude)</span>
                   </div>
                   <span id="req-ips-351" class="t-num font-bold text-slate-700">3.51</span>
                 </div>
 
-                <!-- 3.00 Sangat Memuaskan -->
                 <div class="py-3 flex items-center justify-between">
                   <div class="flex items-center gap-2">
                     <span class="w-2 h-2 rounded-full bg-slate-300"></span>
@@ -844,16 +1208,14 @@
               </p>
             </div>
 
-            <!-- Bottom Reset & Save Buttons -->
             <div class="flex items-center justify-between pt-1">
               <button onclick="resetSimulasiIPK()" class="text-xs font-bold text-slate-500 hover:text-brand-red transition-colors">
                 ↺ Reset Rencana
               </button>
-              <button onclick="showToast('Perencanaan 8 Semester berhasil disimpan & disinkronkan!')" class="px-5 py-2.5 rounded-xl bg-brand-blue hover:bg-brand-blueDark text-white text-xs font-bold shadow-sm transition-colors">
+              <button onclick="showToast('Perencanaan 8 Semester berhasil disimpan!')" class="px-5 py-2.5 rounded-xl bg-brand-blue hover:bg-brand-blueDark text-white text-xs font-bold shadow-sm transition-colors">
                 Simpan Perencanaan 💾
               </button>
             </div>
-
           </div>
 
         </div>
@@ -862,21 +1224,34 @@
     </section>
 
     <!-- ========================================================================
-         HALAMAN KONTRAK & BOBOT PENILAIAN (Exact Match to New Screenshot)
+         PAGE 5: KONTRAK & BOBOT PENILAIAN (Isolated Per-Major Syllabus Manager)
          ======================================================================== -->
     <section id="page-bobot" class="page-section py-8">
-      <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
 
-        <!-- Header & Action Buttons (Matches "Manajemen Mata Kuliah & Bobot Kontrak Kuliah") -->
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
+        <!-- Header, Major Filter Tabs & Action Buttons -->
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
           <div>
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-brand-blue text-xs font-bold mb-2">
+              <span>🔒 Isolasi Kontrak Kuliah per Program Studi</span>
+            </div>
             <h1 class="text-xl sm:text-2xl font-extrabold text-slate-900">Manajemen Mata Kuliah &amp; Bobot Kontrak Kuliah</h1>
-            <p class="text-xs sm:text-sm text-slate-500 mt-1">Anda dapat menyesuaikan nama komponen, persentase bobot, atau menambah komponen baru sesuai kontrak kuliah.</p>
+            <p class="text-xs text-slate-500 mt-1">Pilih tab jurusan di bawah untuk mengatur kontrak kuliah masing-masing prodi tanpa saling memengaruhi.</p>
           </div>
 
-          <div class="flex items-center gap-3 self-start sm:self-auto shrink-0">
+          <div class="flex flex-wrap items-center gap-3">
+            <!-- Segmented Major Switcher for Contract Weights -->
+            <div class="inline-flex p-1 rounded-xl bg-slate-100 border border-slate-200">
+              <button onclick="switchMajor('SI')" id="bobot-tab-si" class="px-4 py-2 rounded-lg text-xs font-extrabold transition-all bg-brand-blue text-white shadow-sm">
+                💻 Kontrak SI (7 MK)
+              </button>
+              <button onclick="switchMajor('IK')" id="bobot-tab-ik" class="px-4 py-2 rounded-lg text-xs font-extrabold transition-all text-slate-600 hover:text-brand-red">
+                ⚙️ Kontrak Ilkom (6 MK)
+              </button>
+            </div>
+
             <button onclick="resetAllWeightsToDefault()" class="px-4 py-2.5 rounded-xl bg-red-50 hover:bg-red-100 text-brand-red border border-red-200 text-xs font-bold transition-colors">
-              ↺ Reset ke Default
+              ↺ Reset Prodi Ini
             </button>
             <button onclick="showToast('Kontrak Kuliah & Bobot Penilaian berhasil disimpan!')" class="px-5 py-2.5 rounded-xl bg-brand-blue hover:bg-brand-blueDark text-white text-xs font-bold shadow-sm transition-colors">
               Simpan Perubahan 💾
@@ -884,21 +1259,21 @@
           </div>
         </div>
 
-        <!-- 7 Course Weight Editor Cards Grid (4 Columns on XL screens to match screenshot) -->
-        <div id="bobot-courses-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 items-start">
-          <!-- Populated by renderBobotView() -->
-        </div>
-
-        <!-- Bottom Synchronization Info Banner -->
-        <div class="bg-blue-50/70 border border-blue-200 rounded-2xl p-5 flex items-start gap-4">
-          <div class="w-8 h-8 rounded-xl bg-brand-blue text-white font-bold text-sm flex items-center justify-center shrink-0 mt-0.5">i</div>
-          <div>
-            <h3 class="text-sm font-extrabold text-slate-900">Informasi Sinkronisasi Real-Time</h3>
-            <p class="text-xs text-slate-600 mt-1 leading-relaxed">
-              Perubahan nama komponen maupun persentase bobot penilaian di halaman ini akan secara otomatis memperbarui perhitungan di halaman <strong>Jurusan (Sistem Informasi)</strong> dan <strong>Input Nilai MK</strong>. Mendukung bobot desimal (seperti <strong>7,5%</strong> atau <strong>2,5%</strong> pada Manajemen Bisnis) serta bobot ekstra (seperti <strong>105%</strong> pada Dasar-Dasar Pemrograman 1).
+        <!-- Architecture Explanation Banner: Answering how PSD vs Manbis/Kombistek are isolated -->
+        <div class="bg-gradient-to-r from-blue-50/90 via-white to-red-50/80 border border-blue-200 rounded-2xl p-5 flex items-start gap-4 shadow-sm">
+          <div class="w-9 h-9 rounded-xl bg-brand-blue text-white font-extrabold text-sm flex items-center justify-center shrink-0 mt-0.5">✓</div>
+          <div class="space-y-1">
+            <h3 class="text-sm font-extrabold text-slate-900">
+              Solusi Isolasi Kurikulum: <span id="bobot-banner-major-name" class="text-brand-blue">Sistem Informasi (7 MK • 20 SKS)</span>
+            </h3>
+            <p class="text-xs text-slate-600 leading-relaxed">
+              Setiap program studi memiliki ruang penyimpanan kontrak kuliah tersendiri. Mata kuliah <strong>Pengantar Sistem Digital (PSD)</strong> hanya muncul dan dihitung pada kurikulum <strong>Ilmu Komputer (18 SKS)</strong> sehingga <strong>sama sekali tidak memengaruhi</strong> mahasiswa Sistem Informasi. Sebaliknya, <strong>Manajemen Bisnis</strong> &amp; <strong>Komunikasi Bisnis dan Teknis</strong> hanya dihitung pada kurikulum <strong>Sistem Informasi (20 SKS)</strong>.
             </p>
           </div>
         </div>
+
+        <!-- Course Weight Editor Cards Grid (Filtered by Active Major) -->
+        <div id="bobot-courses-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"></div>
 
       </div>
     </section>
@@ -913,147 +1288,258 @@
       <div class="flex items-center gap-2">
         <span class="font-extrabold text-base"><span class="text-brand-blue">Pacilian</span><span class="text-brand-red">Kuat</span></span>
         <span>•</span>
-        <span>Tracking Nilai &amp; Strategi Belajar Mahasiswa</span>
+        <span>Bersama PandaKecil (Pacil) — Sistem Informasi &amp; Ilmu Komputer Fasilkom UI</span>
       </div>
       <div class="flex flex-wrap items-center gap-4 font-semibold">
         <button onclick="navigateTo('beranda')" class="hover:text-brand-blue">Beranda</button>
-        <button onclick="selectJurusan('si')" class="hover:text-brand-blue">Sistem Informasi</button>
-        <button onclick="navigateTo('hitung')" class="hover:text-brand-blue">Input Nilai MK</button>
+        <button onclick="selectJurusan('SI')" class="hover:text-brand-blue">Sistem Informasi</button>
+        <button onclick="selectJurusan('IK')" class="hover:text-brand-red">Ilmu Komputer</button>
         <button onclick="navigateTo('simulasi')" class="hover:text-brand-blue">Simulasi IPK</button>
-        <button onclick="navigateTo('bobot')" class="hover:text-brand-blue">Kontrak &amp; Bobot Penilaian</button>
+        <button onclick="navigateTo('bobot')" class="hover:text-brand-blue">Kontrak Kuliah</button>
       </div>
     </div>
   </footer>
 
-  <!-- ==========================================================================
-       TOAST NOTIFICATION CONTAINER
-       ========================================================================== -->
+  <!-- Toast Container -->
   <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
 
   <!-- ==========================================================================
-       UNIFIED REACTIVE APPLICATION LOGIC
+       APPLICATION LOGIC (ISOLATED MULTI-MAJOR + MULTI-SCORE + INTERACTIVE PACIL PARK)
        ========================================================================== -->
   <script>
     // --------------------------------------------------------------------------
-    // 1. EXACT UPDATED COURSE DATA & SYLLABUS WEIGHTS (From User's New Screenshot)
+    // 1. ISOLATED SYLLABUS DATA PER MAJOR ('SI' = 7 MK / 20 SKS, 'IK' = 6 MK / 18 SKS)
     // --------------------------------------------------------------------------
-    const DEFAULT_COURSES = [
-      {
-        id: 'ddp1',
-        code: 'CS101',
-        name: 'Dasar-Dasar Pemrograman 1',
-        shortName: 'Dasar-Dasar Pemrograman 1',
-        sks: 4,
-        semester: 1,
-        description: 'Total bobot 105% (termasuk ekstra 5% dari Tugas Proyek Akhir)',
-        components: [
-          { id: 'ddp_1', name: 'Praktikum Lab (closed book)', weight: 10, score: null },
-          { id: 'ddp_2', name: 'Kuis (closed book)', weight: 10, score: null },
-          { id: 'ddp_3', name: 'UTS (closed book)', weight: 30, score: null },
-          { id: 'ddp_4', name: 'UAS (closed book)', weight: 40, score: null },
-          { id: 'ddp_5', name: 'Tugas Proyek Akhir (boleh AI)', weight: 15, score: null }
-        ]
+    const DEFAULT_COURSES_BY_MAJOR = {
+      SI: [
+        {
+          id: 'ddp1',
+          code: 'CSGE601020',
+          name: 'Dasar-Dasar Pemrograman 1',
+          shortName: 'Dasar-Dasar Pemrograman 1',
+          sks: 4,
+          semester: 1,
+          description: 'Total bobot 105% (termasuk ekstra 5% dari Tugas Proyek Akhir)',
+          components: [
+            { id: 'ddp_1', name: 'Praktikum Lab (closed book)', weight: 10, rawInput: '' },
+            { id: 'ddp_2', name: 'Kuis (closed book)', weight: 10, rawInput: '' },
+            { id: 'ddp_3', name: 'UTS (closed book)', weight: 30, rawInput: '' },
+            { id: 'ddp_4', name: 'UAS (closed book)', weight: 40, rawInput: '' },
+            { id: 'ddp_5', name: 'Tugas Proyek Akhir (boleh AI)', weight: 15, rawInput: '' }
+          ]
+        },
+        {
+          id: 'kalkulus1',
+          code: 'CSGE601012',
+          name: 'Kalkulus 1',
+          shortName: 'Kalkulus 1',
+          sks: 3,
+          semester: 1,
+          description: 'Total 100% - Kuis, Tugas Individu/Kelompok, UTS & UAS',
+          components: [
+            { id: 'kal_1', name: 'Kuis', weight: 22, rawInput: '' },
+            { id: 'kal_2', name: 'Tugas Individu', weight: 8, rawInput: '' },
+            { id: 'kal_3', name: 'Tugas Kelompok', weight: 12, rawInput: '' },
+            { id: 'kal_4', name: 'UTS', weight: 29, rawInput: '' },
+            { id: 'kal_5', name: 'UAS', weight: 29, rawInput: '' }
+          ]
+        },
+        {
+          id: 'kombistek',
+          code: 'CSIE601011',
+          name: 'Komunikasi Bisnis dan Teknis',
+          shortName: 'Komunikasi Bisnis dan Teknis',
+          sks: 3,
+          semester: 1,
+          description: 'Total 100% - 5 Tugas Kelompok, CV, 3 Kuis & Keaktifan (Khusus SI)',
+          components: [
+            { id: 'kbt_1', name: 'Tugas Kelompok 1: Laporan Analisis', weight: 10, rawInput: '' },
+            { id: 'kbt_2', name: 'Tugas Kelompok 2: Infografis', weight: 10, rawInput: '' },
+            { id: 'kbt_3', name: 'Tugas Kelompok 3: Pesan Bisnis', weight: 10, rawInput: '' },
+            { id: 'kbt_4', name: 'Tugas Kelompok 4: Penulisan Proposal', weight: 10, rawInput: '' },
+            { id: 'kbt_5', name: 'Tugas Kelompok 5: Presentasi Akhir', weight: 20, rawInput: '' },
+            { id: 'kbt_6', name: 'Tugas Individu 1: Pembuatan CV', weight: 5, rawInput: '' },
+            { id: 'kbt_7', name: 'Kuis 1', weight: 10, rawInput: '' },
+            { id: 'kbt_8', name: 'Kuis 2', weight: 10, rawInput: '' },
+            { id: 'kbt_9', name: 'Kuis 3', weight: 10, rawInput: '' },
+            { id: 'kbt_10', name: 'Keaktifan Mahasiswa', weight: 5, rawInput: '' }
+          ]
+        },
+        {
+          id: 'manbis',
+          code: 'CSIE601012',
+          name: 'Manajemen Bisnis',
+          shortName: 'Manajemen Bisnis',
+          sks: 3,
+          semester: 1,
+          description: 'Total 100% - Kuis, UTS, Proyek Kelompok & Partisipasi (Khusus SI)',
+          components: [
+            { id: 'mb_1', name: 'Kuis 1', weight: 7.5, rawInput: '' },
+            { id: 'mb_2', name: 'Kuis 2', weight: 7.5, rawInput: '' },
+            { id: 'mb_3', name: 'UTS', weight: 25, rawInput: '' },
+            { id: 'mb_4', name: 'Tugas Kelompok: Business Plan', weight: 25, rawInput: '' },
+            { id: 'mb_5', name: 'Tugas Kelompok: Studi Kasus', weight: 20, rawInput: '' },
+            { id: 'mb_6', name: 'Partisipasi: Kehadiran Diskusi', weight: 2.5, rawInput: '' },
+            { id: 'mb_7', name: 'Partisipasi: Kahoot 12x (10 Terbaik)', weight: 7.5, rawInput: '' },
+            { id: 'mb_8', name: 'Partisipasi: Exercise & Tanya Jawab', weight: 5, rawInput: '' }
+          ]
+        },
+        {
+          id: 'matdis1',
+          code: 'CSGE601010',
+          name: 'Matematika Diskret 1',
+          shortName: 'Matematika Diskret 1',
+          sks: 3,
+          semester: 1,
+          description: 'Total 100% - Kuis 40% (Pre-class & Post-class) dan Ujian 60%',
+          components: [
+            { id: 'md_1', name: 'Pre-class Quiz (12 Terbaik)', weight: 12, rawInput: '' },
+            { id: 'md_2', name: 'Post-class Quiz (7 Terbaik)', weight: 28, rawInput: '' },
+            { id: 'md_3', name: 'UTS', weight: 30, rawInput: '' },
+            { id: 'md_4', name: 'UAS', weight: 30, rawInput: '' }
+          ]
+        },
+        {
+          id: 'agama',
+          code: 'UIGE600004',
+          name: 'MPK Agama',
+          shortName: 'MPK Agama',
+          sks: 2,
+          semester: 1,
+          description: 'Total 100% - Komponen dapat disesuaikan di Manajemen Bobot MK',
+          components: [
+            { id: 'ag_1', name: 'Tugas & Diskusi Kelas', weight: 40, rawInput: '' },
+            { id: 'ag_2', name: 'UTS / Proyek Tengah Semester', weight: 30, rawInput: '' },
+            { id: 'ag_3', name: 'UAS / Proyek Akhir Semester', weight: 30, rawInput: '' }
+          ]
+        },
+        {
+          id: 'inggris',
+          code: 'UIGE600003',
+          name: 'MPK Bahasa Inggris',
+          shortName: 'MPK Bahasa Inggris',
+          sks: 2,
+          semester: 1,
+          description: 'Total 100% - Fleksibel (Silakan input nilai per komponen / sesuaikan bobot)',
+          components: [
+            { id: 'en_1', name: 'Tugas, Latihan & Partisipasi', weight: 40, rawInput: '' },
+            { id: 'en_2', name: 'UTS / Kuis Evaluasi Tengah', weight: 30, rawInput: '' },
+            { id: 'en_3', name: 'UAS / Proyek Akhir Bahasa Inggris', weight: 30, rawInput: '' }
+          ]
+        }
+      ],
+
+      IK: [
+        {
+          id: 'psd',
+          code: 'CSGE601021',
+          name: 'Pengantar Sistem Digital',
+          shortName: 'Pengantar Sistem Digital (PSD)',
+          sks: 4,
+          semester: 1,
+          description: 'Total 100% - Tugas Mandiri (8x) 15%, Lab (8x) 15%, UTS 30%, UAS 35%, Quiz (8x) 5%',
+          components: [
+            { id: 'psd_1', name: 'Tugas Mandiri (8x)', weight: 15, rawInput: '' },
+            { id: 'psd_2', name: 'Lab (8x)', weight: 15, rawInput: '' },
+            { id: 'psd_3', name: 'UTS', weight: 30, rawInput: '' },
+            { id: 'psd_4', name: 'UAS', weight: 35, rawInput: '' },
+            { id: 'psd_5', name: 'Quiz (8x)', weight: 5, rawInput: '' }
+          ]
+        },
+        {
+          id: 'ddp1',
+          code: 'CSGE601020',
+          name: 'Dasar-Dasar Pemrograman 1',
+          shortName: 'Dasar-Dasar Pemrograman 1',
+          sks: 4,
+          semester: 1,
+          description: 'Total bobot 105% (termasuk ekstra 5% dari Tugas Proyek Akhir)',
+          components: [
+            { id: 'ddp_1', name: 'Praktikum Lab (closed book)', weight: 10, rawInput: '' },
+            { id: 'ddp_2', name: 'Kuis (closed book)', weight: 10, rawInput: '' },
+            { id: 'ddp_3', name: 'UTS (closed book)', weight: 30, rawInput: '' },
+            { id: 'ddp_4', name: 'UAS (closed book)', weight: 40, rawInput: '' },
+            { id: 'ddp_5', name: 'Tugas Proyek Akhir (boleh AI)', weight: 15, rawInput: '' }
+          ]
+        },
+        {
+          id: 'kalkulus1',
+          code: 'CSGE601012',
+          name: 'Kalkulus 1',
+          shortName: 'Kalkulus 1',
+          sks: 3,
+          semester: 1,
+          description: 'Total 100% - Kuis, Tugas Individu/Kelompok, UTS & UAS',
+          components: [
+            { id: 'kal_1', name: 'Kuis', weight: 22, rawInput: '' },
+            { id: 'kal_2', name: 'Tugas Individu', weight: 8, rawInput: '' },
+            { id: 'kal_3', name: 'Tugas Kelompok', weight: 12, rawInput: '' },
+            { id: 'kal_4', name: 'UTS', weight: 29, rawInput: '' },
+            { id: 'kal_5', name: 'UAS', weight: 29, rawInput: '' }
+          ]
+        },
+        {
+          id: 'matdis1',
+          code: 'CSGE601010',
+          name: 'Matematika Diskret 1',
+          shortName: 'Matematika Diskret 1',
+          sks: 3,
+          semester: 1,
+          description: 'Total 100% - Kuis 40% (Pre-class & Post-class) dan Ujian 60%',
+          components: [
+            { id: 'md_1', name: 'Pre-class Quiz (12 Terbaik)', weight: 12, rawInput: '' },
+            { id: 'md_2', name: 'Post-class Quiz (7 Terbaik)', weight: 28, rawInput: '' },
+            { id: 'md_3', name: 'UTS', weight: 30, rawInput: '' },
+            { id: 'md_4', name: 'UAS', weight: 30, rawInput: '' }
+          ]
+        },
+        {
+          id: 'agama',
+          code: 'UIGE600004',
+          name: 'MPK Agama',
+          shortName: 'MPK Agama',
+          sks: 2,
+          semester: 1,
+          description: 'Total 100% - Komponen dapat disesuaikan di Manajemen Bobot MK',
+          components: [
+            { id: 'ag_1', name: 'Tugas & Diskusi Kelas', weight: 40, rawInput: '' },
+            { id: 'ag_2', name: 'UTS / Proyek Tengah Semester', weight: 30, rawInput: '' },
+            { id: 'ag_3', name: 'UAS / Proyek Akhir Semester', weight: 30, rawInput: '' }
+          ]
+        },
+        {
+          id: 'inggris',
+          code: 'UIGE600003',
+          name: 'MPK Bahasa Inggris',
+          shortName: 'MPK Bahasa Inggris',
+          sks: 2,
+          semester: 1,
+          description: 'Total 100% - Fleksibel (Silakan input nilai per komponen / sesuaikan bobot)',
+          components: [
+            { id: 'en_1', name: 'Tugas, Latihan & Partisipasi', weight: 40, rawInput: '' },
+            { id: 'en_2', name: 'UTS / Kuis Evaluasi Tengah', weight: 30, rawInput: '' },
+            { id: 'en_3', name: 'UAS / Proyek Akhir Bahasa Inggris', weight: 30, rawInput: '' }
+          ]
+        }
+      ]
+    };
+
+    const MAJOR_META = {
+      SI: {
+        code: 'SI',
+        name: 'Sistem Informasi',
+        mkCount: 7,
+        totalSks: 20,
+        badgeColor: 'blue'
       },
-      {
-        id: 'kalkulus1',
-        code: 'MA101',
-        name: 'Kalkulus 1',
-        shortName: 'Kalkulus 1',
-        sks: 3,
-        semester: 1,
-        description: 'Total 100% - Kuis, Tugas Individu/Kelompok, UTS & UAS',
-        components: [
-          { id: 'kal_1', name: 'Kuis', weight: 22, score: null },
-          { id: 'kal_2', name: 'Tugas Individu', weight: 8, score: null },
-          { id: 'kal_3', name: 'Tugas Kelompok', weight: 12, score: null },
-          { id: 'kal_4', name: 'UTS', weight: 29, score: null },
-          { id: 'kal_5', name: 'UAS', weight: 29, score: null }
-        ]
-      },
-      {
-        id: 'kombistek',
-        code: 'SI101',
-        name: 'Komunikasi Bisnis dan Teknis',
-        shortName: 'Komunikasi Bisnis dan Teknis',
-        sks: 3,
-        semester: 1,
-        description: 'Total 100% - 5 Tugas Kelompok, CV, 3 Kuis & Keaktifan',
-        components: [
-          { id: 'kbt_1', name: 'Tugas Kelompok 1: Laporan', weight: 10, score: null },
-          { id: 'kbt_2', name: 'Tugas Kelompok 2: Infografis', weight: 10, score: null },
-          { id: 'kbt_3', name: 'Tugas Kelompok 3: Pesan Bisnis', weight: 10, score: null },
-          { id: 'kbt_4', name: 'Tugas Kelompok 4: Penulisan Proposal', weight: 10, score: null },
-          { id: 'kbt_5', name: 'Tugas Kelompok 5: Presentasi', weight: 20, score: null },
-          { id: 'kbt_6', name: 'Tugas Individu 1: Pembuatan CV', weight: 5, score: null },
-          { id: 'kbt_7', name: 'Kuis 1', weight: 10, score: null },
-          { id: 'kbt_8', name: 'Kuis 2', weight: 10, score: null },
-          { id: 'kbt_9', name: 'Kuis 3', weight: 10, score: null },
-          { id: 'kbt_10', name: 'Keaktifan Mahasiswa', weight: 5, score: null }
-        ]
-      },
-      {
-        id: 'manbis',
-        code: 'SI102',
-        name: 'Manajemen Bisnis',
-        shortName: 'Manajemen Bisnis',
-        sks: 3,
-        semester: 1,
-        description: 'Total 100% - Fokus pada Kuis, UTS, Proyek Kelompok & Partisipasi',
-        components: [
-          { id: 'mb_1', name: 'Kuis 1', weight: 7.5, score: null },
-          { id: 'mb_2', name: 'Kuis 2', weight: 7.5, score: null },
-          { id: 'mb_3', name: 'UTS', weight: 25, score: null },
-          { id: 'mb_4', name: 'Tugas Kelompok: Business Plan', weight: 25, score: null },
-          { id: 'mb_5', name: 'Tugas Kelompok: Studi Kasus', weight: 20, score: null },
-          { id: 'mb_6', name: 'Partisipasi: Kehadiran Diskusi', weight: 2.5, score: null },
-          { id: 'mb_7', name: 'Partisipasi: Kahoot 12x (10 Terbaik)', weight: 7.5, score: null },
-          { id: 'mb_8', name: 'Partisipasi: Exercise & Tanya Jawab', weight: 5, score: null }
-        ]
-      },
-      {
-        id: 'matdis1',
-        code: 'CS102',
-        name: 'Matematika Diskret 1',
-        shortName: 'Matematika Diskret 1',
-        sks: 3,
-        semester: 1,
-        description: 'Total 100% - Kuis 40% (Pre-class & Post-class) dan Ujian 60%',
-        components: [
-          { id: 'md_1', name: 'Pre-class Quiz (12 Terbaik)', weight: 12, score: null },
-          { id: 'md_2', name: 'Post-class Quiz (7 Terbaik)', weight: 28, score: null },
-          { id: 'md_3', name: 'UTS', weight: 30, score: null },
-          { id: 'md_4', name: 'UAS', weight: 30, score: null }
-        ]
-      },
-      {
-        id: 'agama',
-        code: 'UI101',
-        name: 'MPK Agama',
-        shortName: 'MPK Agama',
-        sks: 2,
-        semester: 1,
-        description: 'Total 100% - Komponen dapat disesuaikan di Manajemen Bobot MK',
-        components: [
-          { id: 'ag_1', name: 'Tugas & Diskusi Kelas', weight: 40, score: null },
-          { id: 'ag_2', name: 'UTS / Proyek Tengah Semester', weight: 30, score: null },
-          { id: 'ag_3', name: 'UAS / Proyek Akhir Semester', weight: 30, score: null }
-        ]
-      },
-      {
-        id: 'inggris',
-        code: 'UI102',
-        name: 'MPK Bahasa Inggris',
-        shortName: 'MPK Bahasa Inggris',
-        sks: 2,
-        semester: 1,
-        description: 'Total 100% - Fleksibel (Silakan input nilai per komponen / sesuaikan bobot)',
-        components: [
-          { id: 'en_1', name: 'Tugas, Latihan & Partisipasi', weight: 40, score: null },
-          { id: 'en_2', name: 'UTS / Kuis Evaluasi Tengah', weight: 30, score: null },
-          { id: 'en_3', name: 'UAS / Proyek Akhir Bahasa Inggris', weight: 30, score: null }
-        ]
+      IK: {
+        code: 'IK',
+        name: 'Ilmu Komputer',
+        mkCount: 6,
+        totalSks: 18,
+        badgeColor: 'red'
       }
-    ];
+    };
 
     const DEFAULT_SEMESTERS = [
       { smt: 1, ips: null, sks: 20 },
@@ -1066,29 +1552,39 @@
       { smt: 8, ips: null, sks: 20 }
     ];
 
-    // Unified App State
     let state = {
       currentPage: 'beranda',
-      selectedCourseId: 'ddp1',
-      globalTargetScore: 85, // Default A (Min. 85)
+      activeMajor: 'SI', // 'SI' or 'IK'
+      selectedCourseIdByMajor: {
+        SI: 'kalkulus1',
+        IK: 'psd'
+      },
+      globalTargetScore: 85,
       targetIPK: 3.70,
-      courses: JSON.parse(JSON.stringify(DEFAULT_COURSES)),
-      semesters: JSON.parse(JSON.stringify(DEFAULT_SEMESTERS))
+      coursesByMajor: JSON.parse(JSON.stringify(DEFAULT_COURSES_BY_MAJOR)),
+      semestersByMajor: {
+        SI: JSON.parse(JSON.stringify(DEFAULT_SEMESTERS)),
+        IK: JSON.parse(JSON.stringify(DEFAULT_SEMESTERS)).map((s, idx) => idx === 0 ? { ...s, sks: 18 } : s)
+      }
     };
 
-    // Helper to format weights nicely (e.g., 7.5 -> "7,5" or "7.5" without trailing zeros)
-    function formatWeight(num) {
-      const n = Number(parseFloat(num || 0).toFixed(2));
-      return n.toString().replace('.', ',');
+    // Helper getters for the currently active major
+    function getActiveCourses() {
+      return state.coursesByMajor[state.activeMajor];
     }
 
-    function parseFlexibleNumber(val) {
-      if (val === null || val === undefined || val === '') return NaN;
-      const normalized = String(val).replace(',', '.');
-      return parseFloat(normalized);
+    function getActiveSemesters() {
+      return state.semestersByMajor[state.activeMajor];
     }
 
-    // Fasilkom UI Standard Grade Thresholds
+    function getSelectedCourseId() {
+      return state.selectedCourseIdByMajor[state.activeMajor];
+    }
+
+    function setSelectedCourseId(courseId) {
+      state.selectedCourseIdByMajor[state.activeMajor] = courseId;
+    }
+
     const GRADE_THRESHOLDS = [
       { letter: 'A', min: 85, gp: 4.00 },
       { letter: 'A-', min: 80, gp: 3.70 },
@@ -1108,9 +1604,249 @@
       return { letter: 'E', min: 0, gp: 0.00 };
     }
 
+    function formatWeight(w) {
+      const num = parseFloat(w) || 0;
+      return Number.isInteger(num) ? num.toString() : num.toFixed(1).replace('.', ',');
+    }
+
     // --------------------------------------------------------------------------
-    // 2. NAVIGATION & DROPDOWN CONTROLLERS
+    // 2. MULTI-SCORE PARSER ENGINE (Parses "100, 80, 93, 85" -> array & average)
     // --------------------------------------------------------------------------
+    function parseMultiScores(rawInput) {
+      if (rawInput === null || rawInput === undefined) {
+        return { scores: [], avg: null };
+      }
+      const str = String(rawInput).trim();
+      if (!str) {
+        return { scores: [], avg: null };
+      }
+
+      const tokens = str.split(/[,;\s]+/).filter(Boolean);
+      const validScores = [];
+
+      tokens.forEach(token => {
+        const normalized = token.replace(',', '.');
+        const val = parseFloat(normalized);
+        if (!isNaN(val)) {
+          const clamped = Math.max(0, Math.min(100, val));
+          validScores.push(clamped);
+        }
+      });
+
+      if (validScores.length === 0) {
+        return { scores: [], avg: null };
+      }
+
+      const sum = validScores.reduce((acc, n) => acc + n, 0);
+      const avg = sum / validScores.length;
+      return { scores: validScores, avg };
+    }
+
+    // --------------------------------------------------------------------------
+    // 3. INTERACTIVE "PandaKecil (Pacil)" NATURE PARK CURSOR-FOLLOW & POSE ENGINE
+    // --------------------------------------------------------------------------
+    const pacilPhysics = {
+      x: 50,         // Current % X (12 to 88)
+      y: 64,         // Current % Y (28 to 82)
+      targetX: 50,
+      targetY: 64,
+      vx: 0,
+      vy: 0,
+      isDragging: false,
+      freeHoverMode: false, // false = click & hold cursor; true = follow cursor automatically
+      stepPhase: 0,
+      pose: 'idle',  // 'idle' | 'walk-right' | 'walk-left' | 'jump-up' | 'lying-down'
+      lastMoveTime: Date.now()
+    };
+
+    function togglePandaFollowMode(e) {
+      if (e) e.stopPropagation();
+      pacilPhysics.freeHoverMode = !pacilPhysics.freeHoverMode;
+      const label = document.getElementById('panda-mode-label');
+      const dot = document.getElementById('panda-mode-indicator');
+      if (pacilPhysics.freeHoverMode) {
+        label.textContent = 'Mode: Ikuti Kursor Otomatis';
+        dot.className = 'w-2 h-2 rounded-full bg-emerald-400 animate-ping';
+        showToast('PandaKecil (Pacil) sekarang langsung mengikuti gerakan kursor Anda!');
+      } else {
+        label.textContent = 'Mode: Klik & Tahan Kursor';
+        dot.className = 'w-2 h-2 rounded-full bg-amber-400';
+        showToast('Mode Klik & Tahan: Tekan dan arahkan kursor di taman untuk menggerakkan Pacil.');
+      }
+    }
+
+    function initPacilParkPhysics() {
+      const stage = document.getElementById('pacil-park-stage');
+      if (!stage) return;
+
+      function updateTargetFromPointer(clientX, clientY) {
+        const rect = stage.getBoundingClientRect();
+        const relX = ((clientX - rect.left) / rect.width) * 100;
+        const relY = ((clientY - rect.top) / rect.height) * 100;
+        pacilPhysics.targetX = Math.max(14, Math.min(86, relX));
+        pacilPhysics.targetY = Math.max(26, Math.min(84, relY));
+        pacilPhysics.lastMoveTime = Date.now();
+      }
+
+      stage.addEventListener('pointerdown', (e) => {
+        if (e.target.closest('button')) return;
+        pacilPhysics.isDragging = true;
+        updateTargetFromPointer(e.clientX, e.clientY);
+      });
+
+      stage.addEventListener('pointermove', (e) => {
+        if (pacilPhysics.isDragging || pacilPhysics.freeHoverMode) {
+          updateTargetFromPointer(e.clientX, e.clientY);
+        }
+      });
+
+      window.addEventListener('pointerup', () => {
+        pacilPhysics.isDragging = false;
+      });
+
+      // Physics & Pose Animation Loop (60fps)
+      function animatePacil() {
+        const dx = pacilPhysics.targetX - pacilPhysics.x;
+        const dy = pacilPhysics.targetY - pacilPhysics.y;
+
+        pacilPhysics.vx = dx * 0.12;
+        pacilPhysics.vy = dy * 0.12;
+
+        pacilPhysics.x += pacilPhysics.vx;
+        pacilPhysics.y += pacilPhysics.vy;
+
+        const speed = Math.hypot(pacilPhysics.vx, pacilPhysics.vy);
+        pacilPhysics.stepPhase += speed * 0.45;
+
+        const actor = document.getElementById('pacil-actor');
+        const shadow = document.getElementById('pacil-ground-shadow');
+        const bodyRig = document.getElementById('pacil-body-rig');
+        const svgUpright = document.getElementById('pacil-svg-upright');
+        const svgLying = document.getElementById('pacil-svg-lying');
+        const bubbleText = document.getElementById('pacil-bubble-text');
+        const coordsStatus = document.getElementById('pacil-coords-status');
+        const legLeft = document.getElementById('pacil-leg-left');
+        const legRight = document.getElementById('pacil-leg-right');
+        const armLeft = document.getElementById('pacil-arm-left');
+        const armRight = document.getElementById('pacil-arm-right');
+        const pupils = document.getElementById('pacil-pupils');
+
+        if (actor && shadow && bodyRig) {
+          // Position PandaKecil
+          actor.style.left = `${pacilPhysics.x}%`;
+          actor.style.top = `${pacilPhysics.y}%`;
+
+          // Position Ground Shadow underneath on the grass
+          const groundY = Math.max(pacilPhysics.y + 13, 73);
+          const heightFactor = Math.max(0.45, Math.min(1.15, (pacilPhysics.y - 20) / 55));
+          shadow.style.left = `${pacilPhysics.x}%`;
+          shadow.style.top = `${groundY}%`;
+          shadow.style.transform = `translate(-50%, -50%) scale(${heightFactor.toFixed(2)})`;
+
+          // Determine directional pose based on cursor target Y and horizontal velocity
+          const isLowOnGrass = pacilPhysics.y > 72 && speed < 0.75;
+          const isHighJumping = pacilPhysics.y < 43;
+          const isMovingRight = pacilPhysics.vx > 0.22;
+          const isMovingLeft = pacilPhysics.vx < -0.22;
+
+          if (isLowOnGrass) {
+            // TIDURAN / REBAHAN DI RUMPUT POSE
+            svgUpright.classList.add('hidden');
+            svgLying.classList.remove('hidden');
+            const gentleRock = Math.sin(Date.now() * 0.004) * 3;
+            bodyRig.style.transform = `rotate(${gentleRock.toFixed(1)}deg)`;
+            bubbleText.textContent = 'Rebahan santai di rumput Fasilkom... 🐼🌿💤';
+            coordsStatus.textContent = 'Pose: Tiduran di Rumput';
+          } else {
+            svgUpright.classList.remove('hidden');
+            svgLying.classList.add('hidden');
+
+            // Eye pupil tracking toward movement direction
+            const pupilShiftX = Math.max(-5, Math.min(5, dx * 0.35));
+            const pupilShiftY = Math.max(-4, Math.min(4, dy * 0.35));
+            if (pupils) {
+              pupils.style.transform = `translate(${pupilShiftX.toFixed(1)}px, ${pupilShiftY.toFixed(1)}px)`;
+            }
+
+            if (isHighJumping) {
+              // KE ATAS / MELOMPAT POSE
+              const jumpBob = Math.sin(Date.now() * 0.01) * 5;
+              bodyRig.style.transform = `translateY(${jumpBob.toFixed(1)}px) scale(1.05)`;
+              if (armLeft) armLeft.style.transform = 'rotate(48deg)';
+              if (armRight) armRight.style.transform = 'rotate(-48deg)';
+              if (legLeft) legLeft.style.transform = 'rotate(12deg)';
+              if (legRight) legRight.style.transform = 'rotate(-12deg)';
+              bubbleText.textContent = 'Wohoo! Lompat tinggi ke pucuk pohon menuju IPK 4.00! 🙌✨';
+              coordsStatus.textContent = 'Pose: Melompat ke Atas';
+            } else if (isMovingRight) {
+              // JALAN KE KANAN POSE
+              const stepSwing = Math.sin(pacilPhysics.stepPhase) * 20;
+              const bodyBounce = Math.abs(Math.cos(pacilPhysics.stepPhase)) * -6;
+              bodyRig.style.transform = `translateY(${bodyBounce.toFixed(1)}px) rotate(8deg)`;
+              if (legLeft) legLeft.style.transform = `rotate(${stepSwing.toFixed(1)}deg)`;
+              if (legRight) legRight.style.transform = `rotate(${(-stepSwing).toFixed(1)}deg)`;
+              if (armLeft) armLeft.style.transform = `rotate(${(-stepSwing * 0.6).toFixed(1)}deg)`;
+              if (armRight) armRight.style.transform = `rotate(${(stepSwing * 0.6).toFixed(1)}deg)`;
+              bubbleText.textContent = 'Jalan ke kanan menyusuri rumput bambu! 🐾➡️';
+              coordsStatus.textContent = 'Pose: Jalan ke Kanan';
+            } else if (isMovingLeft) {
+              // JALAN KE KIRI POSE
+              const stepSwing = Math.sin(pacilPhysics.stepPhase) * 20;
+              const bodyBounce = Math.abs(Math.cos(pacilPhysics.stepPhase)) * -6;
+              bodyRig.style.transform = `translateY(${bodyBounce.toFixed(1)}px) rotate(-8deg)`;
+              if (legLeft) legLeft.style.transform = `rotate(${stepSwing.toFixed(1)}deg)`;
+              if (legRight) legRight.style.transform = `rotate(${(-stepSwing).toFixed(1)}deg)`;
+              if (armLeft) armLeft.style.transform = `rotate(${(-stepSwing * 0.6).toFixed(1)}deg)`;
+              if (armRight) armRight.style.transform = `rotate(${(stepSwing * 0.6).toFixed(1)}deg)`;
+              bubbleText.textContent = 'Jalan ke kiri berteduh di bawah pohon! ⬅️🌳';
+              coordsStatus.textContent = 'Pose: Jalan ke Kiri';
+            } else {
+              // IDLE BREATHING ON MEADOW
+              const breathe = Math.sin(Date.now() * 0.0035) * 3;
+              bodyRig.style.transform = `translateY(${breathe.toFixed(1)}px) rotate(0deg)`;
+              if (legLeft) legLeft.style.transform = 'rotate(0deg)';
+              if (legRight) legRight.style.transform = 'rotate(0deg)';
+              if (armLeft) armLeft.style.transform = 'rotate(0deg)';
+              if (armRight) armRight.style.transform = 'rotate(0deg)';
+              bubbleText.textContent = 'Klik & arahkan kursor (Kiri, Kanan, Atas, atau Bawah untuk Tiduran)! 🐼🌿';
+              coordsStatus.textContent = 'Pose: Berdiri Santai';
+            }
+          }
+        }
+
+        requestAnimationFrame(animatePacil);
+      }
+
+      requestAnimationFrame(animatePacil);
+    }
+
+    // --------------------------------------------------------------------------
+    // 4. NAVIGATION, MAJOR SWITCHING & DROPDOWN CONTROLLERS
+    // --------------------------------------------------------------------------
+    function switchMajor(majorCode, showNotification = true) {
+      if (majorCode !== 'SI' && majorCode !== 'IK') return;
+      state.activeMajor = majorCode;
+
+      // Ensure selectedCourseId is valid for the newly active major
+      const activeList = getActiveCourses();
+      const currentSelected = getSelectedCourseId();
+      if (!activeList.some(c => c.id === currentSelected)) {
+        setSelectedCourseId(activeList[0].id);
+      }
+
+      refreshAllViews(true);
+
+      if (showNotification) {
+        const meta = MAJOR_META[majorCode];
+        showToast(`Kurikulum aktif: ${meta.name} (${meta.mkCount} MK • ${meta.totalSks} SKS)`);
+      }
+    }
+
+    function toggleActiveMajorQuick() {
+      const nextMajor = state.activeMajor === 'SI' ? 'IK' : 'SI';
+      switchMajor(nextMajor, true);
+    }
+
     function navigateTo(pageId) {
       state.currentPage = pageId;
 
@@ -1125,12 +1861,12 @@
       const navMap = {
         'beranda': 'nav-beranda',
         'jurusan-si': 'nav-jurusan',
-        'hitung': 'nav-hitung',
+        'hitung': 'nav-jurusan',
         'simulasi': 'nav-simulasi',
         'bobot': 'nav-bobot'
       };
       document.querySelectorAll('.nav-btn').forEach(btn => {
-        btn.className = 'nav-btn px-4 py-2 rounded-full text-sm font-semibold text-slate-600 hover:text-brand-blue transition-all flex items-center gap-1.5';
+        btn.className = 'nav-btn px-4 py-2 rounded-full text-sm font-bold text-slate-600 hover:text-brand-blue transition-all flex items-center gap-1.5';
       });
       const activeBtn = document.getElementById(navMap[pageId]);
       if (activeBtn) {
@@ -1138,7 +1874,7 @@
       }
 
       closeJurusanDropdown();
-      refreshAllViews();
+      refreshAllViews(true);
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
@@ -1170,13 +1906,17 @@
 
     function selectJurusan(code) {
       closeJurusanDropdown();
-      if (code === 'si') {
+      const upper = String(code).toUpperCase();
+      if (upper === 'SI') {
+        state.activeMajor = 'SI';
         navigateTo('jurusan-si');
-        showToast('Membuka Jurusan Sistem Informasi (7 Mata Kuliah)');
-      } else if (code === 'ik') {
-        showToast('Jurusan Ilmu Komputer belum tersedia saat ini. Baru Sistem Informasi yang dapat dibuka.', 'info');
-      } else if (code === 'ka') {
-        showToast('Jurusan Kecerdasan Artifisial belum tersedia saat ini. Baru Sistem Informasi yang dapat dibuka.', 'info');
+        showToast('Membuka Dashboard Sistem Informasi (7 Mata Kuliah • 20 SKS)');
+      } else if (upper === 'IK') {
+        state.activeMajor = 'IK';
+        navigateTo('jurusan-si');
+        showToast('Membuka Dashboard Ilmu Komputer (6 Mata Kuliah • 18 SKS, termasuk PSD)');
+      } else {
+        showToast('Jurusan Kecerdasan Artifisial segera hadir. Saat ini Sistem Informasi & Ilmu Komputer yang tersedia.', 'info');
       }
     }
 
@@ -1193,7 +1933,7 @@
     });
 
     // --------------------------------------------------------------------------
-    // 3. COURSE METRICS ENGINE (Supports Decimal & 105% Bonus Weights)
+    // 5. COURSE METRICS ENGINE (Supports Multi-Value Averages & Per-Major Isolation)
     // --------------------------------------------------------------------------
     function calculateCourseStats(course) {
       let totalWeight = 0;
@@ -1202,24 +1942,22 @@
       let lostPoints = 0;
 
       course.components.forEach(comp => {
-        const w = parseFlexibleNumber(comp.weight) || 0;
+        const w = parseFloat(comp.weight) || 0;
         totalWeight += w;
-        if (comp.score !== null && comp.score !== '' && !isNaN(parseFlexibleNumber(comp.score))) {
-          const s = Math.max(0, Math.min(100, parseFlexibleNumber(comp.score)));
+
+        const parsed = parseMultiScores(comp.rawInput);
+        if (parsed.avg !== null) {
           gradedWeight += w;
-          const earned = (s * w) / 100;
+          const earned = (parsed.avg * w) / 100;
           const maxPossible = w;
           savedPoints += earned;
           lostPoints += (maxPossible - earned);
         }
       });
 
-      totalWeight = Number(totalWeight.toFixed(2));
-      gradedWeight = Number(gradedWeight.toFixed(2));
-      const remainingWeight = Number(Math.max(0, totalWeight - gradedWeight).toFixed(2));
+      const remainingWeight = Math.max(0, totalWeight - gradedWeight);
       const runningAvg = gradedWeight > 0 ? (savedPoints / gradedWeight) * 100 : null;
 
-      // Minimum average score needed on remaining weight to reach globalTargetScore
       const pointsNeededForTarget = state.globalTargetScore - savedPoints;
       let minRequiredOnRemaining = 0;
       if (remainingWeight > 0) {
@@ -1228,7 +1966,6 @@
         minRequiredOnRemaining = pointsNeededForTarget <= 0 ? 0 : 999;
       }
 
-      // Security status badge (Blue & Red themed)
       let statusLabel = 'BELUM DIISI';
       let statusClass = 'bg-slate-100 text-slate-500';
       if (gradedWeight > 0) {
@@ -1240,13 +1977,13 @@
           statusClass = 'bg-blue-100 text-brand-blue';
         } else if (minRequiredOnRemaining <= 92) {
           statusLabel = 'PERLU FOKUS';
-          statusClass = 'bg-red-50 text-brand-red border border-red-200';
+          statusClass = 'bg-amber-100 text-amber-800';
         } else if (minRequiredOnRemaining <= 100) {
           statusLabel = 'RAWAN';
           statusClass = 'bg-red-100 text-brand-red';
         } else {
           statusLabel = 'SULIT CAPAI TARGET';
-          statusClass = 'bg-brand-red text-white';
+          statusClass = 'bg-red-100 text-brand-red';
         }
       }
 
@@ -1267,7 +2004,7 @@
       let totalSKSGraded = 0;
       let weightedGradePoints = 0;
 
-      state.courses.forEach(course => {
+      getActiveCourses().forEach(course => {
         const stats = calculateCourseStats(course);
         if (stats.runningAvg !== null) {
           const gradeObj = scoreToGradePoint(stats.runningAvg);
@@ -1281,7 +2018,7 @@
     }
 
     // --------------------------------------------------------------------------
-    // 4. JURUSAN SISTEM INFORMASI RENDERER (7 MK)
+    // 6. PAGE 2 RENDERER: DASHBOARD JURUSAN (SI 7 MK vs IK 6 MK)
     // --------------------------------------------------------------------------
     function handleGlobalTargetChange(val) {
       state.globalTargetScore = parseFloat(val) || 85;
@@ -1290,7 +2027,7 @@
     }
 
     function openCourseDetail(courseId) {
-      state.selectedCourseId = courseId;
+      setSelectedCourseId(courseId);
       navigateTo('hitung');
     }
 
@@ -1298,45 +2035,54 @@
       const grid = document.getElementById('si-courses-grid');
       if (!grid) return;
 
-      grid.innerHTML = state.courses.map((course, idx) => {
+      const courses = getActiveCourses();
+
+      grid.innerHTML = courses.map((course, idx) => {
         const stats = calculateCourseStats(course);
         const progressWidth = Math.min(100, Math.max(0, stats.savedPoints));
         const avgDisplay = stats.runningAvg !== null
           ? `<span class="t-num font-extrabold text-slate-900">${stats.runningAvg.toFixed(1)}</span> <span class="text-xs font-bold text-brand-blue">(${scoreToGradePoint(stats.runningAvg).letter})</span>`
           : `-`;
 
-        const isHighRisk = stats.minRequiredOnRemaining > 85 || idx === 2;
+        const isHighRisk = stats.minRequiredOnRemaining > 85 || idx === 0;
         const calloutBorder = stats.minRequiredOnRemaining > 100
-          ? 'border-l-4 border-brand-red bg-red-50/80'
-          : (isHighRisk ? 'border-l-4 border-brand-red bg-red-50/50' : 'border-l-4 border-brand-blue bg-blue-50/60');
-        const calloutTitleColor = (stats.minRequiredOnRemaining > 85 || idx === 2) ? 'text-brand-red' : 'text-brand-blue';
+          ? 'border-l-4 border-brand-red bg-red-50/70'
+          : (isHighRisk ? 'border-l-4 border-brand-red bg-red-50/50' : 'border-l-4 border-brand-blue bg-blue-50/50');
+        const calloutTitleColor = (stats.minRequiredOnRemaining > 85 || idx === 0) ? 'text-brand-red' : 'text-brand-blue';
 
         let requirementMessage = '';
         if (stats.remainingWeight === 0) {
           requirementMessage = `Semua bobot selesai. Nilai akhir: <strong>${stats.savedPoints.toFixed(1)}</strong>`;
         } else if (stats.minRequiredOnRemaining <= 0) {
-          requirementMessage = `Target <strong>${state.globalTargetScore}</strong> sudah tercapai dari tabungan poin!`;
+          requirementMessage = `Target <strong>${state.globalTargetScore}</strong> sudah terkunci dari tabungan poin!`;
         } else if (stats.minRequiredOnRemaining > 100) {
           requirementMessage = `Butuh <strong>${stats.minRequiredOnRemaining.toFixed(1)}</strong> di sisa <strong>${formatWeight(stats.remainingWeight)}%</strong> bobot (Melebihi 100)`;
         } else {
           requirementMessage = `Minimal <strong>${Math.max(0, stats.minRequiredOnRemaining).toFixed(1)}</strong> di sisa <strong>${formatWeight(stats.remainingWeight)}%</strong> bobot`;
         }
 
+        const exclusiveTag = course.id === 'psd'
+          ? `<span class="ml-1.5 text-[10px] font-bold px-2 py-0.5 rounded bg-red-50 text-brand-red border border-red-200">Khusus Ilkom</span>`
+          : ((course.id === 'manbis' || course.id === 'kombistek')
+              ? `<span class="ml-1.5 text-[10px] font-bold px-2 py-0.5 rounded bg-blue-50 text-brand-blue border border-blue-200">Khusus SI</span>`
+              : '');
+
         return `
           <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm flex flex-col justify-between card-lift">
             <div>
-              <!-- Card Top Header -->
               <div class="flex items-start justify-between gap-3">
                 <div>
                   <h3 class="font-extrabold text-base text-slate-900 leading-snug">${course.name}</h3>
-                  <p class="text-xs font-semibold text-slate-400 mt-0.5">${course.sks} SKS</p>
+                  <p class="text-xs font-semibold text-slate-400 mt-1 flex items-center flex-wrap gap-1">
+                    <span>${course.sks} SKS • ${course.components.length} Komponen</span>
+                    ${exclusiveTag}
+                  </p>
                 </div>
                 <span class="text-[10px] font-extrabold uppercase tracking-wider px-2.5 py-1 rounded-full shrink-0 ${stats.statusClass}">
                   ${stats.statusLabel}
                 </span>
               </div>
 
-              <!-- Poin Terkumpul Progress Bar -->
               <div class="mt-5">
                 <div class="flex items-center justify-between text-[11px] font-bold uppercase tracking-wider">
                   <span class="text-slate-400">Poin Terkumpul</span>
@@ -1347,13 +2093,11 @@
                 </div>
               </div>
 
-              <!-- Rata-Rata Saat Ini -->
               <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
                 <span class="font-bold uppercase tracking-wider text-slate-400 text-[11px]">Rata-Rata Saat Ini</span>
                 <div>${avgDisplay}</div>
               </div>
 
-              <!-- Syarat Capai Target Callout -->
               <div class="mt-4 rounded-xl p-3.5 ${calloutBorder}">
                 <div class="text-[10px] font-extrabold uppercase tracking-wider ${calloutTitleColor}">
                   Syarat Capai Target (${state.globalTargetScore})
@@ -1364,8 +2108,7 @@
               </div>
             </div>
 
-            <!-- Action Button to Input Nilai MK -->
-            <button onclick="openCourseDetail('${course.id}')" class="mt-5 w-full py-2.5 px-4 rounded-xl border border-slate-200 hover:border-brand-blue hover:bg-blue-50 text-xs font-bold text-slate-700 hover:text-brand-blue transition-all flex items-center justify-center gap-1.5 group">
+            <button onclick="openCourseDetail('${course.id}')" class="mt-5 w-full py-2.5 px-4 rounded-xl border border-slate-200 hover:border-brand-blue hover:bg-blue-50/60 text-xs font-bold text-slate-700 hover:text-brand-blue transition-all flex items-center justify-center gap-1.5 group">
               <span>Input / Hitung Nilai Detail</span>
               <span class="group-hover:translate-x-1 transition-transform">→</span>
             </button>
@@ -1375,128 +2118,200 @@
     }
 
     // --------------------------------------------------------------------------
-    // 5. INPUT NILAI MK RENDERER (KALKULATOR & TARGET ADVISOR)
+    // 7. PAGE 3 RENDERER: MULTI-VALUE GRADE CALCULATOR & TARGET ADVISOR
     // --------------------------------------------------------------------------
     function selectCourseForCalc(courseId) {
-      state.selectedCourseId = courseId;
-      renderCalculatorView();
+      setSelectedCourseId(courseId);
+      renderCalculatorView(true);
     }
 
-    function updateComponentScore(courseId, compId, val) {
-      const course = state.courses.find(c => c.id === courseId);
+    function updateComponentRawScore(courseId, compId, rawVal) {
+      const course = getActiveCourses().find(c => c.id === courseId);
       if (!course) return;
       const comp = course.components.find(c => c.id === compId);
       if (!comp) return;
 
-      if (val === '' || val === null) {
-        comp.score = null;
-      } else {
-        let num = parseFlexibleNumber(val);
-        if (isNaN(num)) num = null;
-        else num = Math.max(0, Math.min(100, num));
-        comp.score = num;
-      }
-
+      comp.rawInput = rawVal;
       refreshAllViews(false);
     }
 
-    function resetCurrentCourseGrades() {
-      const course = state.courses.find(c => c.id === state.selectedCourseId);
+    function removeSingleScoreChip(courseId, compId, chipIndex) {
+      const course = getActiveCourses().find(c => c.id === courseId);
       if (!course) return;
-      course.components.forEach(c => c.score = null);
-      refreshAllViews();
-      showToast(`Input nilai untuk ${course.name} telah direset.`);
+      const comp = course.components.find(c => c.id === compId);
+      if (!comp) return;
+
+      const parsed = parseMultiScores(comp.rawInput);
+      if (parsed.scores.length > chipIndex) {
+        parsed.scores.splice(chipIndex, 1);
+        comp.rawInput = parsed.scores.join(', ');
+        refreshAllViews(true);
+      }
+    }
+
+    function renderComponentChipsHTML(courseId, comp) {
+      const parsed = parseMultiScores(comp.rawInput);
+      if (parsed.scores.length === 0) {
+        return `<div class="text-[11px] text-slate-400 mt-1.5">Belum ada nilai. Ketik misal <span class="font-mono text-slate-500">100, 80, 93, 85</span> jika ada beberapa kuis/tugas/lab.</div>`;
+      }
+
+      const chips = parsed.scores.map((s, idx) => `
+        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-blue-50 text-brand-blue border border-blue-200 font-mono text-[11px] font-bold">
+          <span>#${idx + 1}: ${s}</span>
+          <button type="button" onclick="removeSingleScoreChip('${courseId}', '${comp.id}', ${idx})" class="text-slate-400 hover:text-brand-red ml-0.5 font-sans" title="Hapus nilai ini">×</button>
+        </span>
+      `).join('');
+
+      const summaryBadge = parsed.scores.length > 1
+        ? `<span class="inline-flex items-center px-2 py-0.5 rounded-md bg-red-50 text-brand-red border border-red-200 font-mono text-[11px] font-extrabold">
+             ${parsed.scores.length} Nilai • Rata-rata: ${parsed.avg.toFixed(2)}
+           </span>`
+        : `<span class="text-[11px] font-mono text-slate-500">1 Nilai (${parsed.avg.toFixed(1)})</span>`;
+
+      return `
+        <div class="flex flex-wrap items-center gap-1.5 mt-2">
+          ${chips}
+          ${summaryBadge}
+        </div>
+      `;
+    }
+
+    function resetCurrentCourseGrades() {
+      const course = getActiveCourses().find(c => c.id === getSelectedCourseId());
+      if (!course) return;
+      course.components.forEach(c => c.rawInput = '');
+      refreshAllViews(true);
+      showToast(`Input nilai untuk ${course.shortName} telah direset.`);
     }
 
     function fillSampleGradesForCurrentCourse() {
-      const course = state.courses.find(c => c.id === state.selectedCourseId);
+      const course = getActiveCourses().find(c => c.id === getSelectedCourseId());
       if (!course) return;
-      course.components.forEach((c, idx) => {
-        if (idx < course.components.length - 1) {
-          c.score = Math.min(95, 80 + (idx * 3));
-        } else {
-          c.score = null; // Leave final component open to demonstrate Target Advisor
-        }
-      });
-      refreshAllViews();
-      showToast(`Contoh nilai untuk ${course.name} berhasil diisi!`);
+
+      if (course.id === 'psd') {
+        // 8x Tugas Mandiri, 8x Lab, UTS, UAS open, 8x Quiz
+        course.components[0].rawInput = '100, 95, 90, 88, 92, 85, 90, 94'; // Tugas Mandiri (8x)
+        course.components[1].rawInput = '95, 90, 85, 88, 92, 90, 86, 90';  // Lab (8x)
+        course.components[2].rawInput = '82';                              // UTS
+        course.components[3].rawInput = '';                                // UAS open for Target Advisor
+        course.components[4].rawInput = '100, 80, 90, 85, 95, 88, 90, 92'; // Quiz (8x)
+      } else if (course.id === 'kalkulus1') {
+        course.components[0].rawInput = '100, 80, 93, 85';
+        course.components[1].rawInput = '90, 85, 88';
+        course.components[2].rawInput = '92, 88';
+        course.components[3].rawInput = '82';
+        course.components[4].rawInput = '';
+      } else if (course.id === 'matdis1') {
+        course.components[0].rawInput = '100, 95, 90, 85, 100, 92';
+        course.components[1].rawInput = '88, 78, 84, 90';
+        course.components[2].rawInput = '80';
+        course.components[3].rawInput = '';
+      } else {
+        course.components.forEach((c, idx) => {
+          if (idx === 0) {
+            c.rawInput = '100, 80, 93, 85';
+          } else if (idx === 1 && course.components.length > 2) {
+            c.rawInput = '88, 92, 85';
+          } else if (idx < course.components.length - 1) {
+            c.rawInput = '84';
+          } else {
+            c.rawInput = '';
+          }
+        });
+      }
+
+      refreshAllViews(true);
+      showToast(`Contoh Multi-Nilai berhasil diisi pada ${course.shortName}!`);
     }
 
     function saveCourseGradesToast() {
-      const course = state.courses.find(c => c.id === state.selectedCourseId);
-      refreshAllViews();
-      showToast(`Nilai ${course ? course.name : 'Mata Kuliah'} disimpan & disinkronkan!`);
+      const course = getActiveCourses().find(c => c.id === getSelectedCourseId());
+      refreshAllViews(true);
+      showToast(`Nilai ${course ? course.name : 'Mata Kuliah'} disimpan ke profil ${MAJOR_META[state.activeMajor].name}!`);
     }
 
     function renderCalculatorView(rebuildInputs = true) {
-      const course = state.courses.find(c => c.id === state.selectedCourseId) || state.courses[0];
+      const courses = getActiveCourses();
+      const course = courses.find(c => c.id === getSelectedCourseId()) || courses[0];
       if (!course) return;
 
       const selectEl = document.getElementById('calc-course-select');
       if (selectEl) {
-        selectEl.innerHTML = state.courses.map(c =>
+        selectEl.innerHTML = courses.map(c =>
           `<option value="${c.id}" ${c.id === course.id ? 'selected' : ''}>${c.name} (${c.sks} SKS)</option>`
         ).join('');
       }
 
       document.getElementById('calc-course-title').textContent = course.name;
-      document.getElementById('calc-course-meta').textContent = `Semester ${course.semester} • Kode: ${course.code} • ${course.sks} SKS`;
-      const descEl = document.getElementById('calc-course-desc');
-      if (descEl) descEl.textContent = course.description || '';
+      document.getElementById('calc-course-meta').textContent = `${course.description || `Semester ${course.semester} • ${course.sks} SKS`}`;
 
       const stats = calculateCourseStats(course);
       const weightBadge = document.getElementById('calc-total-weight-badge');
       weightBadge.textContent = `Total Bobot: ${formatWeight(stats.totalWeight)}%`;
-      weightBadge.className = stats.totalWeight === 100
-        ? 't-num text-xs font-bold px-3 py-1.5 rounded-full bg-blue-50 text-brand-blue border border-blue-200 shrink-0'
-        : 't-num text-xs font-bold px-3 py-1.5 rounded-full bg-red-50 text-brand-red border border-red-200 shrink-0';
 
       if (rebuildInputs) {
         const listEl = document.getElementById('calc-components-list');
         listEl.innerHTML = course.components.map(comp => {
-          const hasScore = comp.score !== null && comp.score !== '';
-          const contrib = hasScore ? ((comp.score * comp.weight) / 100).toFixed(2) : null;
+          const parsed = parseMultiScores(comp.rawInput);
+          const hasScore = parsed.avg !== null;
+          const contrib = hasScore ? ((parsed.avg * comp.weight) / 100).toFixed(2) : null;
+
           return `
-            <div class="grid grid-cols-12 gap-3 items-center py-2.5 border-b border-slate-100 last:border-none">
-              <div class="col-span-5 sm:col-span-5">
-                <div class="font-bold text-sm text-slate-900 leading-snug">${comp.name}</div>
-                <span class="inline-block mt-1 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded bg-blue-50 text-brand-blue border border-blue-100">
-                  ${formatWeight(comp.weight)}% BOBOT
-                </span>
+            <div class="py-3.5 border-b border-slate-100 last:border-none">
+              <div class="grid grid-cols-12 gap-3 items-center">
+                <div class="col-span-12 sm:col-span-5">
+                  <div class="font-bold text-sm text-slate-900 leading-snug">${comp.name}</div>
+                  <span class="inline-block mt-1 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded bg-blue-50 text-brand-blue border border-blue-200">
+                    ${formatWeight(comp.weight)}% BOBOT
+                  </span>
+                </div>
+                <div class="col-span-8 sm:col-span-4">
+                  <input
+                    type="text"
+                    inputmode="decimal"
+                    placeholder="cth: 100, 80, 93, 85"
+                    value="${comp.rawInput || ''}"
+                    oninput="updateComponentRawScore('${course.id}', '${comp.id}', this.value)"
+                    class="t-num w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-brand-blue focus:ring-2 focus:ring-brand-blue/15 focus:outline-none text-sm font-bold text-slate-900 placeholder:font-sans placeholder:font-normal placeholder:text-slate-400"
+                  />
+                </div>
+                <div class="col-span-4 sm:col-span-3 text-right">
+                  <div id="contrib-${comp.id}" class="t-num text-xs font-extrabold ${hasScore ? 'text-brand-blue' : 'text-slate-400'}">
+                    ${hasScore ? `+ ${contrib} poin` : '- poin'}
+                  </div>
+                  <div id="avg-sub-${comp.id}" class="t-num text-[10px] text-slate-400 mt-0.5">
+                    ${hasScore && parsed.scores.length > 1 ? `Rata2: ${parsed.avg.toFixed(1)}` : ''}
+                  </div>
+                </div>
               </div>
-              <div class="col-span-4 sm:col-span-4">
-                <input
-                  type="number"
-                  min="0"
-                  max="100"
-                  step="0.5"
-                  placeholder="Ketik nilai..."
-                  value="${hasScore ? comp.score : ''}"
-                  oninput="updateComponentScore('${course.id}', '${comp.id}', this.value)"
-                  class="t-num w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-brand-blue focus:ring-2 focus:ring-brand-blue/15 focus:outline-none text-sm font-semibold text-slate-900 placeholder:font-sans placeholder:font-normal placeholder:text-slate-400"
-                />
-              </div>
-              <div class="col-span-3 sm:col-span-3 text-right">
-                <span id="contrib-${comp.id}" class="t-num text-xs font-bold ${hasScore ? 'text-brand-blue' : 'text-slate-400'}">
-                  ${hasScore ? `+ ${contrib} poin` : '- poin'}
-                </span>
+              <div id="chips-${comp.id}">
+                ${renderComponentChipsHTML(course.id, comp)}
               </div>
             </div>
           `;
         }).join('');
       } else {
         course.components.forEach(comp => {
+          const parsed = parseMultiScores(comp.rawInput);
+          const hasScore = parsed.avg !== null;
+          const contrib = hasScore ? ((parsed.avg * comp.weight) / 100).toFixed(2) : null;
+
           const span = document.getElementById(`contrib-${comp.id}`);
           if (span) {
-            const hasScore = comp.score !== null && comp.score !== '';
-            const contrib = hasScore ? ((comp.score * comp.weight) / 100).toFixed(2) : null;
             span.textContent = hasScore ? `+ ${contrib} poin` : '- poin';
-            span.className = `t-num text-xs font-bold ${hasScore ? 'text-brand-blue' : 'text-slate-400'}`;
+            span.className = `t-num text-xs font-extrabold ${hasScore ? 'text-brand-blue' : 'text-slate-400'}`;
+          }
+          const avgSub = document.getElementById(`avg-sub-${comp.id}`);
+          if (avgSub) {
+            avgSub.textContent = hasScore && parsed.scores.length > 1 ? `Rata2: ${parsed.avg.toFixed(1)}` : '';
+          }
+          const chipsContainer = document.getElementById(`chips-${comp.id}`);
+          if (chipsContainer) {
+            chipsContainer.innerHTML = renderComponentChipsHTML(course.id, comp);
           }
         });
       }
 
-      // Update Right Column Card 1: EVALUASI SAAT INI
       document.getElementById('eval-graded-weight').innerHTML = `${formatWeight(stats.gradedWeight)}% <span class="text-slate-400 font-normal">/ ${formatWeight(stats.totalWeight)}%</span>`;
       document.getElementById('eval-saved-points').textContent = `${stats.savedPoints.toFixed(2)} Poin`;
       document.getElementById('eval-lost-points').textContent = `-${stats.lostPoints.toFixed(2)} Poin`;
@@ -1511,7 +2326,6 @@
         avgEl.className = 't-num text-sm font-bold italic text-slate-400';
       }
 
-      // Update Right Column Card 2: TARGET ADVISOR
       document.getElementById('advisor-subtitle').textContent =
         `"Berapa nilai rata-rata yang harus Anda dapatkan di sisa komponen (${formatWeight(stats.remainingWeight)}%) untuk mencapai target nilai akhir?"`;
 
@@ -1567,8 +2381,8 @@
       if (neededForA <= 0) {
         alertBox.className = 'mt-4 rounded-xl p-4 bg-blue-50 border border-blue-200';
         alertBox.querySelector('div').className = 'text-[11px] font-extrabold uppercase tracking-wider text-brand-blue flex items-center gap-1.5';
-        alertBox.querySelector('div').innerHTML = '<span>✓ TARGET A SUDAH TERCAPAI</span>';
-        alertText.innerHTML = `Selamat! Tabungan poin Anda (<strong>${stats.savedPoints.toFixed(2)}</strong>) sudah melewati batas nilai A (85).`;
+        alertBox.querySelector('div').innerHTML = '<span>✓ TARGET A SUDAH TERKUNCI</span>';
+        alertText.innerHTML = `Selamat! Tabungan poin Anda (<strong>${stats.savedPoints.toFixed(2)}</strong>) sudah mencapai batas nilai A (85).`;
       } else if (neededForA > 100) {
         alertBox.className = 'mt-4 rounded-xl p-4 bg-red-50 border border-red-200';
         alertBox.querySelector('div').className = 'text-[11px] font-extrabold uppercase tracking-wider text-brand-red flex items-center gap-1.5';
@@ -1583,26 +2397,27 @@
     }
 
     // --------------------------------------------------------------------------
-    // 6. SIMULASI IPK 8 SEMESTER RENDERER
+    // 8. PAGE 4 RENDERER: SIMULASI IPK 8 SEMESTER (Per Active Major)
     // --------------------------------------------------------------------------
     function handleTargetIPKChange(val) {
-      let num = parseFlexibleNumber(val);
+      let num = parseFloat(val);
       if (isNaN(num)) num = 3.70;
       num = Math.max(2.00, Math.min(4.00, num));
       state.targetIPK = num;
       refreshAllViews();
-      showToast(`Target IPK diatur ke ${num.toFixed(2)}`);
+      showToast(`Target IPK Lulus diatur ke ${num.toFixed(2)}`);
     }
 
     function updateSemesterInput(smtIndex, field, val) {
-      const item = state.semesters[smtIndex];
+      const semesters = getActiveSemesters();
+      const item = semesters[smtIndex];
       if (!item) return;
 
       if (field === 'ips') {
         if (val === '' || val === null) {
           item.ips = null;
         } else {
-          let num = parseFlexibleNumber(val);
+          let num = parseFloat(val);
           if (isNaN(num)) num = null;
           else num = Math.max(0, Math.min(4.00, num));
           item.ips = num;
@@ -1616,26 +2431,32 @@
       refreshAllViews(false);
     }
 
-    function pullSmt1FromSICourses() {
-      const estIps = calculateEstimatedIPS();
-      const totalSks = state.courses.reduce((acc, c) => acc + c.sks, 0);
+    function pullSmt1FromActiveMajor() {
+      let estIps = calculateEstimatedIPS();
+      const courses = getActiveCourses();
+      const totalSks = courses.reduce((acc, c) => acc + c.sks, 0);
 
       if (estIps === 0) {
         loadDemoData(false);
+        estIps = calculateEstimatedIPS();
       }
 
-      const finalIps = calculateEstimatedIPS();
-      state.semesters[0].ips = parseFloat(finalIps.toFixed(2));
-      state.semesters[0].sks = totalSks;
+      const semesters = getActiveSemesters();
+      semesters[0].ips = parseFloat(estIps.toFixed(2));
+      semesters[0].sks = totalSks;
 
       refreshAllViews();
-      showToast(`IPS Semester 1 (${finalIps.toFixed(2)} dari ${totalSks} SKS) berhasil ditarik dari 7 MK Sistem Informasi!`);
+      const meta = MAJOR_META[state.activeMajor];
+      showToast(`IPS Semester 1 (${estIps.toFixed(2)} dari ${totalSks} SKS) berhasil ditarik dari ${meta.mkCount} MK ${meta.name}!`);
     }
 
     function resetSimulasiIPK() {
-      state.semesters = JSON.parse(JSON.stringify(DEFAULT_SEMESTERS));
+      const defaultSksSmt1 = state.activeMajor === 'IK' ? 18 : 20;
+      state.semestersByMajor[state.activeMajor] = JSON.parse(JSON.stringify(DEFAULT_SEMESTERS)).map((s, idx) =>
+        idx === 0 ? { ...s, sks: defaultSksSmt1 } : s
+      );
       refreshAllViews();
-      showToast('Simulasi IPK 8 Semester telah direset.');
+      showToast(`Simulasi IPK 8 Semester untuk ${MAJOR_META[state.activeMajor].name} telah direset.`);
     }
 
     function calculateSimulasiStats() {
@@ -1645,7 +2466,7 @@
       let totalQualityPoints = 0;
       let totalProgramSKS = 0;
 
-      state.semesters.forEach(s => {
+      getActiveSemesters().forEach(s => {
         const sks = parseInt(s.sks, 10) || 20;
         totalProgramSKS += sks;
         if (s.ips !== null && s.ips !== '' && !isNaN(s.ips)) {
@@ -1678,6 +2499,13 @@
 
     function renderSimulasiIPKView(rebuildInputs = true) {
       const simStats = calculateSimulasiStats();
+      const semesters = getActiveSemesters();
+      const meta = MAJOR_META[state.activeMajor];
+
+      const pullLabel = document.getElementById('sim-pull-btn-label');
+      if (pullLabel) {
+        pullLabel.textContent = `Tarik IPS Smt 1 dari ${meta.mkCount} MK ${meta.code} Saat Ini (${meta.totalSks} SKS)`;
+      }
 
       const targetInput = document.getElementById('sim-target-ipk-input');
       if (targetInput && document.activeElement !== targetInput) {
@@ -1687,7 +2515,7 @@
 
       if (rebuildInputs) {
         const grid = document.getElementById('sim-semesters-grid');
-        grid.innerHTML = state.semesters.map((s, idx) => {
+        grid.innerHTML = semesters.map((s, idx) => {
           const isFilled = s.ips !== null && s.ips !== '';
           const badgeClass = isFilled
             ? 'bg-blue-100 text-brand-blue'
@@ -1695,7 +2523,7 @@
           const badgeText = isFilled ? 'SUDAH DIISI' : 'BELUM DIJALANI';
 
           return `
-            <div class="rounded-2xl p-4 border ${isFilled ? 'border-brand-blue/40 bg-blue-50/30' : 'border-slate-200 bg-slate-50/60'} transition-all">
+            <div class="rounded-2xl p-4 border ${isFilled ? 'border-brand-blue/40 bg-blue-50/20' : 'border-slate-200 bg-slate-50/60'} transition-all">
               <div class="flex items-center justify-between mb-3">
                 <span class="font-extrabold text-sm text-slate-900">Semester ${s.smt}</span>
                 <span id="smt-badge-${idx}" class="text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-md ${badgeClass}">
@@ -1732,7 +2560,7 @@
           `;
         }).join('');
       } else {
-        state.semesters.forEach((s, idx) => {
+        semesters.forEach((s, idx) => {
           const badge = document.getElementById(`smt-badge-${idx}`);
           if (badge) {
             const isFilled = s.ips !== null && s.ips !== '';
@@ -1750,7 +2578,7 @@
       const reqUserClamped = Math.max(0, reqUser);
 
       document.getElementById('sim-strategy-flash').innerHTML =
-        `Tembus langsung IPK <strong>${state.targetIPK.toFixed(2)}</strong> di semester berikutnya. Membutuhkan rata-rata nilai <strong class="text-brand-blue underline">A (4.0)</strong> di sebagian besar MK utama.`;
+        `Tembus langsung IPK <strong>${state.targetIPK.toFixed(2)}</strong> di semester berikutnya. Membutuhkan rata-rata nilai <strong class="text-brand-blue underline">A (4.00)</strong> di sebagian besar MK utama.`;
 
       if (reqUser > 4.00) {
         document.getElementById('sim-strategy-balanced').innerHTML =
@@ -1772,14 +2600,14 @@
       document.getElementById('req-ips-351').textContent = formatReq(simStats.getRequiredRemainingIPS(3.51));
       document.getElementById('req-ips-300').textContent = formatReq(simStats.getRequiredRemainingIPS(3.00));
       document.getElementById('sim-footnote').textContent =
-        `*Angka target dihitung berdasarkan sisa ${simStats.remainingSKS} SKS yang belum ditempuh.`;
+        `*Angka target dihitung berdasarkan sisa ${simStats.remainingSKS} SKS (${meta.name}) yang belum ditempuh.`;
     }
 
     // --------------------------------------------------------------------------
-    // 7. KONTRAK & BOBOT PENILAIAN RENDERER (Matches User's New Screenshot)
+    // 9. PAGE 5 RENDERER: KONTRAK & BOBOT PENILAIAN (Isolated Per Active Major)
     // --------------------------------------------------------------------------
     function updateComponentMeta(courseId, compId, field, val) {
-      const course = state.courses.find(c => c.id === courseId);
+      const course = getActiveCourses().find(c => c.id === courseId);
       if (!course) return;
       const comp = course.components.find(c => c.id === compId);
       if (!comp) return;
@@ -1787,7 +2615,8 @@
       if (field === 'name') {
         comp.name = val;
       } else if (field === 'weight') {
-        let num = parseFlexibleNumber(val);
+        const normalized = String(val).replace(',', '.');
+        let num = parseFloat(normalized);
         if (isNaN(num) || num < 0) num = 0;
         if (num > 100) num = 100;
         comp.weight = num;
@@ -1796,76 +2625,85 @@
     }
 
     function addCourseComponent(courseId) {
-      const course = state.courses.find(c => c.id === courseId);
+      const course = getActiveCourses().find(c => c.id === courseId);
       if (!course) return;
       const newId = 'comp_' + Date.now() + '_' + Math.floor(Math.random() * 1000);
       course.components.push({
         id: newId,
         name: 'Komponen Baru',
         weight: 10,
-        score: null
+        rawInput: ''
       });
-      refreshAllViews();
-      showToast(`Komponen penilaian baru ditambahkan ke ${course.name}`);
+      refreshAllViews(true);
+      showToast(`Komponen penilaian baru ditambahkan ke ${course.shortName} (${MAJOR_META[state.activeMajor].code})`);
     }
 
     function removeCourseComponent(courseId, compId) {
-      const course = state.courses.find(c => c.id === courseId);
+      const course = getActiveCourses().find(c => c.id === courseId);
       if (!course) return;
       if (course.components.length <= 1) {
         showToast('Setiap mata kuliah minimal harus memiliki 1 komponen penilaian.', 'info');
         return;
       }
       course.components = course.components.filter(c => c.id !== compId);
-      refreshAllViews();
-      showToast(`Komponen dihapus dari ${course.name}`);
+      refreshAllViews(true);
+      showToast(`Komponen dihapus dari ${course.shortName}`);
     }
 
     function resetAllWeightsToDefault() {
-      state.courses = JSON.parse(JSON.stringify(DEFAULT_COURSES));
-      refreshAllViews();
-      showToast('Semua kontrak kuliah & bobot persentase dikembalikan ke data default.');
+      state.coursesByMajor[state.activeMajor] = JSON.parse(JSON.stringify(DEFAULT_COURSES_BY_MAJOR[state.activeMajor]));
+      refreshAllViews(true);
+      showToast(`Kontrak kuliah & bobot persentase ${MAJOR_META[state.activeMajor].name} dikembalikan ke default.`);
     }
 
     function renderBobotView(rebuildInputs = true) {
       const grid = document.getElementById('bobot-courses-grid');
       if (!grid) return;
 
+      const courses = getActiveCourses();
+      const meta = MAJOR_META[state.activeMajor];
+
+      const bannerName = document.getElementById('bobot-banner-major-name');
+      if (bannerName) {
+        bannerName.textContent = `${meta.name} (${meta.mkCount} MK • ${meta.totalSks} SKS)`;
+        bannerName.className = state.activeMajor === 'IK' ? 'text-brand-red font-extrabold' : 'text-brand-blue font-extrabold';
+      }
+
       if (!rebuildInputs) {
-        state.courses.forEach(course => {
-          const totalW = Number(course.components.reduce((acc, c) => acc + (parseFlexibleNumber(c.weight) || 0), 0).toFixed(2));
+        courses.forEach(course => {
+          const totalW = course.components.reduce((acc, c) => acc + (parseFloat(c.weight) || 0), 0);
           const badge = document.getElementById(`bobot-total-badge-${course.id}`);
           if (badge) {
-            badge.innerHTML = `Total:<br/>${formatWeight(totalW)}%`;
+            badge.textContent = `Total: ${formatWeight(totalW)}%`;
           }
         });
         return;
       }
 
-      grid.innerHTML = state.courses.map(course => {
-        const totalW = Number(course.components.reduce((acc, c) => acc + (parseFlexibleNumber(c.weight) || 0), 0).toFixed(2));
+      grid.innerHTML = courses.map(course => {
+        const totalW = course.components.reduce((acc, c) => acc + (parseFloat(c.weight) || 0), 0);
 
-        const rowsHtml = course.components.map(comp => {
+        const rowsHtml = course.components.map((comp) => {
           return `
             <div class="flex items-center gap-1.5">
               <input
                 type="text"
                 value="${comp.name}"
-                title="${comp.name}"
                 oninput="updateComponentMeta('${course.id}', '${comp.id}', 'name', this.value)"
                 class="flex-1 min-w-0 px-2.5 py-1.5 rounded-lg bg-white border border-slate-200 text-xs font-medium text-slate-800 focus:border-brand-blue focus:outline-none"
               />
-              <input
-                type="text"
-                inputmode="decimal"
-                value="${formatWeight(comp.weight)}"
-                oninput="updateComponentMeta('${course.id}', '${comp.id}', 'weight', this.value)"
-                class="t-num w-14 shrink-0 px-2 py-1.5 rounded-lg bg-white border border-slate-200 text-xs font-bold text-slate-900 text-left focus:border-brand-blue focus:outline-none"
-              />
-              <span class="text-xs font-semibold text-slate-400 shrink-0">%</span>
+              <div class="flex items-center gap-1 shrink-0">
+                <input
+                  type="text"
+                  value="${formatWeight(comp.weight)}"
+                  oninput="updateComponentMeta('${course.id}', '${comp.id}', 'weight', this.value)"
+                  class="t-num w-14 px-2 py-1.5 rounded-lg bg-white border border-slate-200 text-slate-900 text-xs font-bold text-center focus:border-brand-blue focus:outline-none"
+                />
+                <span class="text-[11px] font-semibold text-slate-400">%</span>
+              </div>
               <button
                 onclick="removeCourseComponent('${course.id}', '${comp.id}')"
-                class="w-7 h-7 shrink-0 rounded-lg bg-red-50 hover:bg-brand-red text-brand-red hover:text-white font-bold text-xs flex items-center justify-center transition-colors"
+                class="w-6 h-6 flex items-center justify-center text-brand-red bg-red-50 hover:bg-red-100 rounded-md text-xs font-bold transition-colors shrink-0"
                 title="Hapus Komponen"
               >
                 ✕
@@ -1877,31 +2715,22 @@
         return `
           <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm flex flex-col justify-between">
             <div>
-              <!-- Header Matching User's Screenshot -->
               <div class="flex items-start justify-between gap-2">
-                <h3 class="font-extrabold text-sm sm:text-base text-slate-900 leading-snug">
-                  ${course.name} (${course.sks} SKS)
-                </h3>
-                <span id="bobot-total-badge-${course.id}" class="t-num text-[11px] font-bold leading-tight text-center px-2.5 py-1 rounded-lg bg-slate-50 border border-slate-200 text-slate-700 shrink-0">
-                  Total:<br/>${formatWeight(totalW)}%
+                <h3 class="font-extrabold text-sm text-slate-900 leading-snug">${course.name} (${course.sks} SKS)</h3>
+                <span id="bobot-total-badge-${course.id}" class="t-num text-[10px] font-bold px-2 py-1 rounded-md bg-slate-50 border border-slate-200 text-slate-600 shrink-0">
+                  Total: ${formatWeight(totalW)}%
                 </span>
               </div>
+              <p class="text-[11px] text-slate-400 mt-1 leading-relaxed">${course.description || ''}</p>
 
-              <!-- Course Description Subtitle -->
-              <p class="text-[11px] text-slate-500 mt-1.5 leading-relaxed">
-                ${course.description || ''}
-              </p>
-
-              <!-- Component Rows -->
               <div class="space-y-2 my-4">
                 ${rowsHtml}
               </div>
             </div>
 
-            <!-- Add Component Button -->
             <button
               onclick="addCourseComponent('${course.id}')"
-              class="w-full py-2 px-3 rounded-lg border border-slate-200 hover:border-brand-blue hover:bg-blue-50/50 text-center text-xs font-bold text-slate-700 hover:text-brand-blue transition-colors"
+              class="w-full py-2 px-3 rounded-xl border border-slate-200 hover:border-brand-blue hover:bg-blue-50/40 text-center text-xs font-bold text-slate-700 hover:text-brand-blue transition-colors"
             >
               + Tambah Komponen Penilaian
             </button>
@@ -1911,54 +2740,163 @@
     }
 
     // --------------------------------------------------------------------------
-    // 8. DEMO DATA LOADER & MASTER SYNC REFRESH
+    // 10. DEMO MULTI-SCORE DATA LOADER & MASTER UI SYNC
     // --------------------------------------------------------------------------
     function loadDemoData(showNotification = true) {
-      const sampleScores = {
-        ddp1: [88, 85, 82, null, 90],                  // UAS open
-        kalkulus1: [84, 90, 88, 80, null],             // UAS open
-        kombistek: [88, 90, 85, 87, 90, 92, 84, 86, 85, 95],
-        manbis: [86, 84, 82, 88, 85, 100, 90, null],   // Last open
-        matdis1: [85, 82, 78, null],                   // UAS open
-        agama: [92, 88, 90],
-        inggris: [88, 85, null]
+      const sampleMultiInputs = {
+        psd: [
+          '100, 95, 90, 88, 92, 85, 90, 94', // Tugas Mandiri (8x) - 15%
+          '95, 90, 85, 88, 92, 90, 86, 90',  // Lab (8x) - 15%
+          '84',                              // UTS - 30%
+          '',                                // UAS - 35% (open for Target Advisor)
+          '100, 80, 90, 85, 95, 88, 90, 92'  // Quiz (8x) - 5%
+        ],
+        ddp1: ['95, 88, 92, 90', '100, 85, 90', '84', '', '95'],
+        kalkulus1: ['100, 80, 93, 85', '90, 88, 85', '92, 86', '81', ''],
+        kombistek: ['88', '90', '85', '87', '92', '95', '100, 85', '90', '84', '100'],
+        manbis: ['88, 92', '85, 90', '84', '90', '88', '100', '95, 90, 88, 100', '90'],
+        matdis1: ['100, 90, 95, 85, 92', '88, 80, 90, 84', '79', ''],
+        agama: ['92, 88, 95', '90', '88'],
+        inggris: ['88, 90, 86', '85', '87']
       };
 
-      state.courses.forEach(course => {
-        const scores = sampleScores[course.id];
-        if (scores) {
+      const courses = getActiveCourses();
+      courses.forEach(course => {
+        const inputs = sampleMultiInputs[course.id];
+        if (inputs) {
           course.components.forEach((comp, idx) => {
-            comp.score = scores[idx] !== undefined ? scores[idx] : null;
+            comp.rawInput = inputs[idx] !== undefined ? inputs[idx] : '';
           });
         }
       });
 
       const estIps = calculateEstimatedIPS();
-      state.semesters[0].ips = parseFloat(estIps.toFixed(2));
-      state.semesters[0].sks = 20;
+      const totalSks = courses.reduce((acc, c) => acc + c.sks, 0);
+      const semesters = getActiveSemesters();
+      semesters[0].ips = parseFloat(estIps.toFixed(2));
+      semesters[0].sks = totalSks;
 
-      refreshAllViews();
+      refreshAllViews(true);
       if (showNotification) {
-        showToast('Data contoh berhasil dimuat! Cek perubahan di Sistem Informasi, Input Nilai MK, & Simulasi IPK.');
+        const meta = MAJOR_META[state.activeMajor];
+        showToast(`Contoh Multi-Nilai untuk ${meta.name} (${meta.mkCount} MK) berhasil dimuat!`);
+      }
+    }
+
+    function updateMajorSegmentedTabsUI() {
+      const isSI = state.activeMajor === 'SI';
+      const meta = MAJOR_META[state.activeMajor];
+
+      // Header quick pill
+      const headerPill = document.getElementById('header-active-major-pill');
+      const headerText = document.getElementById('header-major-text');
+      if (headerPill && headerText) {
+        headerText.textContent = `Prodi: ${meta.code} (${meta.totalSks} SKS)`;
+        headerPill.className = isSI
+          ? 'hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-blue-50 hover:bg-blue-100 border border-blue-200 text-brand-blue text-xs font-extrabold transition-all'
+          : 'hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-red-50 hover:bg-red-100 border border-red-200 text-brand-red text-xs font-extrabold transition-all';
+      }
+
+      // Page 2 Dashboard tabs & labels
+      const tabSI = document.getElementById('tab-major-si');
+      const tabIK = document.getElementById('tab-major-ik');
+      if (tabSI && tabIK) {
+        tabSI.className = isSI
+          ? 'px-4 py-2 rounded-lg text-xs font-extrabold transition-all bg-brand-blue text-white shadow-sm'
+          : 'px-4 py-2 rounded-lg text-xs font-extrabold transition-all text-slate-600 hover:text-brand-blue';
+        tabIK.className = !isSI
+          ? 'px-4 py-2 rounded-lg text-xs font-extrabold transition-all bg-brand-red text-white shadow-sm'
+          : 'px-4 py-2 rounded-lg text-xs font-extrabold transition-all text-slate-600 hover:text-brand-red';
+      }
+
+      const isoNote = document.getElementById('dashboard-isolation-note');
+      if (isoNote) {
+        isoNote.textContent = `Profil nilai & bobot terisolasi khusus untuk ${meta.name} (${meta.mkCount} MK • ${meta.totalSks} SKS)`;
+      }
+
+      const prodiBadge = document.getElementById('si-prodi-badge');
+      if (prodiBadge) {
+        prodiBadge.innerHTML = `<span>🎓 Program Studi ${meta.name}</span>`;
+        prodiBadge.className = isSI
+          ? 'inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-blue-50 border border-blue-200 text-brand-blue text-xs font-bold'
+          : 'inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-red-50 border border-red-200 text-brand-red text-xs font-bold';
+      }
+
+      const mkCountEl = document.getElementById('si-total-mk-count');
+      const sksCountEl = document.getElementById('si-total-sks-count');
+      const sectionSubCount = document.getElementById('si-section-subtitle-count');
+      if (mkCountEl) mkCountEl.textContent = `${meta.mkCount} MK`;
+      if (sksCountEl) sksCountEl.textContent = `(${meta.totalSks} SKS)`;
+      if (sectionSubCount) sectionSubCount.textContent = `(${meta.mkCount} MK - ${meta.totalSks} SKS)`;
+
+      // Page 3 Calculator tabs
+      const calcTabSI = document.getElementById('calc-tab-si');
+      const calcTabIK = document.getElementById('calc-tab-ik');
+      if (calcTabSI && calcTabIK) {
+        calcTabSI.className = isSI
+          ? 'px-3 py-1.5 rounded-lg text-[11px] font-extrabold transition-all bg-brand-blue text-white'
+          : 'px-3 py-1.5 rounded-lg text-[11px] font-extrabold transition-all text-slate-600 hover:text-brand-blue';
+        calcTabIK.className = !isSI
+          ? 'px-3 py-1.5 rounded-lg text-[11px] font-extrabold transition-all bg-brand-red text-white'
+          : 'px-3 py-1.5 rounded-lg text-[11px] font-extrabold transition-all text-slate-600 hover:text-brand-red';
+      }
+      const calcBackLabel = document.getElementById('calc-back-major-label');
+      if (calcBackLabel) calcBackLabel.textContent = `Daftar MK ${meta.name}`;
+      const calcDropTag = document.getElementById('calc-dropdown-major-tag');
+      if (calcDropTag) calcDropTag.textContent = `Mata Kuliah Terpilih (${meta.name})`;
+
+      // Page 4 Simulasi tabs
+      const simTabSI = document.getElementById('sim-tab-si');
+      const simTabIK = document.getElementById('sim-tab-ik');
+      if (simTabSI && simTabIK) {
+        simTabSI.className = isSI
+          ? 'px-3 py-1.5 rounded-lg text-xs font-extrabold transition-all bg-brand-blue text-white'
+          : 'px-3 py-1.5 rounded-lg text-xs font-extrabold transition-all text-slate-600 hover:text-brand-blue';
+        simTabIK.className = !isSI
+          ? 'px-3 py-1.5 rounded-lg text-xs font-extrabold transition-all bg-brand-red text-white'
+          : 'px-3 py-1.5 rounded-lg text-xs font-extrabold transition-all text-slate-600 hover:text-brand-red';
+      }
+
+      // Page 5 Bobot tabs
+      const bobotTabSI = document.getElementById('bobot-tab-si');
+      const bobotTabIK = document.getElementById('bobot-tab-ik');
+      if (bobotTabSI && bobotTabIK) {
+        bobotTabSI.className = isSI
+          ? 'px-4 py-2 rounded-lg text-xs font-extrabold transition-all bg-brand-blue text-white shadow-sm'
+          : 'px-4 py-2 rounded-lg text-xs font-extrabold transition-all text-slate-600 hover:text-brand-blue';
+        bobotTabIK.className = !isSI
+          ? 'px-4 py-2 rounded-lg text-xs font-extrabold transition-all bg-brand-red text-white shadow-sm'
+          : 'px-4 py-2 rounded-lg text-xs font-extrabold transition-all text-slate-600 hover:text-brand-red';
       }
     }
 
     function refreshAllViews(rebuildInputs = true) {
+      updateMajorSegmentedTabsUI();
+
+      const meta = MAJOR_META[state.activeMajor];
       const estIps = calculateEstimatedIPS();
       const simStats = calculateSimulasiStats();
       const reqNextIps = simStats.getRequiredRemainingIPS(state.targetIPK);
 
-      // Update Beranda Live Summary
+      // Update Hero Live Card
+      const heroTag = document.getElementById('hero-card-major-tag');
+      if (heroTag) {
+        heroTag.textContent = `PRODI AKTIF: ${meta.name.toUpperCase()} • STATUS SAAT INI`;
+      }
+      const heroMkEl = document.getElementById('hero-live-mk');
+      if (heroMkEl) {
+        heroMkEl.innerHTML = `${meta.mkCount} MK <span class="text-[11px] font-normal text-slate-500">(${meta.totalSks} SKS)</span>`;
+      }
       const heroIpsEl = document.getElementById('hero-live-ips');
       if (heroIpsEl) {
-        heroIpsEl.innerHTML = `${estIps.toFixed(2)} <span class="text-xs font-normal text-slate-400">/ 4.00</span>`;
+        heroIpsEl.innerHTML = `${estIps.toFixed(2)} <span class="text-[11px] font-normal text-slate-400">/ 4.00</span>`;
       }
       const heroTargetEl = document.getElementById('hero-live-target');
       if (heroTargetEl) {
-        heroTargetEl.innerHTML = `${state.targetIPK.toFixed(2)} <span class="text-[10px] font-sans font-bold bg-brand-red text-white px-2 py-0.5 rounded-full ml-1">HIGH</span>`;
+        heroTargetEl.innerHTML = `${state.targetIPK.toFixed(2)} <span class="text-[9px] font-sans font-extrabold bg-brand-red text-white px-1.5 py-0.5 rounded">HIGH</span>`;
       }
 
-      // Update Jurusan SI Top Summary Banner
+      // Update Dashboard Metrics
       const siEstIps = document.getElementById('si-est-ips');
       if (siEstIps) siEstIps.textContent = estIps.toFixed(2);
 
@@ -1983,7 +2921,7 @@
     }
 
     // --------------------------------------------------------------------------
-    // 9. CUSTOM TOAST NOTIFICATION (Blue & Red Theme)
+    // 11. CUSTOM TOAST NOTIFICATION
     // --------------------------------------------------------------------------
     function showToast(message, type = 'success') {
       const container = document.getElementById('toast-container');
@@ -1991,12 +2929,12 @@
 
       const toast = document.createElement('div');
       const bgClass = type === 'info'
-        ? 'bg-brand-red text-white border-red-700'
-        : 'bg-brand-blue text-white border-blue-800';
+        ? 'bg-slate-900 text-white border-slate-700'
+        : 'bg-brand-blue text-white border-blue-700';
 
       toast.className = `pointer-events-auto flex items-center gap-2.5 px-4 py-3 rounded-2xl border shadow-xl text-xs font-bold transition-all duration-300 transform translate-y-2 opacity-0 ${bgClass}`;
       toast.innerHTML = `
-        <span class="w-2 h-2 rounded-full bg-white shrink-0"></span>
+        <span class="w-2 h-2 rounded-full bg-brand-red shrink-0"></span>
         <span>${message}</span>
       `;
 
@@ -2013,6 +2951,7 @@
     }
 
     window.addEventListener('DOMContentLoaded', () => {
+      initPacilParkPhysics();
       refreshAllViews(true);
     });
   </script>
