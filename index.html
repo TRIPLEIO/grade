@@ -292,7 +292,7 @@
       <div class="page-header">
         <div>
           <h2>Manajemen Mata Kuliah & Bobot Kontrak Kuliah</h2>
-          <p>Rincian struktur bobot penilaian resmi dari 7 mata kuliah aktif (Total 20 SKS).</p>
+          <p>Anda dapat menyesuaikan nama komponen, persentase bobot, atau menambah komponen baru sesuai kontrak kuliah.</p>
         </div>
       </div>
       <div class="grid-3" id="bobot-courses-container"></div>
@@ -421,7 +421,7 @@
         id: 'agama',
         sks: 2,
         name: 'MPK Agama (2 SKS)',
-        note: 'Total 100% - Mata Kuliah Pengembangan Kepribadian',
+        note: 'Total 100% - Komponen dapat disesuaikan di Manajemen Bobot MK',
         components: [
           { name: 'Tugas & Diskusi Kelas', weight: 40, detail: 'Penugasan & keaktifan', rawInput: '' },
           { name: 'UTS / Proyek Tengah Semester', weight: 30, detail: 'Evaluasi Tengah Semester', rawInput: '' },
@@ -432,15 +432,17 @@
         id: 'inggris',
         sks: 2,
         name: 'MPK Bahasa Inggris (2 SKS)',
-        note: 'Nilai Akhir: C+ (Bobot IP 2.30) - Bisa diedit jika perlu',
+        note: 'Total 100% - Fleksibel (Silakan input nilai per komponen / sesuaikan bobot)',
         components: [
-          { name: 'Nilai Akhir MPK Bahasa Inggris', weight: 100, detail: 'Nilai C+ setara rentang 60-64 (IP 2.30)', rawInput: '62' }
+          { name: 'Tugas, Latihan & Partisipasi Kelas', weight: 40, detail: 'Reading, Writing, Speaking & Keaktifan', rawInput: '' },
+          { name: 'UTS / Kuis Evaluasi Tengah', weight: 30, detail: 'Ujian Tengah Semester', rawInput: '' },
+          { name: 'UAS / Proyek Akhir Bahasa Inggris', weight: 30, detail: 'Ujian Akhir Semester / Presentasi', rawInput: '' }
         ]
       }
     ];
 
     const DEFAULT_SEMESTERS = [
-      { sem: 1, ips: '3.56', sks: 20 },
+      { sem: 1, ips: '', sks: 20 },
       { sem: 2, ips: '', sks: 20 },
       { sem: 3, ips: '', sks: 20 },
       { sem: 4, ips: '', sks: 20 },
@@ -453,13 +455,13 @@
     let state = {
       targetScore: 85,
       targetIPK: 3.70,
-      courses: JSON.parse(localStorage.getItem('grade_advisor_courses_v6')) || JSON.parse(JSON.stringify(DEFAULT_COURSES)),
-      semesters: JSON.parse(localStorage.getItem('grade_advisor_semesters_v6')) || JSON.parse(JSON.stringify(DEFAULT_SEMESTERS))
+      courses: JSON.parse(localStorage.getItem('grade_advisor_courses_v7')) || JSON.parse(JSON.stringify(DEFAULT_COURSES)),
+      semesters: JSON.parse(localStorage.getItem('grade_advisor_semesters_v7')) || JSON.parse(JSON.stringify(DEFAULT_SEMESTERS))
     };
 
     function saveState() {
-      localStorage.setItem('grade_advisor_courses_v6', JSON.stringify(state.courses));
-      localStorage.setItem('grade_advisor_semesters_v6', JSON.stringify(state.semesters));
+      localStorage.setItem('grade_advisor_courses_v7', JSON.stringify(state.courses));
+      localStorage.setItem('grade_advisor_semesters_v7', JSON.stringify(state.semesters));
     }
 
     function parseScoreInput(raw) {
@@ -573,7 +575,8 @@
         const sks = course.sks || 3;
         if (s.completedWeight > 0) {
           activeSKS += sks;
-          weightedGpaSum += getLetterInfo(s.currentRunningAvg).gpa * sks;
+          const baseScore = s.remainingWeight === 0 ? s.earnedPoints : s.currentRunningAvg;
+          weightedGpaSum += getLetterInfo(baseScore).gpa * sks;
         }
 
         const targetInfo = s.remainingWeight > 0
@@ -609,7 +612,7 @@
         '<div class="card"><span class="kpi-label">Total Mata Kuliah Aktif</span><div class="kpi-val">7 MK <span style="font-size:12px; font-weight:400; color:#6B7280;">(20 SKS)</span></div></div>' +
         '<div class="card"><span class="kpi-label">Estimasi IPS Berjalan</span><div class="kpi-val">' + estGpa + ' <span style="font-size:12px; font-weight:400; color:#6B7280;">/ 4.00</span></div></div>' +
         '<div class="card"><span class="kpi-label">IPK Simulasi (' + ipkStats.completedSemCount + ' Smt)</span><div class="kpi-val">' + ipkStats.currentIPK.toFixed(2) + '</div></div>' +
-        '<div class="card"><span class="kpi-label">Target IPS Smt Depan (Utk IPK ' + state.targetIPK.toFixed(2) + ')</span><div class="kpi-val">' + (ipkStats.reqNextSemOnly <= 4 ? ipkStats.reqNextSemOnly.toFixed(2) : 'Rata2 ' + ipkStats.reqRemainingAvg.toFixed(2)) + '</div></div>';
+        '<div class="card"><span class="kpi-label">Target IPS Smt Depan (Utk IPK ' + state.targetIPK.toFixed(2) + ')</span><div class="kpi-val">' + (ipkStats.reqNextSemOnly <= 4 && ipkStats.reqNextSemOnly > 0 ? ipkStats.reqNextSemOnly.toFixed(2) : 'Rata2 ' + ipkStats.reqRemainingAvg.toFixed(2)) + '</div></div>';
 
       document.getElementById('beranda-course-cards').innerHTML = cardsHtml;
     }
@@ -768,7 +771,7 @@
           '<div style="display:flex; align-items:center; gap:10px;">' +
             '<div>' +
               '<span style="font-size:10px; color:#6B7280; display:block;">IPS Semester ' + s.sem + '</span>' +
-              '<input type="text" placeholder="Kosong / cth: 3.56" value="' + s.ips + '" oninput="handleSemesterChange(' + idx + ', \'ips\', this.value)" style="width:130px; font-weight:600;" />' +
+              '<input type="text" placeholder="Kosong / cth: 3.50" value="' + s.ips + '" oninput="handleSemesterChange(' + idx + ', \'ips\', this.value)" style="width:130px; font-weight:600;" />' +
             '</div>' +
             '<div>' +
               '<span style="font-size:10px; color:#6B7280; display:block;">Beban SKS</span>' +
@@ -798,21 +801,23 @@
     }
 
     function fillSmt1FromCurrent() {
-      let totalSKS = 0;
+      let activeSKS = 0;
       let totalMutu = 0;
       state.courses.forEach(function(course) {
         const s = analyzeCourse(course);
         const sks = course.sks || 3;
-        totalSKS += sks;
         if (s.completedWeight > 0) {
-          totalMutu += getLetterInfo(s.currentRunningAvg).gpa * sks;
-        } else {
-          // Jika matkul belum diisi nilainya, asumsikan target A (4.00) untuk simulasi
-          totalMutu += 4.00 * sks;
+          activeSKS += sks;
+          const baseScore = s.remainingWeight === 0 ? s.earnedPoints : s.currentRunningAvg;
+          totalMutu += getLetterInfo(baseScore).gpa * sks;
         }
       });
-      state.semesters[0].ips = (totalMutu / totalSKS).toFixed(2);
-      state.semesters[0].sks = totalSKS;
+      if (activeSKS === 0) {
+        alert('Belum ada nilai mata kuliah yang diisi pada menu Hitung Nilai MK. Silakan isi nilai terlebih dahulu atau ketik langsung IPS Semester 1 Anda.');
+        return;
+      }
+      state.semesters[0].ips = (totalMutu / activeSKS).toFixed(2);
+      state.semesters[0].sks = 20;
       saveState();
       renderIPK8();
       renderBeranda();
@@ -883,8 +888,10 @@
       }).join('');
 
       if (stats.remainingSemCount > 0) {
-        if (stats.reqRemainingAvg <= 3.75) {
-          msgEl.innerHTML = '<div class="badge badge-safe" style="display:block; padding:12px; font-size:12px; line-height:1.5;"><b>KESIMPULAN: SANGAT BISA DICAPAI!</b> Walaupun ada nilai C+ di Bahasa Inggris (2 SKS), Anda hanya perlu mempertahankan rata-rata IPS minimal <b>' + Math.max(0, stats.reqRemainingAvg).toFixed(2) + '</b> pada ' + stats.remainingSemCount + ' semester ke depan untuk lulus dengan IPK <b>' + state.targetIPK.toFixed(2) + '</b>.</div>';
+        if (stats.completedSemCount === 0) {
+          msgEl.innerHTML = '<div class="badge badge-neutral" style="display:block; padding:12px; font-size:12px; line-height:1.5;">Silakan isi IPS Semester 1 Anda di sebelah kiri (atau klik tombol <b>Tarik IPS Smt 1 dari 7 MK Saat Ini</b>) untuk melihat rekomendasi IPS semester berikutnya.</div>';
+        } else if (stats.reqRemainingAvg <= 3.75) {
+          msgEl.innerHTML = '<div class="badge badge-safe" style="display:block; padding:12px; font-size:12px; line-height:1.5;"><b>KESIMPULAN: SANGAT BISA DICAPAI!</b> Dengan IPK saat ini ' + stats.currentIPK.toFixed(2) + ', Anda hanya perlu mempertahankan rata-rata IPS minimal <b>' + Math.max(0, stats.reqRemainingAvg).toFixed(2) + '</b> pada ' + stats.remainingSemCount + ' semester ke depan untuk lulus dengan IPK <b>' + state.targetIPK.toFixed(2) + '</b>.</div>';
         } else if (stats.reqRemainingAvg <= 4.00) {
           msgEl.innerHTML = '<div class="badge badge-warn" style="display:block; padding:12px; font-size:12px; line-height:1.5;"><b>KESIMPULAN: MASIH MUNGKIN TAPI KETAT.</b> Anda wajib meraih IPS rata-rata <b>' + stats.reqRemainingAvg.toFixed(2) + '</b> di seluruh sisa ' + stats.remainingSemCount + ' semester.</div>';
         } else {
@@ -931,21 +938,60 @@
         '</div>';
     }
 
+    // FITUR 5: MANAJEMEN BOBOT MK (BISA EDIT KOMPONEN & BOBOT SECARA FLEKSIBEL)
     function renderBobot() {
-      document.getElementById('bobot-courses-container').innerHTML = state.courses.map(function(c) {
+      document.getElementById('bobot-courses-container').innerHTML = state.courses.map(function(c, cIdx) {
+        const totalW = c.components.reduce(function(sum, item) { return sum + (parseFloat(item.weight) || 0); }, 0);
         return '<div class="card" style="justify-content:flex-start;">' +
-          '<h4 style="font-size:15px; font-weight:700;">' + c.name + '</h4>' +
+          '<div style="display:flex; justify-content:space-between; align-items:center;">' +
+            '<h4 style="font-size:15px; font-weight:700;">' + c.name + '</h4>' +
+            '<span class="badge badge-neutral">Total: ' + totalW + '%</span>' +
+          '</div>' +
           '<p style="font-size:12px; color:#6B7280; margin:4px 0 12px 0;">' + c.note + '</p>' +
-          '<div>' +
-            c.components.map(function(comp) {
-              return '<div style="display:flex; justify-content:space-between; font-size:12px; padding:6px 0; border-top:1px solid #F3F4F6;">' +
-                '<span>' + comp.name + '</span>' +
-                '<b>' + comp.weight + '%</b>' +
+          '<div style="display:flex; flex-direction:column; gap:8px;">' +
+            c.components.map(function(comp, compIdx) {
+              return '<div style="display:flex; gap:6px; align-items:center;">' +
+                '<input type="text" value="' + comp.name + '" onchange="updateComponentMeta(' + cIdx + ', ' + compIdx + ', \'name\', this.value)" style="flex:1; padding:5px 8px; font-size:12px;" title="Nama Komponen" />' +
+                '<input type="number" step="0.5" value="' + comp.weight + '" onchange="updateComponentMeta(' + cIdx + ', ' + compIdx + ', \'weight\', this.value)" style="width:65px; padding:5px 8px; font-size:12px;" title="Bobot (%)" />' +
+                '<span style="font-size:12px; color:#6B7280;">%</span>' +
+                '<button type="button" onclick="removeComponent(' + cIdx + ', ' + compIdx + ')" style="border:1px solid #FECDD3; background:#FFF1F2; color:#9F1239; border-radius:4px; padding:4px 8px; font-size:11px; cursor:pointer;" title="Hapus">✕</button>' +
               '</div>';
             }).join('') +
           '</div>' +
+          '<button type="button" onclick="addComponent(' + cIdx + ')" class="btn-outline" style="margin-top:12px;">+ Tambah Komponen Penilaian</button>' +
         '</div>';
       }).join('');
+    }
+
+    function updateComponentMeta(cIdx, compIdx, field, val) {
+      if (field === 'weight') {
+        state.courses[cIdx].components[compIdx].weight = parseFloat(val) || 0;
+      } else {
+        state.courses[cIdx].components[compIdx][field] = val;
+      }
+      saveState();
+      renderAll();
+    }
+
+    function addComponent(cIdx) {
+      state.courses[cIdx].components.push({
+        name: 'Komponen Baru',
+        weight: 10,
+        detail: 'Komponen tambahan',
+        rawInput: ''
+      });
+      saveState();
+      renderAll();
+    }
+
+    function removeComponent(cIdx, compIdx) {
+      if (state.courses[cIdx].components.length <= 1) {
+        alert('Minimal harus ada 1 komponen penilaian dalam mata kuliah.');
+        return;
+      }
+      state.courses[cIdx].components.splice(compIdx, 1);
+      saveState();
+      renderAll();
     }
 
     function renderAnalitik() {
@@ -967,8 +1013,8 @@
 
     function resetAllData() {
       if (confirm('Hapus semua nilai dan reset kembali ke awal?')) {
-        localStorage.removeItem('grade_advisor_courses_v6');
-        localStorage.removeItem('grade_advisor_semesters_v6');
+        localStorage.removeItem('grade_advisor_courses_v7');
+        localStorage.removeItem('grade_advisor_semesters_v7');
         state.courses = JSON.parse(JSON.stringify(DEFAULT_COURSES));
         state.semesters = JSON.parse(JSON.stringify(DEFAULT_SEMESTERS));
         renderAll();
